@@ -1,0 +1,19 @@
+version: "2"
+
+services:
+ react-client:
+  build: client
+  ports:
+   - "3000:3000"
+
+ express-graphql:
+  build: server
+  ports:
+   - "4000:4000"
+  links:
+   - mongodb-database
+
+ mongodb-database:
+  image: mvertes/alpine-mongo:latest
+  ports: 
+   - "27017:27017"
