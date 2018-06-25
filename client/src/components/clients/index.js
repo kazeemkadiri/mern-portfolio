@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import  Navbar  from './navbar';
 import Header from './header';
 import AboutMe from './about-me';
+import Services from './services';
   
 export default class ClientIndex extends Component {
 
@@ -13,6 +14,7 @@ export default class ClientIndex extends Component {
                 <Navbar />
                 <Header />
                 <AboutMe />
+                <Services />
             </div>
 
         );
