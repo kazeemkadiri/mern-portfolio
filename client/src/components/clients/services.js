@@ -91,7 +91,7 @@ class Services extends Component {
                     <div className={ classes.containerChild }>
                         <Card className={classes.card}>
                             <div className={ classes.cardChildImg }>
-                                <img src='https://placehold.it/100x100' />
+                                <img src='https://placehold.it/100x100' alt="A service bg"/>
                             </div>
 
                             <div className={ classes.cardChildDescription }>
@@ -110,7 +110,7 @@ class Services extends Component {
                     <div className={ classes.containerChild }>
                         <Card className={classes.card}>
                             <div className={ classes.cardChildImg }>
-                                <img src='https://placehold.it/100x100' />
+                                <img src='https://placehold.it/100x100' alt="A service bg" />
                             </div>
 
                             <div className={ classes.cardChildDescription }>
