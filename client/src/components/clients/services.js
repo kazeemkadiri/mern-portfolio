@@ -24,7 +24,15 @@ const styles = () => ({
         flex: 1,
         flexBasis: "40%",
         position: "relative",
-        margin: "10px 5%"
+        margin: "10px 2%"
+    },
+    cardChildImg: {
+        flex: 1,
+        margin: "10px 2%"
+    },
+    cardChildDescription: {
+        flex: 2,
+        margin: "10px 2%"
     },
     removeWebKit: removeWebKit,
     servicesAlignment: servicesAlignment,
@@ -33,8 +41,9 @@ const styles = () => ({
         color: "#0c2e8a"
     },
     underLine: {
-        borderBottom: "3px solid #50d8af",
+        background: "#50d8af",
         width: "3%",
+        height: "3px",
         float: "left",
         ...removeWebKit
     },
@@ -81,11 +90,11 @@ class Services extends Component {
                     {/* Services are listed here */}
                     <div className={ classes.containerChild }>
                         <Card className={classes.card}>
-                            <div className={ classes.containerChild }>
+                            <div className={ classes.cardChildImg }>
                                 <img src='https://placehold.it/100x100' />
                             </div>
 
-                            <div className={ classes.containerChild }>
+                            <div className={ classes.cardChildDescription }>
                                 <CardContent>
                                 <Typography className={classes.title} color="textSecondary">
                                     Service Description
@@ -97,6 +106,26 @@ class Services extends Component {
                             </div>
                         </Card>
                     </div>
+
+                    <div className={ classes.containerChild }>
+                        <Card className={classes.card}>
+                            <div className={ classes.cardChildImg }>
+                                <img src='https://placehold.it/100x100' />
+                            </div>
+
+                            <div className={ classes.cardChildDescription }>
+                                <CardContent>
+                                <Typography className={classes.title} color="textSecondary">
+                                    Service Description
+                                </Typography>
+                                </CardContent>
+                                <CardActions>
+                                <Button size="small">Learn More</Button>
+                                </CardActions>
+                            </div>
+                        </Card>
+                    </div>
+
                 </div>
 
             </div>
