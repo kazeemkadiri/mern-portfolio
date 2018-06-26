@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
-
+import Modal from './modal';
 
 const removeWebKit = {
     "-webkit-margin-before": "0em"
@@ -20,10 +20,10 @@ const styles = () => ({
         flex: 1,
         flexBasis: "25%",
         maxHeight: "100%",
-        position: "relative",
         margin: "10px 0px",
         display: "flex",
         alignItems: "center",
+        position: "relative",
         justifyContent: "center",
     },
     cardChildImg: {
@@ -169,10 +169,29 @@ class MyPortfolio extends Component {
                     ]
                 }
             ]
+            
         }
 
     }
 
+    projectHovered = ($event) => {
+
+        const hoveredElement = $event.target;
+
+        this.displayMaskOnHoveredProject(hoveredElement);
+
+    }
+
+    displayMaskOnHoveredProject(hoveredElement){
+
+        console.log(hoveredElement.classList.join('').match(/mask/));
+
+        const projectBlackOverlay = (hoveredElement.classList.join('').match(/black-overlay/) ) ? 
+                                    hoveredElement : hoveredElement.parentNode.childNodes[1]; 
+
+        projectBlackOverlay.styles.css.opacity = "0.8";
+
+    }
 
     render() {
         
@@ -185,6 +204,10 @@ class MyPortfolio extends Component {
         return (
 
             <div className="MyPortfolio" id="portfolio" style={{ width: "100%", marginTop: "40px" }}>
+                
+                {/* Modal to display the images and description of projects */}
+                <Modal modalOpen={ this.state.modalOpen } />
+                
                 <div className={ classes.sectionHeader }>
                     <h1 className={ classes.removeWebKit }>MY PORTFOLIO</h1>
                     <hr className={ classes.underLine } />
@@ -193,14 +216,23 @@ class MyPortfolio extends Component {
 
                 {/* Brief service description goes here */}
                 <div className={classes.container} style={{ marginTop: "4em", ...servicesAlignment }}>
-                    { projects.map( project => (
-                                    <div className={ classes.containerChild }>
-                                        <img src={project.slides[0].image_path} alt={project.slides[0].title} />
+                    { projects.map( (project, index) => (
+                                    <div className={ classes.containerChild } onMouseOver={ ($event) => this.projectHovered($event) } key={index}>
+                                        <img src={project.slides[0].image_path} 
+                                             alt={project.slides[0].title} 
+                                             style={{ width:"100%" }} />
 
+                                        {/* Overlay displayed on hover of project */}
+                                        <div className={classes.mask} 
+                                             style={{ background: "black", opacity: "0", top: 0, bottom: 0, left: 0, right: 0 }}>
+                                            
+                                        </div>
+                                        
                                         {/* The overlay holds the title of the image */}
                                         <div className={classes.mask}>
                                             <h3 style={{ color: "white" }}>{ project.title.toUpperCase() }</h3>
                                         </div>
+
                                     </div>
                                     )
                                 )
