@@ -184,12 +184,13 @@ class MyPortfolio extends Component {
 
     displayMaskOnHoveredProject(hoveredElement){
 
-        console.log(hoveredElement.classList.join('').match(/mask/));
+        // Add Mouse
+        console.log(hoveredElement.classList);
 
-        const projectBlackOverlay = (hoveredElement.classList.join('').match(/black-overlay/) ) ? 
+        const projectBlackOverlay = (Array.from(hoveredElement.classList).join('').match(/black-overlay/) ) ? 
                                     hoveredElement : hoveredElement.parentNode.childNodes[1]; 
 
-        projectBlackOverlay.styles.css.opacity = "0.8";
+        projectBlackOverlay.style.opacity = "0.6";
 
     }
 
@@ -217,13 +218,15 @@ class MyPortfolio extends Component {
                 {/* Brief service description goes here */}
                 <div className={classes.container} style={{ marginTop: "4em", ...servicesAlignment }}>
                     { projects.map( (project, index) => (
-                                    <div className={ classes.containerChild } onMouseOver={ ($event) => this.projectHovered($event) } key={index}>
+                                    <div className={ classes.containerChild } 
+                                         onMouseOver={ ($event) => this.projectHovered($event) }
+                                         key={index}>
                                         <img src={project.slides[0].image_path} 
                                              alt={project.slides[0].title} 
                                              style={{ width:"100%" }} />
 
                                         {/* Overlay displayed on hover of project */}
-                                        <div className={classes.mask} 
+                                        <div className={`black-overlay ${classes.mask}`} 
                                              style={{ background: "black", opacity: "0", top: 0, bottom: 0, left: 0, right: 0 }}>
                                             
                                         </div>
