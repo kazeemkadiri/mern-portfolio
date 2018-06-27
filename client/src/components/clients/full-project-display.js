@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 const styles = () => ({
 
@@ -23,17 +24,25 @@ class FullProjectDisplay extends Component {
         console.log(project);
         
         return (
-            <div className={ classes.root } >
-                <Grid container spacing={2}>
+            <div className={ classes.root } style = {{ height: "100%" }}>
+                <Grid container spacing={8}>
                     
                     <Grid item xs={12} sm={6} md={8}>
                         {/* Carousel slides of the project images are rendered here */}
                         <Carousel>
-                            { project.slides.map( slide => ( <div>
-                                <img src = { slide.image_path } 
-                                     alt={slide.title} />
+                            { project.slides.map( slide => ( 
+                                
+                                <div style={{ position: "relative" }} key={slide}>
+                                    
+                                    <img src = { slide.image_path } 
+                                        alt = {slide.title} 
+                                        style = {{ height: "100%" }} />
+
                                     <p className="legend"> { slide.title } </p>
-                                </div>)
+
+                                </div>
+                                
+                                )
                               )
                             }
                         </Carousel>
