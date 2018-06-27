@@ -174,9 +174,19 @@ class MyPortfolio extends Component {
 
     }
 
+    // handleProjectMouseOut = (element) => {
+        
+    //     element.removeEventListener("mouseout", handleProjectMouseOut, false);
+
+    //     this.getOverlayDiv
+    // }
+
     projectHovered = ($event) => {
 
         const hoveredElement = $event.target;
+
+        // addListenerForMouseOutOnProject
+        hoveredElement.onMouseOut(this.handleProjectMouseOut);
 
         this.displayMaskOnHoveredProject(hoveredElement);
 
@@ -187,11 +197,15 @@ class MyPortfolio extends Component {
         // Add Mouse
         console.log(hoveredElement.classList);
 
-        const projectBlackOverlay = (Array.from(hoveredElement.classList).join('').match(/black-overlay/) ) ? 
-                                    hoveredElement : hoveredElement.parentNode.childNodes[1]; 
+        const projectBlackOverlay = this.getOverlayDiv(hoveredElement); 
 
         projectBlackOverlay.style.opacity = "0.6";
 
+    }
+
+    getOverlayDiv(hoveredElement) {
+        return (Array.from(hoveredElement.classList).join('').match(/black-overlay/) ) ? 
+                                    hoveredElement : hoveredElement.parentNode.childNodes[1];
     }
 
     render() {
