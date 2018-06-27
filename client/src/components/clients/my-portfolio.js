@@ -13,6 +13,10 @@ const servicesAlignment = {
 }
 
 const styles = () => ({
+    
+    ReactModal__Content: {
+        height: "20% !important"
+    },
     container: {
         display: "flex",
         position: "relative",

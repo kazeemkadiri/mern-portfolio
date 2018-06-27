@@ -11,7 +11,6 @@ const styles = () => ({
         flexGrow: "1"
     }
 
-
 });
 
 class FullProjectDisplay extends Component {
@@ -24,15 +23,15 @@ class FullProjectDisplay extends Component {
         console.log(project);
         
         return (
-            <div className={ classes.root } style = {{ height: "100%" }}>
-                <Grid container spacing={8}>
+            <div className={ classes.root } style = {{ position: "relative", height: "100%" }}>
+                <Grid container spacing={8} style={{ height: "100%" }}>
                     
-                    <Grid item xs={12} sm={6} md={8}>
+                    <Grid item xs={12} sm={6} md={8} style={{ height: "100%" }}>
                         {/* Carousel slides of the project images are rendered here */}
                         <Carousel>
                             { project.slides.map( slide => ( 
                                 
-                                <div style={{ position: "relative" }} key={slide}>
+                                <div style={{ position: "relative", height: "100%" }} key={slide}>
                                     
                                     <img src = { slide.image_path } 
                                         alt = {slide.title} 
