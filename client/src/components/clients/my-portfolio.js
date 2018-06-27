@@ -51,6 +51,7 @@ const styles = () => ({
         width: "3%",
         height: "3px",
         float: "left",
+        border: "1px solid #50d8af",
         ...removeWebKit
     },
     card: {
@@ -185,7 +186,7 @@ class MyPortfolio extends Component {
     displayMaskOnHoveredProject(hoveredElement){
 
         // Add Mouse
-        console.log(hoveredElement.classList);
+        console.log( hoveredElement.parentNode.childNodes[1] );
 
         const projectBlackOverlay = (Array.from(hoveredElement.classList).join('').match(/black-overlay/) ) ? 
                                     hoveredElement : hoveredElement.parentNode.childNodes[1]; 
