@@ -4,6 +4,7 @@ import Header from './header';
 import AboutMe from './about-me';
 import Services from './services';
 import MyPortfolio from './my-portfolio';
+import ContactMe from './contact-me';
   
 export default class ClientIndex extends Component {
 
@@ -17,6 +18,7 @@ export default class ClientIndex extends Component {
                 <AboutMe />
                 <Services />
                 <MyPortfolio />
+                <ContactMe />
             </div>
 
         );
