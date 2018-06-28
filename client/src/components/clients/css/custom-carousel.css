@@ -1,0 +1,21 @@
+// All styles here are customised for carousel slider
+
+.slider-wrapper.axis-horizontal{
+    position: absolute;
+    height: 80% !important;
+}
+
+.carousel.carousel-slider{
+    height: 80%;
+}
+
+.carousel-grid-wrapper > div,
+.carousel .slider-wrapper.axis-horizontal .slider{
+
+    height: 100%;
+
+}
+
+.carousel img {
+    pointer-events: all;
+}

@@ -4,6 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import './css/custom-carousel.css';
+
 
 const styles = () => ({
 
@@ -15,6 +17,31 @@ const styles = () => ({
 
 class FullProjectDisplay extends Component {
 
+    constructor() {
+
+        super();
+
+        this.gridNodeRef = null;
+
+    }
+
+    adjustGridInnerDivHeight() {
+
+       // console.log(this.gridNodeRef.childNodes[0]);
+
+    }
+
+    componentDidMount() {
+
+        console.log(this.gridNodeRef);
+
+        this.adjustGridInnerDivHeight();
+
+    }
+
+    gridNodeRef = (node) => {
+        console.log(node);
+    }
 
     render() {
 
@@ -26,7 +53,9 @@ class FullProjectDisplay extends Component {
             <div className={ classes.root } style = {{ position: "relative", height: "100%" }}>
                 <Grid container spacing={8} style={{ height: "100%" }}>
                     
-                    <Grid item xs={12} sm={6} md={8} style={{ height: "100%" }}>
+                    <Grid className="carousel-grid-wrapper" item xs={12} sm={6} md={8} style={{ height: "100% !important" }}
+                          ref={node => this.gridNodeRef = node}>
+
                         {/* Carousel slides of the project images are rendered here */}
                         <Carousel>
                             { project.slides.map( slide => ( 
