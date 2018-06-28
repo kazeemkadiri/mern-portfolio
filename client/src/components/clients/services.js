@@ -5,6 +5,9 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Slide from 'react-reveal/Slide';
+
+
 
 const removeWebKit = {
     "-webkit-margin-before": "0em"
@@ -66,10 +69,19 @@ const styles = () => ({
   });
 
 
+
 class Services extends Component {
 
+    constructor() {
+
+        super();
+
+        this.slideAnimationDirections = [ "slideInLeft", "slideInRight" ];
+
+    }
+
     render() {
-        
+
         const { classes } = this.props;
 
         return (
@@ -89,41 +101,45 @@ class Services extends Component {
                 <div className={classes.container} style={{ marginTop: "4em", ...servicesAlignment }}>
                     {/* Services are listed here */}
                     <div className={ classes.containerChild }>
-                        <Card className={classes.card}>
-                            <div className={ classes.cardChildImg }>
-                                <img src='https://placehold.it/100x100' alt="A service bg"/>
-                            </div>
+                       <Slide left={ this.slideAnimationDirections[0] } >
+                            <Card className={classes.card}>
+                                <div className={ classes.cardChildImg }>
+                                    <img src='https://placehold.it/100x100' alt="A service bg"/>
+                                </div>
 
-                            <div className={ classes.cardChildDescription }>
-                                <CardContent>
-                                <Typography className={classes.title} color="textSecondary">
-                                    Service Description
-                                </Typography>
-                                </CardContent>
-                                <CardActions>
-                                <Button size="small">Learn More</Button>
-                                </CardActions>
-                            </div>
-                        </Card>
+                                <div className={ classes.cardChildDescription }>
+                                    <CardContent>
+                                    <Typography className={classes.title} color="textSecondary">
+                                        Service Description
+                                    </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                    <Button size="small">Learn More</Button>
+                                    </CardActions>
+                                </div>
+                            </Card>
+                        </Slide>
                     </div>
 
                     <div className={ classes.containerChild }>
-                        <Card className={classes.card}>
-                            <div className={ classes.cardChildImg }>
-                                <img src='https://placehold.it/100x100' alt="A service bg" />
-                            </div>
+                       <Slide right={ this.slideAnimationDirections[1] } >
+                            <Card className={classes.card}>
+                                <div className={ classes.cardChildImg }>
+                                    <img src='https://placehold.it/100x100' alt="A service bg" />
+                                </div>
 
-                            <div className={ classes.cardChildDescription }>
-                                <CardContent>
-                                <Typography className={classes.title} color="textSecondary">
-                                    Service Description
-                                </Typography>
-                                </CardContent>
-                                <CardActions>
-                                <Button size="small">Learn More</Button>
-                                </CardActions>
-                            </div>
-                        </Card>
+                                <div className={ classes.cardChildDescription }>
+                                    <CardContent>
+                                    <Typography className={classes.title} color="textSecondary">
+                                        Service Description
+                                    </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                    <Button size="small">Learn More</Button>
+                                    </CardActions>
+                                </div>
+                            </Card>
+                        </Slide>
                     </div>
 
                 </div>

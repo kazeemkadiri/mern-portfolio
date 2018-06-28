@@ -2,15 +2,8 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 import ReactModal from 'react-modal';
 import FullProjectDisplay from './full-project-display';
+import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
 
-const removeWebKit = {
-    "-webkit-margin-before": "0em"
-}
-
-const servicesAlignment = {
-    paddingLeft: "5%",
-    justifyContent: "start"
-}
 
 const styles = () => ({
     
