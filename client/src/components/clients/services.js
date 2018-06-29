@@ -6,17 +6,9 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Slide from 'react-reveal/Slide';
+import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
 
 
-
-const removeWebKit = {
-    "-webkit-margin-before": "0em"
-}
-
-const servicesAlignment = {
-    paddingLeft: "5%",
-    justifyContent: "start"
-}
 
 const styles = () => ({
     container: {

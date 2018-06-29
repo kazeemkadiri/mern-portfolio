@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7ded1d22-9a56-4729-9654-c5ab9cc86bd3" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/client/src/components/clients/contact-form.js" afterPath="$PROJECT_DIR$/client/src/components/clients/contact-form.js" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/clients/services.js" afterPath="$PROJECT_DIR$/client/src/components/clients/services.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,44 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="contact-me.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/components/clients/contact-me.js">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/src/components/admin/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-855">
-              <caret line="47" column="33" lean-forward="false" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="contact-form.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/src/components/clients/contact-form.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="96" column="95" lean-forward="false" selection-start-line="96" selection-start-column="95" selection-end-line="96" selection-end-column="95" />
-              <folding>
-                <element signature="e#0#5704#0" expanded="false" />
-                <element signature="e#0#5704#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="my-portfolio.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/components/clients/my-portfolio.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4019">
-              <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="styles.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/components/clients/global-component-styles/styles.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+            <state relative-caret-position="180">
+              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -88,8 +54,9 @@
         <option value="$PROJECT_DIR$/client/src/components/clients/my-portfolio.js" />
         <option value="$PROJECT_DIR$/client/src/components/clients/global-component-styles/styles.js" />
         <option value="$PROJECT_DIR$/client/src/components/clients/contact-me.js" />
-        <option value="$PROJECT_DIR$/client/src/components/clients/services.js" />
         <option value="$PROJECT_DIR$/client/src/components/clients/contact-form.js" />
+        <option value="$PROJECT_DIR$/client/src/components/clients/services.js" />
+        <option value="$PROJECT_DIR$/client/src/components/admin/index.js" />
       </list>
     </option>
   </component>
@@ -149,6 +116,14 @@
               <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="my_portfolio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="my_portfolio" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="my_portfolio" type="b2602c69:ProjectViewProjectNode" />
@@ -311,7 +286,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1458">
           <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -365,7 +347,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1458">
           <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -381,7 +370,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="4" column="80" lean-forward="false" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -416,7 +412,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
           <caret line="4" column="80" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -618,26 +621,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/components/clients/global-component-styles/styles.js">
+    <entry file="file://$PROJECT_DIR$/client/src/components/clients/contact-form.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/components/clients/services.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="961">
-          <caret line="124" column="42" lean-forward="false" selection-start-line="124" selection-start-column="42" selection-end-line="124" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/components/clients/my-portfolio.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4019">
-          <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="-417">
+          <caret line="96" column="95" lean-forward="false" selection-start-line="96" selection-start-column="95" selection-end-line="96" selection-end-column="95" />
+          <folding>
+            <element signature="e#0#5704#0" expanded="false" />
+            <element signature="e#0#5704#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -649,14 +640,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/components/clients/contact-form.js">
+    <entry file="file://$PROJECT_DIR$/client/src/components/clients/navbar.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="96" column="95" lean-forward="false" selection-start-line="96" selection-start-column="95" selection-end-line="96" selection-end-column="95" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/components/clients/global-component-styles/styles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/components/clients/my-portfolio.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-594">
+          <caret line="212" column="0" lean-forward="false" selection-start-line="212" selection-start-column="0" selection-end-line="212" selection-end-column="0" />
           <folding>
-            <element signature="e#0#5704#0" expanded="false" />
-            <element signature="e#0#5704#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
+            <element signature="e#0#11656#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/components/clients/services.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-270">
+          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/components/admin/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
