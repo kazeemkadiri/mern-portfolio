@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
 import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
+import ContactForm from './contact-form';
+
 
 const styles = () => (
 
@@ -17,6 +19,9 @@ const styles = () => (
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
+        },
+        contactDetailsHeader: {
+            color: "#999"
         },
         sectionHeader: {
             ...servicesAlignment,
@@ -81,9 +86,9 @@ class ContactMe extends Component{
                         <Icon className={ classes.iconStyle }>phone_in_talk</Icon>
                     </span>
 
-                    <h3>Phone</h3>
+                    <h3 className={ classes.contactDetailsHeader }>Phone</h3>
 
-                    <h5>{ contactDetails.phone_no }</h5>
+                    <p>{ contactDetails.phone_no }</p>
 
                 </Grid>
 
@@ -95,11 +100,19 @@ class ContactMe extends Component{
                         <Icon className={ classes.iconStyle }>email</Icon>
                     </span>
 
-                    <h3>Email</h3>
+                    <h3 className={ classes.contactDetailsHeader }>Email</h3>
 
-                    <h5>{ contactDetails.email }</h5>
+                    <p>{ contactDetails.email }</p>
 
                 </Grid>
+
+             </Grid>
+
+             { /* Contact form is displayed here */ }
+
+             <Grid container spacing={0}>
+
+                   <ContactForm />
 
              </Grid>
 

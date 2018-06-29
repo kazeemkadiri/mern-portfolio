@@ -101,7 +101,7 @@ class Services extends Component {
                 <div className={classes.container} style={{ marginTop: "4em", ...servicesAlignment }}>
                     {/* Services are listed here */}
                     <div className={ classes.containerChild }>
-                       <Slide left={ this.slideAnimationDirections[0] } >
+                       <Slide left={true} >
                             <Card className={classes.card}>
                                 <div className={ classes.cardChildImg }>
                                     <img src='https://placehold.it/100x100' alt="A service bg"/>
@@ -122,7 +122,7 @@ class Services extends Component {
                     </div>
 
                     <div className={ classes.containerChild }>
-                       <Slide right={ this.slideAnimationDirections[1] } >
+                       <Slide right={ true } >
                             <Card className={classes.card}>
                                 <div className={ classes.cardChildImg }>
                                     <img src='https://placehold.it/100x100' alt="A service bg" />
