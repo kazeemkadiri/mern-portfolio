@@ -9,7 +9,7 @@ export default () => (
     <BrowserRouter>
         <Switch>
             <Route path="/" exact component={ClientIndex} />
-            <Route path="/admin" exact component={AdminIndex} />
+            <Route path="/admin" component={AdminIndex} />
         </Switch>
     </BrowserRouter>
 

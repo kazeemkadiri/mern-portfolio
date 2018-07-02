@@ -28,7 +28,7 @@ class Sidebar extends Component{
 
         return (
 
-            <aside className="sideBar">
+            <aside className="sideBar" {...this.props}>
 
                 <List
                     component="nav"
