@@ -4,6 +4,7 @@ import Navbar from '../clients/navbar';
 import Sidebar from './sidebar';
 import { Route } from 'react-router-dom';
 import ProjectComponent from './projects';
+import ViewProjectComponent from './view-project';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 
@@ -39,7 +40,8 @@ class AdminIndex extends Component{
                     <Grid item xs={12} sm={12} md={9}>
                         <div className={ classes.mainContent } style={{ marginTop: "10%" }}> 
                             <Route path="/admin/projects" exact component={ ProjectComponent } />    
-                            <Route path="/admin/projects/:operation" exact component={ ProjectComponent } />    
+                            <Route path="/admin/projects/add-project" exact component={ ProjectComponent } />
+                            <Route path="/admin/projects/view-project" exact component={ ViewProjectComponent } />    
                         </div>
                     </Grid>
 
