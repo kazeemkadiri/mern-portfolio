@@ -1,4 +1,11 @@
 import React, { Component } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import { graphql } from 'react-apollo'
+import  gql  from 'graphql-tag';
+
+
 import { Editor } from '@tinymce/tinymce-react';
 import Redirect  from 'react-router-dom/Redirect'
 import { keys } from '../../keys';
@@ -26,6 +33,25 @@ const styles = theme => ({
     },
 
 })
+
+// Mutation to add a newly created project
+const AddProjectMutation = gql`
+    mutation($title: String!, $description: String!, $implementation_details: String!){
+        addProject( title: $title, 
+                    description: $description, 
+                    implementation_details: $implementation_details){
+                        id,
+                        title,
+                        description,
+                        implementation_details,
+                        slides {
+                            title,
+                            implemented_functionality,
+                            image_path
+                        }
+                    }
+    }
+`
 
 class AddProject extends Component{
 
@@ -55,19 +81,46 @@ class AddProject extends Component{
             }
         }) 
 
-        console.log(this.state.formObject);
+        //console.log(this.state.formObject);
 
     }
 
     createProject() {
 
-        // Use graphql tag to send a mutation query
-        if(!true) {
-            return;
-        }
+        const { formObject: { title, description, implementation_details } } = this.state;
 
-        // Navigate to View Project
-        this.navigateToViewProject();
+        // Use graphql tag to send a mutation query
+        this.props.addProject({
+            variables: {
+                title: title,
+                description: description,
+                implementation_details: implementation_details
+            },
+            update: (store, { data: { addProject } }) => {
+
+                console.log(addProject);
+                if(!addProject.hasOwnProperty('id')){
+
+                    // Display error notification
+                    toast.error("Operation failed");
+
+                    return;
+
+                }
+
+                this.saveProjectIdInLocalStorage(addProject);
+
+                // Navigate to View Project
+                this.navigateToViewProject();
+
+            }
+        })        
+
+    }
+
+    saveProjectIdInLocalStorage(project) {
+
+        localStorage.setItem("project", JSON.stringify( project) );
 
     }
 
@@ -119,7 +172,6 @@ class AddProject extends Component{
                                     <Grid item xs={12} sm={12} md={12}>
                                         {/* Editor to save new project */}
                                         <Editor
-                                                apiKey={ keys.tinymce_api_key }
                                                 initialValue={ implementation_details }
                                                 init={{
                                                 plugins: 'link image code',
@@ -146,4 +198,4 @@ class AddProject extends Component{
 
 }
 
-export default withStyles(styles)(AddProject);
+export default withStyles(styles)(graphql(AddProjectMutation, {name: "addProject"})(AddProject));

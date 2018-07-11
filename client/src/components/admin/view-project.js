@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-import { keys } from '../../keys';
+// import { keys } from '../../keys';
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
@@ -35,10 +35,6 @@ class AddProject extends Component{
         this.state = {
             
             project: {
-                title: "Custom cms project",
-                description: "A website management system",
-                slides:[
-                ]
             },
             slide:{
                 title:"",
@@ -48,6 +44,18 @@ class AddProject extends Component{
             }
 
         }
+
+        this.keys = {
+            tinymce_api_key: ""
+        }
+
+    }
+
+    componentWillMount() {
+
+        this.setState({
+            project: JSON.parse(localStorage.getItem("project"))
+        })
 
     }
 
@@ -105,7 +113,7 @@ class AddProject extends Component{
 
         const slideIndex = slides.indexOf(slide);
 
-        (slideIndex > -1) ? slides.splice(slideIndex, 1) : '';
+        const temp = (slideIndex > -1) ? slides.splice(slideIndex, 1) : '';
 
         // Update the state of slides
         this.setState({
@@ -133,7 +141,7 @@ class AddProject extends Component{
     render() {
 
 
-        const { classes } = this.props;
+        const { classes, keys } = this.props;
 
         const { project, slide: { image_path, title } } = this.state;
 
@@ -208,7 +216,6 @@ class AddProject extends Component{
                 <Grid item xs={12} sm={12} md={8}>
                     {/* Editor to attach new slide for project */}
                     <Editor
-                            apiKey={ keys.tinymce_api_key }
                             initialValue={ image_path }
                             init={{
                             plugins: 'link image code',

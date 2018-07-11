@@ -7,59 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Slide from 'react-reveal/Slide';
 import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
-
-
-
-const styles = () => ({
-    container: {
-        display: "flex",
-        justifyContent: "space-between"
-    },
-    containerChild: {
-        flex: 1,
-        flexBasis: "40%",
-        position: "relative",
-        margin: "10px 2%"
-    },
-    cardChildImg: {
-        flex: 1,
-        margin: "10px 2%"
-    },
-    cardChildDescription: {
-        flex: 2,
-        margin: "10px 2%"
-    },
-    removeWebKit: removeWebKit,
-    servicesAlignment: servicesAlignment,
-    sectionHeader: {
-        ...servicesAlignment,
-        color: "#0c2e8a"
-    },
-    underLine: {
-        background: "#50d8af",
-        width: "3%",
-        height: "3px",
-        float: "left",
-        ...removeWebKit
-    },
-    card: {
-        minWidth: 275,
-        display: "flex"
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        marginBottom: 16,
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    }
-  });
-
+import { styles } from './global-component-styles/services-styles';
+import { extractImageSrc } from './utils/utils';
 
 
 class Services extends Component {
@@ -74,7 +23,9 @@ class Services extends Component {
 
     render() {
 
-        const { classes } = this.props;
+        const { classes, services } = this.props;
+
+        console.log(services);
 
         return (
 
@@ -92,47 +43,37 @@ class Services extends Component {
 
                 <div className={classes.container} style={{ marginTop: "4em", ...servicesAlignment }}>
                     {/* Services are listed here */}
-                    <div className={ classes.containerChild }>
-                       <Slide left={true} >
-                            <Card className={classes.card}>
-                                <div className={ classes.cardChildImg }>
-                                    <img src='https://placehold.it/100x100' alt="A service bg"/>
-                                </div>
+                   {
+                        services.length > 0 
+                        
+                        &&
 
-                                <div className={ classes.cardChildDescription }>
-                                    <CardContent>
-                                    <Typography className={classes.title} color="textSecondary">
-                                        Service Description
-                                    </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                    <Button size="small">Learn More</Button>
-                                    </CardActions>
-                                </div>
-                            </Card>
-                        </Slide>
-                    </div>
+                        services.map( (service, index) => (
+                            <div className={ classes.containerChild }>
+                                <Slide left={ index % 2 === 0 }  right={ index % 2 !== 0 }>
+                                    <Card className={classes.card}>
+                                        <div className={ classes.cardChildImg } style={{ paddingTop: "16px" }}>
+                                            <img src={ extractImageSrc(service.service_img) } 
+                                                 alt="A service bg"/>
+                                        </div>
+        
+                                        <div className={ classes.cardChildDescription }>
+                                            <CardContent>
+                                                <Typography className={classes.title} color="textSecondary">
+                                                    <span style={{ fontSize: "20px" }}>{ service.title }</span>
+                                                </Typography>
+                                                { service.description }
+                                            </CardContent>
+                                            <CardActions>
+                                            <Button size="small">Learn More</Button>
+                                            </CardActions>
+                                        </div>
+                                    </Card>
+                                </Slide>
+                            </div>
+                        ))    
 
-                    <div className={ classes.containerChild }>
-                       <Slide right={ true } >
-                            <Card className={classes.card}>
-                                <div className={ classes.cardChildImg }>
-                                    <img src='https://placehold.it/100x100' alt="A service bg" />
-                                </div>
-
-                                <div className={ classes.cardChildDescription }>
-                                    <CardContent>
-                                    <Typography className={classes.title} color="textSecondary">
-                                        Service Description
-                                    </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                    <Button size="small">Learn More</Button>
-                                    </CardActions>
-                                </div>
-                            </Card>
-                        </Slide>
-                    </div>
+                    }
 
                 </div>
 

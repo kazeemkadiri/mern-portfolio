@@ -47,18 +47,32 @@ const styles = () => (
 
 class ContactMe extends Component{
 
-    constructor() {
+    state = {
 
-        super();
-
-        this.state = {
-
-            contactDetails: {
-                phone_no: "0892345345",
-                email: "kasndfas@slfks.com"
-            }
-
+        contactDetails: {
+            phone_no: "",
+            email: ""
         }
+
+    }
+
+    componentWillMount = () => {
+
+        this.initializeStateWithProps()
+
+    }
+
+    initializeStateWithProps = () => {
+
+        console.log("contact",this.props);
+
+        const { contactMe } = this.props;
+
+        this.setState({ contactDetails: {
+                phone_no: contactMe.phone_no,
+                email: contactMe.email
+            }  
+        })
 
     }
 

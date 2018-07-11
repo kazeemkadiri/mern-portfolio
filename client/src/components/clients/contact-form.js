@@ -49,33 +49,24 @@ const styles = (theme) => (
 
 class ContactForm extends Component {
 
-    constructor() {
-        super();
+    state = {
 
-        this.state = {
-
-            formObject: {
-                name: "",
-                email: "",
-                subject: "",
-                message: ""
-            }
-
+        formObject: {
+            name: "",
+            email: "",
+            subject: "",
+            message: ""
         }
+
     }
+
 
 
     updateFormParametersObject = (value, formField) => {
 
-        let newFormFieldValue = {};
-
-        newFormFieldValue = { [formField]: value }
-
         const { formObject } = this.state;
 
-        this.setState({ formObject: { ...formObject, ...newFormFieldValue } });
-
-        console.log({ ...formObject, ...newFormFieldValue });
+        this.setState({ formObject: { ...formObject, [formField]: value  } });
 
     }
 
@@ -155,7 +146,7 @@ class ContactForm extends Component {
 
                        </Grid>
 
-                       <Grid item xs={12} sm={12} md={12}>
+                       <Grid item xs={12} sm={12} md={12} style={{ justifyContent: "center", display: "flex" }}>
 
                            <Button variant="contained" color="primary" className={`sendButton ${classes.button}`}>
                                 <Icon>send</Icon>&nbsp; &nbsp; Send

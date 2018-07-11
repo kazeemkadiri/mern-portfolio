@@ -48,10 +48,19 @@ class Sidebar extends Component{
 
                     <ListItem button>
                         <Link to="/admin/bio" className={ classes.sideBarLinks }>
-                            <Icon>
-                             work_outline
-                            </Icon>
+                            <ListItemIcon>
+                                <Work />
+                            </ListItemIcon>
                             <ListItemText inset primary="Bio" />
+                        </Link>
+                    </ListItem>
+
+                    <ListItem button>
+                        <Link to="/admin/services" className={ classes.sideBarLinks }>
+                            <ListItemIcon>
+                                <Work />
+                            </ListItemIcon>
+                            <ListItemText inset primary="Services" />
                         </Link>
                     </ListItem>
                 </List>

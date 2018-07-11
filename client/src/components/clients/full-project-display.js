@@ -16,8 +16,15 @@ const styles = () => ({
 
 class FullProjectDisplay extends Component {
 
+    state = {
+        projectSlidesExist: false
+    }
 
-    componentDidMount() {
+    componentWillMount() {
+
+        this.setState({
+            projectSlidesExist: this.props.project.slides.length > 0
+        })
 
     }
 
@@ -28,9 +35,9 @@ class FullProjectDisplay extends Component {
     render() {
 
         const { classes , project  } = this.props;
-        
-        console.log(project);
-        
+                
+        const { projectSlidesExist } = this.state;
+
         return (
             <div className={ classes.root } style = {{ position: "relative", height: "100%" }}>
                 <Grid container spacing={8} style={{ height: "100%" }}>
@@ -39,28 +46,40 @@ class FullProjectDisplay extends Component {
                            item xs={12} sm={6} md={8} style={{ height: "100% !important" }}>
 
                         {/* Carousel slides of the project images are rendered here */}
-                        <Carousel>
-                            { project.slides.map( slide => ( 
-                                
-                                <div style={{ position: "relative", height: "100%" }} key={slide}>
+                        { 
+                            projectSlidesExist > 0 && 
+                            <Carousel>
+                                { project.slides.map( slide => ( 
                                     
-                                    <img src = { slide.image_path } 
-                                        alt = {slide.title} 
-                                        style = {{ height: "100%" }} />
+                                    <div style={{ position: "relative", height: "100%" }} key={slide}>
+                                        
+                                        <img src = { slide.image_path } 
+                                            alt = {slide.title} 
+                                            style = {{ height: "100%" }} />
 
-                                    <p className="legend"> { slide.title } </p>
+                                        <p className="legend"> { slide.title } </p>
 
-                                </div>
-                                
-                                )
-                              )
-                            }
-                        </Carousel>
+                                    </div>
+                                    
+                                    )
+                                ) 
+                                }
+                            </Carousel>
+                        }
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid item xs={12} sm={6} md={ projectSlidesExist ? 4 : 12 } 
+                                style={{ display: "flex", justifyContent: "center" }}>
                         {/*  Implementation details are rendered here */}
-                        <h5> For each image slide diplay implementatio details </h5>
+                        { 
+                            projectSlidesExist && 
+                            <h5> For each image slide diplay implementation details </h5> 
+                        }
+                        {
+                            !projectSlidesExist && 
+                            <h3 style={{ fontWeight: "bold" }}> There are no slides for this project. </h3> 
+                        }
+
                     </Grid>
 
                 </Grid>    

@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core';
 import ReactModal from 'react-modal';
 import FullProjectDisplay from './full-project-display';
 import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
-
+import { extractImageSrc } from './utils/utils';
 
 const styles = () => ({
     
@@ -87,94 +87,6 @@ class MyPortfolio extends Component {
 
         this.state = {
             projects: [
-                {
-                    title: "First Project",
-                    description: "Description of first project",
-                    implementation: "Built using laravel",
-                    slides: [
-                        {
-                            title: "App homepage",
-                            implemented_functionality: "Displays the dashboard of the application",
-                            image_path: "https://unsplash.it/500x500"
-                        },
-                        {
-                            title: "Contact Form",
-                            implemented_functionality: "A contact form to send messages from clients to app mail server",
-                            image_path: "https://unsplash.it/500/500"
-                        },
-                        {
-                            title: "About us page",
-                            implemented_functionality: "Displays the about us page of application",
-                            image_path: "https://unsplash.it/500/500"
-                        }
-                    ]
-                },
-                {
-                    title: "Second Project",
-                    description: "Description of second project",
-                    implementation: "Built using MEAN stack",
-                    slides: [
-                        {
-                            title: "App homepage",
-                            implemented_functionality: "Displays the dashboard of the application",
-                            image_path: "https://unsplash.it/500x500"
-                        },
-                        {
-                            title: "Contact Form",
-                            implemented_functionality: "A contact form to send messages from clients to app mail server",
-                            image_path: "https://unsplash.it/500/500"
-                        },
-                        {
-                            title: "About us page",
-                            implemented_functionality: "Displays the about us page of application",
-                            image_path: "https://unsplash.it/500/500"
-                        }
-                    ]
-                },
-                {
-                    title: "Third Project",
-                    description: "Description of third project",
-                    implementation: "Built using MEVN stack",
-                    slides: [
-                        {
-                            title: "App homepage",
-                            implemented_functionality: "Displays the dashboard of the application",
-                            image_path: "https://unsplash.it/500x500"
-                        },
-                        {
-                            title: "Contact Form",
-                            implemented_functionality: "A contact form to send messages from clients to app mail server",
-                            image_path: "https://unsplash.it/500/500"
-                        },
-                        {
-                            title: "About us page",
-                            implemented_functionality: "Displays the about us page of application",
-                            image_path: "https://unsplash.it/500/500"
-                        }
-                    ]
-                },
-                {
-                    title: "Fourth Project",
-                    description: "Description of third project",
-                    implementation: "Built using MEVN stack",
-                    slides: [
-                        {
-                            title: "App homepage",
-                            implemented_functionality: "Displays the dashboard of the application",
-                            image_path: "https://unsplash.it/500x500"
-                        },
-                        {
-                            title: "Contact Form",
-                            implemented_functionality: "A contact form to send messages from clients to app mail server",
-                            image_path: "https://unsplash.it/500/500"
-                        },
-                        {
-                            title: "About us page",
-                            implemented_functionality: "Displays the about us page of application",
-                            image_path: "https://unsplash.it/500/500"
-                        }
-                    ]
-                }
             ]
             ,modalIsOpen: false,
             currentViewingProject: ''
@@ -268,10 +180,10 @@ class MyPortfolio extends Component {
 
     render() {
         
-        const { classes } = this.props;
+        const { classes, projects } = this.props;
 
         // Obtain the projects from the state object 
-        const { projects, currentViewingProject, modalIsOpen } = this.state;
+        const { currentViewingProject, modalIsOpen } = this.state;
 
         return (
 
@@ -306,9 +218,13 @@ class MyPortfolio extends Component {
                                          onMouseOver={ ($event) => this.projectHovered($event) }
                                          onMouseOut={ ($event) => this.removeMask($event) }
                                          key={index}>
-                                        <img src={project.slides[0].image_path} 
-                                             alt={project.slides[0].title} 
+                                        
+                                        { 
+                                            project.slides.length > 0 && 
+                                            <img src={  extractImageSrc(project.slides[0].image_path)} 
+                                             alt={ project.slides[0].title} 
                                              style={{ width:"100%" }} />
+                                        }
 
                                         {/* Overlay displayed on hover of project */}
                                         <div className={`black-overlay ${classes.mask}`} 
