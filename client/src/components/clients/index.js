@@ -81,7 +81,7 @@ class ClientIndex extends Component {
 
         const { allPortfolioData: { bio, services, projects } } = this.state;
 
-        console.log(bio);
+        // console.log(bio);
 
         return (
 

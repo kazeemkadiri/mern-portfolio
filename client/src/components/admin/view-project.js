@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
-// import { keys } from '../../keys';
+import { keys } from '../../keys';
+import { environment } from '../../environment';
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
@@ -45,10 +46,6 @@ class AddProject extends Component{
 
         }
 
-        this.keys = {
-            tinymce_api_key: ""
-        }
-
     }
 
     componentWillMount() {
@@ -83,7 +80,7 @@ class AddProject extends Component{
         })
         
 
-        console.log(this.state.project);
+        // console.log(this.state.project);
 
     }
 
@@ -97,23 +94,15 @@ class AddProject extends Component{
                 [formField]: value
             }
         }) 
-
-        console.log(this.state.slide);
-
     }
 
     deleteSlide(slide) {
 
-        console.log(slide);
-
-        // Make a graphql mutation call to delete slide
-
-        //Remove slide from the list of slides in project
         const { project, project: { slides } } = this.state;
 
         const slideIndex = slides.indexOf(slide);
 
-        const temp = (slideIndex > -1) ? slides.splice(slideIndex, 1) : '';
+        if(slideIndex > -1) slides.splice(slideIndex, 1);
 
         // Update the state of slides
         this.setState({
@@ -127,10 +116,6 @@ class AddProject extends Component{
 
     editSlide(slide) {
 
-        console.log("editing slide", slide);
-
-        // Confirm if currently working on attaching a new slide
-
         this.setState({
             slide: slide
         })
@@ -141,7 +126,7 @@ class AddProject extends Component{
     render() {
 
 
-        const { classes, keys } = this.props;
+        const { classes } = this.props;
 
         const { project, slide: { image_path, title } } = this.state;
 
@@ -216,10 +201,17 @@ class AddProject extends Component{
                 <Grid item xs={12} sm={12} md={8}>
                     {/* Editor to attach new slide for project */}
                     <Editor
+                            apiKey={ keys.tinymce_api_key }
                             initialValue={ image_path }
                             init={{
-                            plugins: 'link image code',
-                            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                theme: "modern",
+                                height: 350,
+                                plugins: ['link image code'],
+                                toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                         | image | link`,
+                                file_browser_callback_types: 'file image media',
+                                images_upload_url: `${environment.serverUrl}/file-upload`
+                               
                             }}
                             onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                     "slide_image") }

@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "bcrypt": "^3.0.0",
+    "express-fileupload": "^0.4.0",
     "graphql-yoga": "^1.14.10",
     "mongoose": "^5.2.0",
     "nodemailer": "^4.6.7",

@@ -89,7 +89,7 @@ class Login extends React.Component{
         const { data, errors } = this.state;
 
         if(this.state.passwordReset){
-            return <Redirect to="/admin/reset-password" />
+            return <Redirect to="/reset-password" />
         }
 
         return (

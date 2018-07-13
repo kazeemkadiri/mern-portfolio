@@ -31,7 +31,7 @@ class Navbar extends Component {
 
 render() {    
     
-    const { classes } = this.props;
+    const { classes, logoutButton, logoutUser } = this.props;
 
     return (
         <div className="Navbar">
@@ -61,7 +61,7 @@ render() {
                                 <a href="#contact" className={classes.navLinks}>CONTACT ME</a>
                             </li>
                         </ul>
-                    
+                    {/* Do handle logout */}
                 </Toolbar>
             </AppBar>
         </div>

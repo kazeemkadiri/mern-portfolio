@@ -3,12 +3,12 @@ import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag'
 import { Editor } from '@tinymce/tinymce-react';
 import { keys } from '../../keys';
+import { environment } from '../../environment';
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -96,7 +96,7 @@ class Services extends Component{
             }
         }) 
 
-        console.log(this.state.formObject);
+        // console.log(this.state.formObject);
     }
 
     saveService = () => {
@@ -108,7 +108,7 @@ class Services extends Component{
             },
             update: async (store, { data: { updateService } }) => {
 
-                console.log(updateService);
+                // console.log(updateService);
                 // const data = store.readQuery({ query: BioQuery });
 
 
@@ -124,11 +124,9 @@ class Services extends Component{
 
     initialiseServiceDataState = (serviceData) => {
 
-        
-
         serviceData.forEach((service) => {
 
-            const { formObject, services } = this.state;
+            const { services } = this.state;
 
             let newServices = services;
     
@@ -228,11 +226,19 @@ class Services extends Component{
                         <Grid item xs={12} sm={12} md={12}>
                             {/* Editor to save new project */}
                             {/* Editor for about me */}
+                            <h4> Service title </h4>
                             <Editor
+                                    apiKey={keys.tinymce_api_key}
                                     initialValue={ title }
                                     init={{
-                                    plugins: 'link image code',
-                                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                        theme: "modern",
+                                        height: 350,
+                                        plugins: ['link image code'],
+                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                 | image | link`,
+                                        file_browser_callback_types: 'file image media',
+                                        images_upload_url: `${environment.serverUrl}/file-upload`
+                                       
                                     }}
                                     onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                             "title") }
@@ -241,11 +247,19 @@ class Services extends Component{
 
                         <Grid item xs={12} sm={12} md={12}>
                             {/* Editor for about me */}
+                            <h4> Service description </h4>
                             <Editor
+                                    apiKey={keys.tinymce_api_key}
                                     initialValue={ description }
                                     init={{
-                                    plugins: 'link image code',
-                                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                        theme: "modern",
+                                        height: 350,
+                                        plugins: ['link image code'],
+                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                 | image | link`,
+                                        file_browser_callback_types: 'file image media',
+                                        images_upload_url: `${environment.serverUrl}/file-upload`
+                                       
                                     }}
                                     onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                             "description") }
@@ -254,11 +268,19 @@ class Services extends Component{
 
                         <Grid item xs={12} sm={12} md={12}>
                             {/* Editor for about me */}
-                            <Editor
+                            <h4> Service image </h4>
+                            <Editor 
+                                    apiKey={keys.tinymce_api_key}
                                     initialValue={ service_img }
                                     init={{
-                                    plugins: 'link image code',
-                                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                        theme: "modern",
+                                        height: 350,
+                                        plugins: ['link image code'],
+                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                 | image | link`,
+                                        file_browser_callback_types: 'file image media',
+                                        images_upload_url: `${environment.serverUrl}/file-upload`
+                                       
                                     }}
                                     onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                             "service_img") }
@@ -281,6 +303,4 @@ class Services extends Component{
 
 }
 
-export default compose(graphql(updateServiceMutation, {name: "updateService"}),
-                       graphql(ServiceQuery, {name: "serviceData"}))
-                      (withStyles(styles)(Services));
+export default compose(graphql(updateServiceMutation, {name: "updateService"}), graphql(ServiceQuery, {name: "serviceData"}))(withStyles(styles)(Services));

@@ -1,6 +1,6 @@
 const extractImageSrc = (imageHtmlMarkup) => {
 
-   if( imageHtmlMarkup.indexOf('src="') === -1 ) return '';
+   if( imageHtmlMarkup.indexOf('src="') === -1 ) return null;
 
    return (imageHtmlMarkup.split('src="')[1]).split('"')[0]
 

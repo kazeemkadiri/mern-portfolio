@@ -1,4 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { sessionService } from 'redux-react-session';
+
 import { Route } from 'react-router-dom';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -14,8 +18,6 @@ import ViewProjectComponent from './view-project';
 import BioComponent from './my-bio';
 import ServicesComponent from './my-services';
 import LoginComponent from './login-form';
-import ResetPasswordComponent from './reset-password';
-import MailPasswordResetComponent from './mail-password-reset';
 
 
 const LoginMutation = gql`
@@ -36,35 +38,24 @@ const styles = () => ({
 })
 
 
-class AdminIndex extends Component{
 
-    state = {
-        isLoggedIn: false
-    }
+
+class AdminIndex extends Component{
 
     componentWillMount() {
 
-        this.verifyLoggedIn()
+        //sessionService.deleteSession();
 
     }
 
-    resetPasswordUrl = () => {
+    logoutUser = (param) => {
 
-        console.log(this.props)
-
-        return this.props.location.pathname.match(/reset-password/);
-
-    } 
-
-    verifyLoggedIn = () => {
-
-        if(localStorage.getItem("isLoggedIn")) this.setState({ isLoggedIn: true });
+        if(param)
+        sessionService.deleteSession()
 
     }
 
     loginUser = (formData) => {
-
-        console.log(formData);
 
         this.props.LoginMutation({
             variables:{
@@ -72,7 +63,11 @@ class AdminIndex extends Component{
             },
             update: (_, { data: { loginUser } }) => {
 
-                console.log(loginUser);
+                // console.log(loginUser);
+                if(loginUser.userExists){
+                    sessionService.saveSession( { formData } )
+                }
+                
 
                 this.setState({ isLoggedIn: loginUser.userExists });
 
@@ -84,16 +79,14 @@ class AdminIndex extends Component{
 
     render() {
 
-        const { classes } = this.props;
-
-        const { isLoggedIn, isResetPassword } = this.state;
+        const { classes, authenticated, checked } = this.props;
 
         return (
-
+            
             <div className="AdminIndex" style={{ width: "100%" }}>
-                <Navbar />
+                <Navbar logoutButton={true} logoutUser={this.logoutUser} />
                 <Grid container spacing={0} style={{ display: "flex", justifyContent: "center", marginTop: "10%" }}>
-                { isLoggedIn &&
+                { checked && authenticated &&
                         <Fragment>
                         <Grid item xs={12} sm={12} md={3}>
                             
@@ -115,18 +108,12 @@ class AdminIndex extends Component{
                 }
 
                 {
-                    !isLoggedIn && !this.resetPasswordUrl() &&
+                    checked && !authenticated  &&
                     
                         <Grid item xs={12} sm={12} md={9}>
                             <LoginComponent submit={this.loginUser} />
                         </Grid>
                 }
-                <Grid item xs={12} sm={12} md={9} style={{ display: "flex", justifyContent: "center" }}>
-                    <div className={ classes.mainContent } style={{ marginTop: "10%" }}>
-                        <Route path="/admin/reset-password" component={ ResetPasswordComponent } />    
-                    </div>
-                </Grid>
-                
                                 
                 </Grid>
             </div>
@@ -136,4 +123,16 @@ class AdminIndex extends Component{
 
 }
 
-export default graphql(LoginMutation, {name:'LoginMutation'})(withStyles(styles)(AdminIndex));
+const { bool } = PropTypes;
+
+AdminIndex.propTypes = {
+  authenticated: bool.isRequired,
+  checked: bool.isRequired
+};
+
+const mapState = ({ session }) => ({
+  checked: session.checked,
+  authenticated: session.authenticated
+});
+
+export default connect(mapState)(graphql(LoginMutation, {name:'LoginMutation'})(withStyles(styles)(AdminIndex)));

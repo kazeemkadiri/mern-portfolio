@@ -29,7 +29,7 @@ class FullProjectDisplay extends Component {
     }
 
     gridNodeRef = (node) => {
-        console.log(node);
+        // console.log(node);
     }
 
     render() {

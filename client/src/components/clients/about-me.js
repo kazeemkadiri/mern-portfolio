@@ -19,49 +19,22 @@ const styles = theme => ({
 
 class AboutMe extends Component {
 
-    state = {
-        aboutMeDescription: '',
-        aboutMeImg: ''
-    }
-
-    
-    setAboutMeDataInState = (aboutMe) => {
-
-        this.setState({
-            aboutMeDescription: aboutMe.description,
-            aboutMeImg: extractImageSrc(aboutMe.about_me_img)
-        })
-
-    }
-
-
-    componentWillReceiveProps(nextProps) {
-
-        if( !nextProps.hasOwnProperty('aboutMe') ) return;
-
-        this.setAboutMeDataInState(nextProps.aboutMe);
-
-    }
-
     render() {
         
         const { classes } = this.props;
 
-        const { aboutMeDescription, aboutMeImg } = this.state;
-
-        if( !aboutMeImg ) return '';
-
-        // console.log(aboutMeImg);
+        const { aboutMe: { description, about_me_img } } = this.props;
 
         return (
 
             <div className="AboutMe" style={{ width: "100%", marginTop: "40px" }}>
                 <div className={classes.container}>
                     <div className={ classes.containerChild }>
-                        <img src={aboutMeImg} style={{ maxWidth: "100%" }} alt="header_background_image"/>
+                        <img src={ extractImageSrc(about_me_img) } style={{ maxWidth: "100%" }} alt="about_me_background_image"/>
                     </div>
-                    <div className={ classes.containerChild }>
-                        { aboutMeDescription }
+                    <div className={ classes.containerChild } 
+                         dangerouslySetInnerHTML={{__html: description}}>
+                        
                     </div>
                 </div>
             </div>

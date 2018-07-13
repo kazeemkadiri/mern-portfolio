@@ -64,7 +64,7 @@ class ContactMe extends Component{
 
     initializeStateWithProps = () => {
 
-        console.log("contact",this.props);
+        // console.log("contact",this.props);
 
         const { contactMe } = this.props;
 

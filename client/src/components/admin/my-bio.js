@@ -3,6 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import gql from 'graphql-tag'
 import { Editor } from '@tinymce/tinymce-react';
 import { keys } from '../../keys';
+import { environment } from '../../environment';
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
@@ -165,13 +166,23 @@ class MyBio extends Component{
                     <Grid container spacing={0} className={ classes.topPageStyles }>
 
                         <Grid item xs={12} sm={12} md={12}>
-                            {/* Editor for about me */}
+                            {/* Editor for header background image */}
                             <h3>Header background image</h3>
                             <Editor
+                                    apiKey={ keys.tinymce_api_key }
                                     initialValue={ header_bg_img }
                                     init={{
-                                    plugins: 'link image code',
-                                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                        theme: "modern",
+                                        height: 350,
+                                        plugins: ['link image code'],
+                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                 | image | link`,
+                                        file_browser_callback_types: 'file image media',
+                                        file_browser_callback: function(field_name, url, type, win) {
+                                            win.document.getElementById(field_name).value = 'my browser value';
+                                        },
+                                        images_upload_url: `${environment.serverUrl}/file-upload`
+                                       
                                     }}
                                     onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                             "header_bg_img") }
@@ -179,13 +190,20 @@ class MyBio extends Component{
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={12}>
-                            {/* Editor for about me */}
+                            {/* Editor for text displayed over header bg image */}
                             <h3>Header background image text</h3>
                             <Editor
+                                    apiKey={ keys.tinymce_api_key }
                                     initialValue={ header_bg_img_text }
                                     init={{
-                                    plugins: 'link image code',
-                                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                        theme: "modern",
+                                        height: 350,
+                                        plugins: ['link image code'],
+                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                 | image | link`,
+                                        file_browser_callback_types: 'file image media',
+                                        images_upload_url: `${environment.serverUrl}/file-upload`
+                                       
                                     }}
                                     onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                             "header_bg_img_text") }
@@ -193,13 +211,20 @@ class MyBio extends Component{
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={12}>
-                            {/* Editor for about me */}
+                            {/* Editor for about me image */}
                             <h3>About me image</h3>
                             <Editor
+                                    apiKey={ keys.tinymce_api_key }
                                     initialValue={ about_me_img }
                                     init={{
-                                    plugins: 'link image code',
-                                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                        theme: "modern",
+                                        height: 350,
+                                        plugins: ['link image code'],
+                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                 | image | link`,
+                                        file_browser_callback_types: 'file image media',
+                                        images_upload_url: `${environment.serverUrl}/file-upload`
+                                       
                                     }}
                                     onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                             "about_me_img") }
@@ -207,13 +232,20 @@ class MyBio extends Component{
                         </Grid>
 
                         <Grid item xs={12} sm={12} md={12}>
-                            {/* Editor for about me */}
+                            {/* Editor for description */}
                             <h3>About me description</h3>
                             <Editor
+                                    apiKey={ keys.tinymce_api_key }
                                     initialValue={ description }
                                     init={{
-                                    plugins: 'link image code',
-                                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                        theme: "modern",
+                                        height: 350,
+                                        plugins: ['link image code'],
+                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                 | image | link`,
+                                        file_browser_callback_types: 'file image media',
+                                        images_upload_url: `${environment.serverUrl}/file-upload`
+                                       
                                     }}
                                     onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                             "description") }
@@ -262,5 +294,4 @@ class MyBio extends Component{
 
 }
 
-export default compose(graphql(updateBioMutation, {name: "updateBio"}), graphql(BioQuery, {name: "BioData"}))
-                      (withStyles(styles)(MyBio));
+export default compose(graphql(updateBioMutation, {name: "updateBio"}), graphql(BioQuery, {name: "BioData"}))(withStyles(styles)(MyBio));

@@ -6,7 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Slide from 'react-reveal/Slide';
-import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
+import { servicesAlignment } from './global-component-styles/styles.js'
 import { styles } from './global-component-styles/services-styles';
 import { extractImageSrc } from './utils/utils';
 
@@ -25,7 +25,7 @@ class Services extends Component {
 
         const { classes, services } = this.props;
 
-        console.log(services);
+        // console.log(services);
 
         return (
 
@@ -43,13 +43,13 @@ class Services extends Component {
 
                 <div className={classes.container} style={{ marginTop: "4em", ...servicesAlignment }}>
                     {/* Services are listed here */}
-                   {
+                    {
                         services.length > 0 
                         
                         &&
 
                         services.map( (service, index) => (
-                            <div className={ classes.containerChild }>
+                            <div className={ classes.containerChild } key={index}>
                                 <Slide left={ index % 2 === 0 }  right={ index % 2 !== 0 }>
                                     <Card className={classes.card}>
                                         <div className={ classes.cardChildImg } style={{ paddingTop: "16px" }}>

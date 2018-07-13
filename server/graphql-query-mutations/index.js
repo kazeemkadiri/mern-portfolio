@@ -35,7 +35,7 @@ const resolvers = {
                 
             }).catch(err => {
                 
-                console.log(err);
+                // console.log(err);
                 
                 return err.toString();
 
@@ -48,7 +48,7 @@ const resolvers = {
 
             const bio = await bioModel.findOne();
 
-            console.log(bio);
+            // console.log(bio);
 
             return bio;
         },
@@ -56,9 +56,15 @@ const resolvers = {
 
             const services = await servicesModel.find({});
 
-            console.log(services);
+            // console.log(services);
 
             return services;
+        },
+        projects: async () => {
+            
+            const projects = await projectsModel.find({})
+
+            return projects
         }
     },
     Mutation: {
@@ -121,11 +127,13 @@ const resolvers = {
         },
         loginUser: async (_, { email, password }) => {
 
-            const hashedPassword = await MyUtil.hashedPassword(password);
+            //const hashedPassword = await MyUtil.hashPassword(password);
 
-            const result = await userModel.findOne({ email: email, password: hashedPassword });
+            const user = await userModel.findOne({ email: email });
 
-            return {userExists: (result ? true : false)}
+            const match = await require('bcrypt').compare(password, user.password);
+
+            return {userExists: (match ? true : false)}
 
         },
         resetPassword: async (_, { email }) => {
@@ -157,7 +165,7 @@ const resolvers = {
 
             const hashedPassword = await MyUtil.hashPassword(password);
 
-            const result = await userModel.findOneAndUpdate({ _id: userId }, { password:  hashedPassword, token: ''});
+            const result = await userModel.findOneAndUpdate({ _id: userId }, {$set: { password:  hashedPassword, token: ''}});
 
             return { updateStatus: (result !== null ? true: false)   };
 

@@ -9,6 +9,7 @@ import  gql  from 'graphql-tag';
 import { Editor } from '@tinymce/tinymce-react';
 import Redirect  from 'react-router-dom/Redirect'
 import { keys } from '../../keys';
+import { environment } from '../../environment';
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
@@ -98,7 +99,7 @@ class AddProject extends Component{
             },
             update: (store, { data: { addProject } }) => {
 
-                console.log(addProject);
+                // console.log(addProject);
                 if(!addProject.hasOwnProperty('id')){
 
                     // Display error notification
@@ -171,11 +172,19 @@ class AddProject extends Component{
 
                                     <Grid item xs={12} sm={12} md={12}>
                                         {/* Editor to save new project */}
+                                        <h4>Implementation details </h4>
                                         <Editor
+                                                apiKey={ keys.tinymce_api_key }
                                                 initialValue={ implementation_details }
                                                 init={{
-                                                plugins: 'link image code',
-                                                toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+                                                    theme: "modern",
+                                                    height: 350,
+                                                    plugins: ['link image code'],
+                                                    toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                             | image | link`,
+                                                    file_browser_callback_types: 'file image media',
+                                                    images_upload_url: `${environment.serverUrl}/file-upload`
+                                                   
                                                 }}
                                                 onChange={event => this.updateFormParametersObject(event.target.getContent(),
                                                                      "implementation_details") }

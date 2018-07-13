@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
 import AddProjectComponent from './add-project'
+import MyPortfolioComponent from '../clients/my-portfolio'
 
 import { Route, Redirect } from 'react-router-dom'
 import  withStyles  from '@material-ui/core/styles/withStyles'
@@ -23,6 +27,22 @@ const styles = theme => ({
 
 })
 
+const ProjectsQuery = gql`
+    {
+        projects{
+            id
+            title
+            description
+            implementation_details
+            slides {
+                title
+                implemented_functionality
+                image_path
+            } 
+        }
+    }
+`
+
 
 class ProjectComponent extends Component{
 
@@ -38,6 +58,11 @@ class ProjectComponent extends Component{
 
     }
 
+    editProject = project => {
+
+        console.log('editing project', project);
+
+    }
 
     redirectToAddProject() {
 
@@ -48,12 +73,12 @@ class ProjectComponent extends Component{
     render(){
 
         if(this.state.redirectToAddProject === true) {
-            console.log('Redirecting')
+            // console.log('Redirecting')
 
             return <Redirect to="/admin/projects/add-project" />
         }
 
-        const { classes } = this.props;
+        const { classes, projects: { projects, loading } } = this.props;
 
         return (
 
@@ -69,13 +94,24 @@ class ProjectComponent extends Component{
                                 <h3>Projects</h3>
                             </Grid>
 
-                            <Grid item xs={12} sm={12} md={3}>
+                            <Grid item xs={12} sm={12} md={10} style={{ display: "flex", justifyContent: "center" }}>
                                 <Button variant="contained" 
                                         color="primary" 
                                         className={classes.button}
                                         onClick = { () => this.redirectToAddProject() }>
                                     <Icon></Icon>Add Project
                                 </Button>
+                            </Grid>
+
+                            {/* Existing projects are listed here */}
+                            <Grid item xs={12} sm={12} md={12} style={{ display: "flex", justifyContent: "center" }}>
+                                {
+                                    !loading && (projects.length > 0) && 
+                                    <MyPortfolioComponent editProject={ this.editProject } 
+                                                           projects={projects}
+                                                           authenticated={true} />
+                                     
+                                }
                             </Grid>
 
                         </Grid>
@@ -96,4 +132,4 @@ class ProjectComponent extends Component{
 
 }
 
-export default withStyles(styles)(ProjectComponent);
+export default graphql(ProjectsQuery, { name:'projects'})(withStyles(styles)(ProjectComponent))

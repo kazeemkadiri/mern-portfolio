@@ -93,6 +93,9 @@ class ResetPassword extends Component{
         const { data, mailStatus } = this.state;
 
         return (
+            <Grid container spacing={0} style={{ display: "flex", justifyContent: "center" }}>
+            <div className={ classes.mainContent } style={{ marginTop: "10%" }}>
+                    
             
             <div className="resetPassword" 
                  style={{ width: "100%"}}>
@@ -158,6 +161,8 @@ class ResetPassword extends Component{
                 </Card>
                 </Grid>
             </div>
+            </div>
+        </Grid>
         )
 
     }

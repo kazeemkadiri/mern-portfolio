@@ -23,39 +23,18 @@ const theme =  createMuiTheme({
 
 class Header extends Component {
 
-    state = {
-        header_bg_img_src: ''
-    }
-
-    setImageSrc = (imageHtmlMarkup) => {
-
-        this.setState({
-            header_bg_img_src: extractImageSrc(imageHtmlMarkup)
-        })
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-
-        if( !nextProps.hasOwnProperty('header') ) return;
-
-        this.setImageSrc(nextProps.header.header_bg_img);
-
-    }
 
     render() {
         
-        const { classes } = this.props;
+        const { classes } = this.props
         
-        const { header_bg_img_src } = this.state;
-
-        if( !header_bg_img_src ) return '';
+        const { header: { header_bg_img } } = this.props
 
         return (
 
             <div className="Header" style={{ width: "100%", marginTop: "20px" }}>
 
-                <img src={header_bg_img_src} style={{ maxWidth: "100%", height: "auto" }} alt="header_background_image"/>
+                <img src={ extractImageSrc(header_bg_img) } style={{ maxWidth: "100%", height: "auto" }} alt="header_background_image"/>
 
                 <div style={{ position: "absolute", right: "10%", top: "4rem"  }}>
                     <MuiThemeProvider theme={theme}>

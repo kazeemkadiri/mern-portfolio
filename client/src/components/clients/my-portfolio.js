@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Button, Icon } from '@material-ui/core';
+
 import ReactModal from 'react-modal';
 import FullProjectDisplay from './full-project-display';
 import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
@@ -168,7 +169,8 @@ class MyPortfolio extends Component {
 
             blackOverlay = hoveredElement.parentNode.childNodes[1];
 
-        }else {
+        }
+        else {
 
             blackOverlay = hoveredElement.parentNode.parentNode.childNodes[1];            
 
@@ -180,7 +182,7 @@ class MyPortfolio extends Component {
 
     render() {
         
-        const { classes, projects } = this.props;
+        const { classes, projects, authenticated } = this.props;
 
         // Obtain the projects from the state object 
         const { currentViewingProject, modalIsOpen } = this.state;
@@ -218,13 +220,18 @@ class MyPortfolio extends Component {
                                          onMouseOver={ ($event) => this.projectHovered($event) }
                                          onMouseOut={ ($event) => this.removeMask($event) }
                                          key={index}>
-                                        
-                                        { 
-                                            project.slides.length > 0 && 
-                                            <img src={  extractImageSrc(project.slides[0].image_path)} 
-                                             alt={ project.slides[0].title} 
-                                             style={{ width:"100%" }} />
-                                        }
+
+                                        <img src={ 
+                                                    (project.slides.length > 0) ?
+                                                     extractImageSrc(project.slides[0].image_path) : 
+                                                     'https://placehold.it/300x300'
+                                                } 
+                                            alt={ 
+                                                    (project.slides.length > 0) ?
+                                                     project.slides[0].title :
+                                                     'No slides for project' 
+                                                } 
+                                            style={{ width:"100%" }} />
 
                                         {/* Overlay displayed on hover of project */}
                                         <div className={`black-overlay ${classes.mask}`} 
@@ -234,11 +241,23 @@ class MyPortfolio extends Component {
                                         
                                         {/* The overlay holds the title of the image */}
                                         <div className={`text-mask ${classes.mask}`} 
-                                             style={{ cursor: "pointer" }}
+                                             style={{ cursor: "pointer", textAlign: 'center' }}
                                              onClick={() => this.displayFullProjectInModal(project)}>
 
                                             <h3 style={{ color: "white", cursor: "pointer" }}>{ project.title.toUpperCase() }</h3>
+                                            {/* This button is displayed when editing project */}
+                                            { 
+                                                    authenticated && 
+                                                    <Button variant="contained" color="primary"
+                                                            className={`sendButton ${classes.button}`}
+                                                            onMouseOver={ e => e.stopPropagation() }
+                                                            onMouseOut={ e => e.stopPropagation() }
+                                                            onClick={ () => this.props.editProject(project) }>
+                                                        <Icon>edit</Icon>&nbsp; &nbsp; Edit
+                                                    </Button> 
+                                                }
                                         </div>
+
 
                                     </div>
                                     )

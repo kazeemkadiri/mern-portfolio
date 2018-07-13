@@ -2,7 +2,8 @@ module.exports = `
     type Query {
         allPortfolioData: Portfolio,
         serviceData: [ Service! ],
-        getBioData: Bio!
+        getBioData: Bio!,
+        projects: [ Project ]
     }
 
     type Mutation {
@@ -20,7 +21,7 @@ module.exports = `
     }
 
     type StatusNotification{
-        operationStatus: Boolean!
+        updateStatus: Boolean!
     }
 
     type ResetMailStatus{
