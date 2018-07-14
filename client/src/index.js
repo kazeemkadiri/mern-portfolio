@@ -11,8 +11,12 @@ import thunkMiddleware from 'redux-thunk';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
+const host = window.location.host
+
+const serverProtocol = host.match(/(.\.com)/) ? 'https://' : 'http://'
+
 const client = new ApolloClient({
-    uri: `http://${window.location.host}:4000`
+    uri: `${serverProtocol}${host}:4000`
 })
 
 const reducers = {
