@@ -4,6 +4,7 @@ const UserModel = require('../models/user')
 const ProjectsModel = require('../models/projects')
 const ServiceModel = require('../models/services')
 
+async(() => {
 //User seed 
 const hashedPassword = await bcrypt.hash('rats', 10);
 
@@ -35,5 +36,5 @@ await ServiceModel.create([{
     'service_img': '<img src= "sdff" />'
 }])
  
-
+})()
 
