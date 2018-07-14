@@ -9,7 +9,9 @@ const ServiceModel = require('../models/services')
 //User seed 
 const hashPassword = async () => await bcrypt.hash('rats', 10);
 
-const hashedPassword = hashPassword();
+let hashedPassword = ''
+
+hashPassword().then( password => hashedPassword = password )
 
 UserModel.create({
     'email': 'kazeem.kadiri@gmail.com',
