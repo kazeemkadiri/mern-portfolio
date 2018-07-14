@@ -11,7 +11,7 @@ const myFileUploadHandler = require('./helpers/general').myFileUploadHandler;
 
 mongoose.connect(
     process.env.MONGODB_URI || mongooseDb, 
-    (msg) => { console.log("Connected") }
+    (msg) => { console.log("Connected", process.env.MONGODB_URI) }
 );
 
 const server = new GraphQlServer({ typeDefs, resolvers });
