@@ -19,12 +19,6 @@ server.use(fileUpload())
 
 server.use('/file-upload', myFileUploadHandler )
 
-console.log(__dirname)
-
-server.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client/build/index.html"))
-})
-
 mongoose.connection.once(
     "open", 
     () => server.start( () => console.log("Server started") ) 
