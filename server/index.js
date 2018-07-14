@@ -1,3 +1,4 @@
+const path = require('path');
 const GraphQlServer  =  require('graphql-yoga').GraphQLServer;
 const typeDefs = require('./graphql-query-mutations').typeDefs;
 const resolvers = require('./graphql-query-mutations').resolvers;
@@ -17,6 +18,10 @@ const server = new GraphQlServer({ typeDefs, resolvers });
 server.use(fileUpload())
 
 server.use('/file-upload', myFileUploadHandler )
+
+server.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../client/build/index.html"))
+})
 
 mongoose.connection.once(
     "open", 

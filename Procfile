@@ -1,1 +1,0 @@
-web: client/build public/
