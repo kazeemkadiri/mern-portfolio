@@ -16,7 +16,7 @@ const host = window.location.host
 const serverProtocol = host.match(/(.\.com)/) ? 'https://' : 'http://'
 
 const client = new ApolloClient({
-    uri: `${serverProtocol}${host}`
+    uri: `${serverProtocol}${host}:4000`
 })
 
 const reducers = {
