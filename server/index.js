@@ -23,7 +23,7 @@ if(express().get('env') === 'production'){
 
     server.use(express.static(staticPath))
 
-    server.get('/', (req, res) => {
+    server.get('*', (req, res) => {
         res.sendFile(path.resolve(staticPath,"index.html"))
     })
     
