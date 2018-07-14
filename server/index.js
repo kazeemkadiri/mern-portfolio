@@ -22,7 +22,7 @@ if(express().get('env') === 'production'){
     server.use(express.static(__dirname))
 
     server.get('/', (req, res) => {
-        res.sendFile(path.resolve(__dirname,"index.html"))
+        res.sendFile(path.resolve(__dirname,'..',"index.html"))
     })
     
 }
