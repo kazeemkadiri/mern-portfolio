@@ -1,4 +1,4 @@
-const path = require('path');
+const express = require('express');
 const GraphQlServer  =  require('graphql-yoga').GraphQLServer;
 const typeDefs = require('./graphql-query-mutations').typeDefs;
 const resolvers = require('./graphql-query-mutations').resolvers;
@@ -14,6 +14,17 @@ mongoose.connect(
 );
 
 const server = new GraphQlServer({ typeDefs, resolvers });
+
+
+if(express().get('env') === 'production'){
+
+    server.use(express.static(__dirname))
+
+    server.get('/', (req, res) => {
+        res.sendFile("index.html")
+    })
+    
+}
 
 server.use(fileUpload())
 
