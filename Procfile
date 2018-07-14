@@ -1,1 +1,1 @@
-web: client/build
+web: client/build public/
