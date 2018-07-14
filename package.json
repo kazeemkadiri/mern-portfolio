@@ -1,0 +1,22 @@
+{
+  "name": "my_portfolio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd client && npm install && cd ../server && npm install"
+  },
+  "cacheDirectories": ["client/node_modules", "server/node_modules"],
+  "engines": {
+    "node": "8.11.3",
+    "npm": "5.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://qasim_dev@bitbucket.org/qasim_dev/my_portfolio.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/qasim_dev/my_portfolio#readme"
+}

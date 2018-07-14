@@ -7,7 +7,10 @@ const fileUpload = require('express-fileupload')
 const myFileUploadHandler = require('./helpers/general').myFileUploadHandler;
 
 
-mongoose.connect(mongooseDb, (msg) => { console.log("Connected") });
+mongoose.connect(
+    process.env.MONGODB_URI || mongooseDb, 
+    (msg) => { console.log("Connected") }
+);
 
 const server = new GraphQlServer({ typeDefs, resolvers });
 
@@ -15,4 +18,7 @@ server.use(fileUpload())
 
 server.use('/file-upload', myFileUploadHandler )
 
-mongoose.connection.once("open", () => server.start( () => console.log("Server started") ) );
+mongoose.connection.once(
+    "open", 
+    () => server.start( () => console.log("Server started") ) 
+);
