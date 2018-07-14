@@ -12,7 +12,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 const client = new ApolloClient({
-    uri: 'http://localhost:4000'
+    uri: `http://${window.location.host}:4000`
 })
 
 const reducers = {
