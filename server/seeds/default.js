@@ -4,8 +4,12 @@ const UserModel = require('../models/user')
 const ProjectModel = require('../models/projects')
 const ServiceModel = require('../models/services')
 
+
+
 //User seed 
-const hashedPassword = bcrypt.hash('rats', 10);
+const hashPassword = async () => await bcrypt.hash('rats', 10);
+
+const hashedPassword = await hashPassword();
 
 UserModel.create({
     'email': 'kazeem.kadiri@gmail.com',
