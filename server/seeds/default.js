@@ -1,20 +1,19 @@
 const bcrypt = require('bcrypt')
 const BioModel = require('../models/bio')
 const UserModel = require('../models/user')
-const ProjectsModel = require('../models/projects')
+const ProjectModel = require('../models/projects')
 const ServiceModel = require('../models/services')
 
-( async () => {
 //User seed 
-const hashedPassword = await bcrypt.hash('rats', 10);
+const hashedPassword = bcrypt.hash('rats', 10);
 
-await UserModel.create({
+UserModel.create({
     'email': 'kazeem.kadiri@gmail.com',
     'password': hashedPassword
 })
 
 //Bio seed
-await BioModel.create([{
+BioModel.create([{
     'description': 'Random description',
     'header_bg_img': '<img src="blah" />',
     'about_me_img': '<img src="blah" />',
@@ -23,18 +22,17 @@ await BioModel.create([{
     'email': 'kazeem.kadiri@gmail.com'
 }])
 
-await ProjectModel.create([{
+ProjectModel.create([{
     'title': 'Project 1',
     'description': 'Project description',
     'implementation_details': 'Built using Mern stack',
     'slides': []
 }])
 
-await ServiceModel.create([{
+ServiceModel.create([{
     'title': 'Service 1',
     'description': 'Service description',
     'service_img': '<img src= "sdff" />'
 }])
  
-})()
 
