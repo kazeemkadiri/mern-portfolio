@@ -19,7 +19,7 @@ const server = new GraphQlServer({ typeDefs, resolvers });
 
 if(express().get('env') === 'production'){
 
-    server.use(express.static(__dirname))
+    server.use(express.static(__dirname, '..'))
 
     server.get('/', (req, res) => {
         res.sendFile(path.resolve(__dirname,'..',"index.html"))
