@@ -13,10 +13,10 @@ let hashedPassword = ''
 
 hashPassword().then( password => hashedPassword = password )
 
-UserModel.create({
+UserModel.insertMany([{
     'email': 'kazeem.kadiri@gmail.com',
     'password': hashedPassword
-})
+}])
 
 //Bio seed
 BioModel.create([{
