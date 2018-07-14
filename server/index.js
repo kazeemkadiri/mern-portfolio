@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 const GraphQlServer  =  require('graphql-yoga').GraphQLServer;
 const typeDefs = require('./graphql-query-mutations').typeDefs;
 const resolvers = require('./graphql-query-mutations').resolvers;
@@ -21,7 +22,7 @@ if(express().get('env') === 'production'){
     server.use(express.static(__dirname))
 
     server.get('/', (req, res) => {
-        res.sendFile("index.html")
+        res.sendFile(path.resolve(__dirname,"index.html"))
     })
     
 }
