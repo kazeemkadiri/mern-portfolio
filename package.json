@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd client && npm install && cd ../server && npm install",
-    "start": "node server/index.js"
+    "postinstall": "cd server && npm install",
+    "start": "node ./server/index.js"
   },
   "cacheDirectories": ["client/node_modules", "server/node_modules"],
   "engines": {
