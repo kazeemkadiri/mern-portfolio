@@ -21,9 +21,7 @@ if(express.get('env') === 'production'){
 
     const staticPath = path.resolve(__dirname, 'build')
 
-    console.log('production')
-
-    express.use(express.static(staticPath))
+    express.static(staticPath)
 
     express.get('/', (req, res) => {
 
@@ -41,6 +39,6 @@ express.use('/file-upload', myFileUploadHandler )
 
 mongoose.connection.once(
     "open", 
-    () => server.start({port: 4000}, () => console.log("Server started")  ) 
+    () => server.start({port: 4000, endpoint: "/graphql"}, () => console.log("Server started")  ) 
 );
 
