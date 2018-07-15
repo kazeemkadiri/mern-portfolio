@@ -33,8 +33,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prebuild":"cd .. && sudo rm -rf build",
-    "postbuild": "mv build .."
+    "prebuild":"cd ../server && sudo rm -rf build",
+    "postbuild": "mv build ../server"
   },
   "devDependencies": {
     "enzyme": "^3.3.0",

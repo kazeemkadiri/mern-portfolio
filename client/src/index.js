@@ -13,7 +13,7 @@ import registerServiceWorker from './registerServiceWorker';
 
 const host = window.location.host
 
-const serverProtocol = host.match(/(.\.com)/) ? 'https://' : 'http://'
+const serverProtocol = host.match(/(.\.com)/) ? `https://` : 'http://'
 
 const client = new ApolloClient({
     uri: `${serverProtocol}${host}:4000`

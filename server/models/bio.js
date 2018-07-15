@@ -29,4 +29,4 @@ const BioSchema = mongoose.Schema({
     
 })
 
-const Bio = module.exports = mongoose.model("Bios", BioSchema);
+const Bio = module.exports = mongoose.model("bios", BioSchema);

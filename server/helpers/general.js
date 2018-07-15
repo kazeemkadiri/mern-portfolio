@@ -16,12 +16,10 @@ myFileUploadHandler = (req, res) => {
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
     let uploadedFile = req.files.file
     
-    console.log(__dirname)
-
-    let fileName = uploadedFile.name
+    let fileName = uploadedFile.name.split('-').join('_')
 
     // Use the mv() method to place the file somewhere on your server
-    uploadedFile.mv(`${__dirname}/../../client/public/images/${fileName}`, 
+    uploadedFile.mv(`${__dirname}/../build/images/${fileName}`, 
                     function(err) {
                         if (err)
                         return res.status(500).send(err);
