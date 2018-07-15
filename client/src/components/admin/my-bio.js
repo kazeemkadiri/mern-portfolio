@@ -178,9 +178,6 @@ class MyBio extends Component{
                                         toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
                                                  | image | link`,
                                         file_browser_callback_types: 'file image media',
-                                        file_browser_callback: function(field_name, url, type, win) {
-                                            win.document.getElementById(field_name).value = 'my browser value';
-                                        },
                                         images_upload_url: `${environment.serverUrl}/file-upload`
                                        
                                     }}
