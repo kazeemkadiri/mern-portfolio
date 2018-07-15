@@ -21,7 +21,9 @@ if(express.get('env') === 'production'){
 
     const staticPath = path.resolve(__dirname, 'build')
 
-    express.static(staticPath)
+    console.log('production')
+
+    express.use('/', require('express').static(staticPath))
 
     express.get('/', (req, res) => {
 
