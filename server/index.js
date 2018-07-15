@@ -41,6 +41,6 @@ express.use('/file-upload', myFileUploadHandler )
 
 mongoose.connection.once(
     "open", 
-    () => server.start({port: 4000, endpoint: "/graphql"}, () => console.log("Server started")  ) 
+    () => server.start({ endpoint: "/graphql" }, () => console.log("Server started")  ) 
 );
 
