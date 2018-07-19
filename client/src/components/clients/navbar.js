@@ -5,7 +5,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Icon from '@material-ui/core/Icon'
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 
 const styles = {
@@ -35,6 +37,20 @@ render() {
 
     return (
         <div className="Navbar">
+            {/* Contact info placed before main navbar*/}
+            <Grid container spacing={0}>
+                <Grid item sm={3} md={3}> 
+                    <Icon>message</Icon>
+                    myemail@email.com 
+                 </Grid>
+                <Grid item sm={3} md={5}>
+                    <Icon>phone</Icon> 240258453345
+                </Grid>
+                <Grid item sm={3} md={4}>
+                    facebook icon | 
+                </Grid>
+            </Grid>
+
             <AppBar>
                 <Toolbar>
                     <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">

@@ -13,10 +13,12 @@ import registerServiceWorker from './registerServiceWorker';
 
 const host = window.location.host
 
-const serverProtocol = host.match(/(.\.com)/) ? `https://` : 'http://'
+const graphqlServerEndPoint = host.match(/(.\.com)/) ? 
+                                `https://${host}/graphql` : 
+                                `http://${host.split(':')[0]}:4000/graphql`
 
 const client = new ApolloClient({
-    uri: `${serverProtocol}${host}/graphql`
+    uri: graphqlServerEndPoint
 })
 
 const reducers = {
