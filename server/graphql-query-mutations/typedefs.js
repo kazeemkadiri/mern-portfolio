@@ -2,7 +2,7 @@ module.exports = `
     type Query {
         allPortfolioData: Portfolio,
         serviceData: [ Service! ],
-        getBioData: Bio!,
+        getBioData: Bio,
         projects: [ Project ]
     }
 
@@ -14,6 +14,15 @@ module.exports = `
         resetPassword(email: String!): ResetMailStatus!
         confirmPasswordResetToken(token: String!): UserId!
         newPasswordUpdate(userId: String!, password: String!): StatusNotification!
+        addProjectSlide(projectId: ID!, title: String!, description: String!, image_path: String!): [Slide]
+        deleteProjectSlide(
+            title: String!, 
+            implemented_functionality: String, 
+            image_path: String!, 
+            description: String!, 
+            projectId: String!
+        ): [Slide]
+        
     }
 
     type UserId{
@@ -67,6 +76,7 @@ module.exports = `
     type Slide {
         title: String,
         implemented_functionality: String,
-        image_path: String
+        image_path: String,
+        description: String
     }
     `;

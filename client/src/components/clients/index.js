@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql  from 'graphql-tag';
 
-import  Navbar  from './navbar';
-import Header from './header';
-import AboutMe from './about-me';
-import Services from './services';
-import MyPortfolio from './my-portfolio';
-import ContactMe from './contact-me';
+import  Navbar  from './navbar'
+import Header from './header'
+import AboutMe from './about-me'
+import Services from './services'
+import MyPortfolio from './my-portfolio'
+import ContactMe from './contact-me'
+import LoadingComponent from './loading'
   
 
 const portfolioQuery = gql`
@@ -49,7 +50,12 @@ const portfolioQuery = gql`
 class ClientIndex extends Component {
 
     state = {
-        allPortfolioData:{ bio: '', services: '', projects: '', contactMe: ''}
+        allPortfolioData:{ 
+                        bio: '', 
+                        services: '', 
+                        projects: '', 
+                        contactMe: ''
+                    }
     }
 
     initializePortfolioData = (allPortfolioData) => {
@@ -68,6 +74,10 @@ class ClientIndex extends Component {
 
     }
 
+    componentWillMount() {
+        
+    }
+
     componentWillReceiveProps(nextProps) {
 
         if( !nextProps.data.hasOwnProperty('allPortfolioData') ) return;
@@ -77,18 +87,20 @@ class ClientIndex extends Component {
 
     render() {
 
-        console.log(this.props);
+        // console.log(this.props);
 
         if(this.state.allPortfolioData.bio === '') return '';
 
         const { allPortfolioData: { bio, services, projects } } = this.state;
 
-        // console.log(bio);
+        if(bio === null)
+        return <LoadingComponent />
+
 
         return (
 
             <div className="ClientIndex">
-                <Navbar />
+                <Navbar email={ bio.email } phone_no={ bio.phone_no } />
                 <Header header={ bio } />
                 <AboutMe aboutMe={ bio } />
                 <Services services={ services } />

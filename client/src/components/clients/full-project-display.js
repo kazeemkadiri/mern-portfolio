@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
-import { Carousel } from 'react-responsive-carousel';
+import MyCarouselComponent from './carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './css/custom-carousel.css';
 
@@ -17,14 +17,37 @@ const styles = () => ({
 class FullProjectDisplay extends Component {
 
     state = {
-        projectSlidesExist: false
+        projectSlidesExist: false,
+        activeSlide: null,
+        settingActiveSlide: false
     }
 
     componentWillMount() {
 
+        this.initializeProjectSlidesExist()
+
+    }
+
+    initializeProjectSlidesExist = () => {
+        
         this.setState({
             projectSlidesExist: this.props.project.slides.length > 0
         })
+
+    }
+
+    setActiveSlide = activeSlideImgAlt => {
+
+        let activeSlide = {}
+        
+        Object.assign( 
+            activeSlide ,
+            this.props.project.slides
+                .find( slide => {
+                    return slide.title === activeSlideImgAlt
+                }))
+
+        this.setState({ activeSlide })
 
     }
 
@@ -36,7 +59,7 @@ class FullProjectDisplay extends Component {
 
         const { classes , project  } = this.props;
                 
-        const { projectSlidesExist } = this.state;
+        const { projectSlidesExist, activeSlide } = this.state;
 
         return (
             <div className={ classes.root } style = {{ position: "relative", height: "100%" }}>
@@ -47,24 +70,10 @@ class FullProjectDisplay extends Component {
 
                         {/* Carousel slides of the project images are rendered here */}
                         { 
-                            projectSlidesExist > 0 && 
-                            <Carousel>
-                                { project.slides.map( slide => ( 
-                                    
-                                    <div style={{ position: "relative", height: "100%" }} key={slide}>
-                                        
-                                        <img src = { slide.image_path } 
-                                            alt = {slide.title} 
-                                            style = {{ height: "100%" }} />
-
-                                        <p className="legend"> { slide.title } </p>
-
-                                    </div>
-                                    
-                                    )
-                                ) 
-                                }
-                            </Carousel>
+                            projectSlidesExist && 
+                            <MyCarouselComponent 
+                                slides={ project.slides } 
+                                setActiveSlide={ this.setActiveSlide } />
                         }
                     </Grid>
 
@@ -73,7 +82,12 @@ class FullProjectDisplay extends Component {
                         {/*  Implementation details are rendered here */}
                         { 
                             projectSlidesExist && 
-                            <h5> For each image slide diplay implementation details </h5> 
+                            <React.Fragment>
+                            <h5> Implementation Details </h5> 
+                            <p>
+                                { activeSlide && activeSlide.implemented_functionality }
+                            </p>
+                            </React.Fragment>
                         }
                         {
                             !projectSlidesExist && 

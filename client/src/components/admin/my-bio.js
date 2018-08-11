@@ -10,7 +10,9 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import { site_text_color } from './css/global'
 
 
 const styles = theme => ({
@@ -26,6 +28,7 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: 200,
     },
+    siteTextColor: site_text_color
 
 })
 
@@ -163,11 +166,13 @@ class MyBio extends Component{
         return (
             <Grid container spacing={0} className={ classes.topPageStyles }>
                 <Grid item xs={12} sm={12} md={8}>
+                <Card className={classes.card}>
+                    <CardContent>
                     <Grid container spacing={0} className={ classes.topPageStyles }>
 
                         <Grid item xs={12} sm={12} md={12}>
                             {/* Editor for header background image */}
-                            <h3>Header background image</h3>
+                            <h3 className={ classes.siteTextColor }>Header background image</h3>
                             <Editor
                                     apiKey={ keys.tinymce_api_key }
                                     initialValue={ header_bg_img }
@@ -188,7 +193,7 @@ class MyBio extends Component{
 
                         <Grid item xs={12} sm={12} md={12}>
                             {/* Editor for text displayed over header bg image */}
-                            <h3>Header background image text</h3>
+                            <h3 className={ classes.siteTextColor }>Header background image text</h3>
                             <Editor
                                     apiKey={ keys.tinymce_api_key }
                                     initialValue={ header_bg_img_text }
@@ -209,7 +214,7 @@ class MyBio extends Component{
 
                         <Grid item xs={12} sm={12} md={12}>
                             {/* Editor for about me image */}
-                            <h3>About me image</h3>
+                            <h3 className={ classes.siteTextColor }>About me image</h3>
                             <Editor
                                     apiKey={ keys.tinymce_api_key }
                                     initialValue={ about_me_img }
@@ -230,7 +235,7 @@ class MyBio extends Component{
 
                         <Grid item xs={12} sm={12} md={12}>
                             {/* Editor for description */}
-                            <h3>About me description</h3>
+                            <h3 className={ classes.siteTextColor }>About me description</h3>
                             <Editor
                                     apiKey={ keys.tinymce_api_key }
                                     initialValue={ description }
@@ -283,6 +288,8 @@ class MyBio extends Component{
                             </Button>
                         </Grid>
                     </Grid>
+                    </CardContent>
+                    </Card>
                 </Grid>
             </Grid>
         )

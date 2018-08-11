@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core';
-import { extractImageSrc } from './utils/utils';
+import React, { Component } from 'react'
+import LoadingComponent  from './loading'
+import { withStyles } from '@material-ui/core'
+import { extractImageSrc } from './utils/utils'
   
 
 const styles = theme => ({
@@ -23,7 +24,7 @@ class AboutMe extends Component {
         
         const { classes } = this.props;
 
-        const { aboutMe: { description, about_me_img } } = this.props;
+        const { aboutMe, aboutMe: { description, about_me_img } } = this.props;
 
         return (
 

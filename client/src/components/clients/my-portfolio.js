@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import Grid from '@material-ui/core/Grid'
 import { withStyles, Button, Icon } from '@material-ui/core';
 
 import ReactModal from 'react-modal';
 import FullProjectDisplay from './full-project-display';
-import { removeWebKit, servicesAlignment } from './global-component-styles/styles.js'
+import { removeWebKit, servicesAlignment, justify_align_center } from './global-component-styles/styles.js'
 import { extractImageSrc } from './utils/utils';
 
 const styles = () => ({
-    
+    justifyAlignCenter: justify_align_center,
     ReactModal__Content: {
         height: "20% !important"
     },
@@ -18,12 +19,13 @@ const styles = () => ({
     containerChild: {
         flex: 1,
         flexBasis: "25%",
-        maxHeight: "100%",
+        maxHeight: "200px !important",
         margin: "10px 0px",
         display: "flex",
         alignItems: "center",
         position: "relative",
         justifyContent: "center",
+        overflow: 'hidden'
     },
     cardChildImg: {
         flex: 1,
@@ -36,8 +38,9 @@ const styles = () => ({
     mask: {
         position: "absolute",
         margin: "auto",
-        height: "auto",
-        width: "auto"
+        height: "200px !important",
+        width: "100%",
+        transition: 'opacity 0.4s'
     },
     removeWebKit: removeWebKit,
     servicesAlignment: servicesAlignment,
@@ -68,6 +71,9 @@ const styles = () => ({
     },
     pos: {
         marginBottom: 12,
+    },
+    transition: {
+        transition: 'zoom 0.4s'
     }
   });
 
@@ -139,13 +145,19 @@ class MyPortfolio extends Component {
 
         projectBlackOverlay.style.opacity = "0";
 
+        projectBlackOverlay.parentNode.childNodes[0].style.zoom = 0
+
     }
 
     displayMaskOnHoveredProject(hoveredElement){
 
         const projectBlackOverlay = this.getOverlayDiv(hoveredElement);
 
+        if(projectBlackOverlay === '') return
+
         projectBlackOverlay.style.opacity = "0.6";
+
+        projectBlackOverlay.parentNode.childNodes[0].style.zoom = 1.2
 
     }
 
@@ -161,11 +173,12 @@ class MyPortfolio extends Component {
         
         let blackOverlay = '';
 
-        if( Array.from(hoveredElement.classList).join('').match(/black-overlay/) ) {
+        // if( Array.from(hoveredElement.classList).join('').match(/black-overlay/) ) {
         
-            blackOverlay = hoveredElement;
+        //     blackOverlay = hoveredElement;
 
-        }else if( (Array.from(hoveredElement.classList).join('').match(/(text-mask)/) ) ) {
+        // }else 
+        if( (Array.from(hoveredElement.classList).join('').match(/(text-mask)/) ) ) {
 
             blackOverlay = hoveredElement.parentNode.childNodes[1];
 
@@ -182,7 +195,7 @@ class MyPortfolio extends Component {
 
     render() {
         
-        const { classes, projects, authenticated } = this.props;
+        const { classes, projects, editProject, authenticated } = this.props;
 
         // Obtain the projects from the state object 
         const { currentViewingProject, modalIsOpen } = this.state;
@@ -207,19 +220,19 @@ class MyPortfolio extends Component {
                        
                 </ReactModal>
                 
-                <div className={ classes.sectionHeader }>
+                <div className={ classes.sectionHeader } style={ authenticated ? { paddingLeft: '0%' }: {}}>
                     <h1 className={ classes.removeWebKit }>MY PORTFOLIO</h1>
                     <hr className={ classes.underLine } />
                 </div>
                 
 
                 {/* Brief service description goes here */}
-                <div className={classes.container} style={{ marginTop: "4em", ...servicesAlignment }}>
+                <div className={classes.container} style={ authenticated ? { paddingLeft: '0%' }: { marginTop: "4em", ...servicesAlignment }}>
                     { projects.map( (project, index) => (
-                                    <div className={ classes.containerChild } 
-                                         onMouseOver={ ($event) => this.projectHovered($event) }
-                                         onMouseOut={ ($event) => this.removeMask($event) }
-                                         key={index}>
+                                    <Grid item sm={12} md={4} 
+                                          className={ `${classes.containerChild} ${classes.justify_align_center}` } 
+                                          key={index}
+                                          style={{ height: '240px !important' }}>
 
                                         <img src={ 
                                                     (project.slides.length > 0) ?
@@ -231,35 +244,49 @@ class MyPortfolio extends Component {
                                                      project.slides[0].title :
                                                      'No slides for project' 
                                                 } 
-                                            style={{ width:"100%" }} />
+                                            className={ classes.transition }
+                                            style={{ maxWidth:"100% !important", height: '200px !important' }} />
 
                                         {/* Overlay displayed on hover of project */}
-                                        <div className={`black-overlay ${classes.mask}`} 
+                                        <div className={`black-overlay ${classes.mask} `} 
                                              style={{ background: "black", opacity: "0", top: 0, bottom: 0, left: 0, right: 0 }}>
                                             
                                         </div>
                                         
                                         {/* The overlay holds the title of the image */}
-                                        <div className={`text-mask ${classes.mask}`} 
-                                             style={{ cursor: "pointer", textAlign: 'center' }}
+                                        <div className={`text-mask ${classes.mask} ${ classes.justifyAlignCenter }`} 
+                                             style={{ 
+                                                        cursor: "pointer", 
+                                                        textAlign: 'center', 
+                                                        display: (authenticated ? 'block': 'flex') 
+                                                    }}
+                                             onMouseOver={ ($event) => this.projectHovered($event) }
+                                             onMouseOut={ ($event) => this.removeMask($event) }
                                              onClick={() => this.displayFullProjectInModal(project)}>
+       
+                                                <h3 style={{ color: "white", cursor: "pointer" }}>
+                                                    { project.title.toUpperCase() }
+                                                </h3>
 
-                                            <h3 style={{ color: "white", cursor: "pointer" }}>{ project.title.toUpperCase() }</h3>
-                                            {/* This button is displayed when editing project */}
-                                            { 
+                                                {/* This button is displayed when editing project */}
+                                                { 
                                                     authenticated && 
                                                     <Button variant="contained" color="primary"
                                                             className={`sendButton ${classes.button}`}
                                                             onMouseOver={ e => e.stopPropagation() }
                                                             onMouseOut={ e => e.stopPropagation() }
-                                                            onClick={ () => this.props.editProject(project) }>
+                                                            onClick={ e => {
+                                                                        e.stopPropagation()
+                                                                        this.props.editProject(project) 
+                                                                    }
+                                                                }>
                                                         <Icon>edit</Icon>&nbsp; &nbsp; Edit
                                                     </Button> 
                                                 }
                                         </div>
 
 
-                                    </div>
+                                    </Grid>
                                     )
                                 )
                     }

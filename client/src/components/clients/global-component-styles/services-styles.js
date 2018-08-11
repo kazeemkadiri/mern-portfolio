@@ -1,6 +1,12 @@
 import { removeWebKit, servicesAlignment } from './styles.js'
+import { site_text_color, justify_align_center } from './styles'
 
 const styles = () => ({
+
+    removeWebKit: removeWebKit,
+    servicesAlignment: servicesAlignment,
+    siteTextColor: site_text_color,
+    justifyAlignCenter: justify_align_center,
     container: {
         display: "flex",
         justifyContent: "space-between"
@@ -17,10 +23,10 @@ const styles = () => ({
     },
     cardChildDescription: {
         flex: 2,
-        margin: "10px 2%"
+        margin: "10px 4%",
+        marginLeft: '50px',
+        height: '180px'
     },
-    removeWebKit: removeWebKit,
-    servicesAlignment: servicesAlignment,
     sectionHeader: {
         ...servicesAlignment,
         color: "#0c2e8a"
@@ -35,7 +41,22 @@ const styles = () => ({
     },
     card: {
         minWidth: 275,
-        display: "flex"
+        display: "flex",
+    },
+    serviceContainer: {
+        padding: '20px',
+        marginBottom: '35px',
+        boxShadow: '8px 8px 12px rgba(74, 79, 91, 0.1)',
+        '&:hover': {
+            boxShadow: '0.2px 0.2px 28px rgba(74, 79, 91, 0.12)',
+            transform: 'translateY(-10px)',
+            '-webkit-transform': 'translateY(-10px)'
+        },
+        transition: '0.3s'
+    },
+    serviceDescription:{
+        height: '90px !important',
+        overflow: 'hidden'
     },
     bullet: {
         display: 'inline-block',
@@ -44,7 +65,9 @@ const styles = () => ({
     },
     title: {
         marginBottom: 16,
-        fontSize: 14,
+        fontSize: 22,
+        fontWeight: 700,
+        textTransform: 'capitalize'
     },
     pos: {
         marginBottom: 12,

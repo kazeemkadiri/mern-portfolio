@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { Editor } from '@tinymce/tinymce-react';
 import { keys } from '../../keys';
 import { environment } from '../../environment';
+import { extractImageSrc } from '../clients/utils/utils'
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
@@ -14,14 +15,18 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add'
 import Slide from 'react-reveal/Slide';
 
 
 import { styles as serviceStyles } from '../clients/global-component-styles/services-styles';
+import { site_text_color, justify_align_center } from '../clients/global-component-styles/styles';
 
 
 const styles = theme => ({
 
+    siteTextColor: site_text_color,
+    justifyAlignCenter: justify_align_center,
     topPageStyles:{
         alignItems: "center"
     },
@@ -33,27 +38,28 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: 200,
     },
+    sectionMargin: {
+        marginBottom: '1.4rem'
+    },
     ...serviceStyles()
 })
 
 const servicePropsTemplate = ` description,
                                 service_img,
-                                title
+                                title,
+                                id
                             `;
 
-const updateServiceMutation = gql`
+const AddServiceMutation = gql`
     mutation(
-             $id: String!,
              $description: String!, 
              $title: String!,
              $service_img: String!
             ){
-        updateService(
-            id: $id,
+        addService(
             title: $title,
             description: $description,
             service_img: $service_img
-            
         ){
             ${servicePropsTemplate}
         }   
@@ -75,13 +81,15 @@ class Services extends Component{
 
         super()
 
+        this.formObject = {
+            id:'',
+            title: '',
+            description: '',
+            service_img: ''
+        }
+
         this.state = {
-            formObject:{
-                id:'',
-                title: '',
-                description: '',
-                service_img: ''
-            },
+            formObject: this.formObject,
             services: []
         }
 
@@ -102,19 +110,26 @@ class Services extends Component{
     saveService = () => {
 
         // Send a gql mutation to save bio
-        this.props.updateService({
+        this.props.addService({
             variables: {
                 ...this.state.formObject
             },
-            update: async (store, { data: { updateService } }) => {
+            update: async (store, { data: { addService } }) => {
 
-                // console.log(updateService);
-                // const data = store.readQuery({ query: BioQuery });
+                const { services } = this.state
 
+                const newServiceList = [
+                    ...services,
+                    addService
+                ]
 
+                console.log(newServiceList)
 
-                // store.writeQuery({ query: newBioObject });
-
+                this.setState({
+                    services: newServiceList
+                })
+                
+                this.resetServiceForm()
 
             }
         })
@@ -156,8 +171,13 @@ class Services extends Component{
 
     setService = (inputService) => {
 
+    }
 
-       
+    resetServiceForm = () => {
+
+        this.setState({
+            formObject: this.formObject
+        })
 
     }
 
@@ -187,114 +207,155 @@ class Services extends Component{
         return (
             <Grid container spacing={0} className={ classes.topPageStyles }>
 
-                <Grid item xs={12} sm={12} md={8}>
-                    {/* Loop through the services and render */}
+                    {/* Loop through the existing services and render */}
                     {
                         services.length > 0 &&
-                        services.map((service) => (
+                        services.map((service, index) => (
+                            <Grid item xs={12} sm={12} md={5} key={ index }>
+                                <div className={ classes.containerChild } key={service.id}>
+                                    <Slide left={ index % 2 === 0 } right={ index % 2 === 1 } >
+                                        <Card className={ `${classes.card} ${classes.serviceContainer}` }>
+                                            <CardContent style={{ width: '100%' }}>
+                                            <Grid container spacing={0} style={{ width: '100%' }}>
+                                                <Grid item md={4}>
+                                                    <div style={
+                                                                    { 
+                                                                        overflow:'hidden', 
+                                                                        height: '90px', 
+                                                                        width: '100%',
+                                                                        margin: '18px 4%' 
+                                                                    }
+                                                                }>
+                                                        <img src={ extractImageSrc(service.service_img) } 
+                                                            alt={service.title}
+                                                            style={{ width: 'inherit' }} />
+                                                    </div>
+                                                </Grid>
 
-                            <div className={ classes.containerChild } key={service.id}>
-                                <Slide left={true} >
-                                        <Card className={classes.card}>
-                                            <div className={ classes.cardChildImg }>
-                                                <img src={service.service_img} alt={service.title}/>
-                                            </div>
+                                                <Grid item md={8}>
+                                                    <div className={ classes.cardChildDescription }>
+                                                        
 
-                                            <div className={ classes.cardChildDescription }>
-                                                <CardContent>
-                                                <Typography className={classes.title} color="textSecondary">
-                                                    { service.description }
-                                                </Typography>
-                                                </CardContent>
-                                                <CardActions>
-                                                <Button size="small">Learn More</Button>
-                                                </CardActions>
-                                            </div>
+                                                            <Typography 
+                                                                className={classes.title} 
+                                                                color="textSecondary"
+                                                                dangerouslySetInnerHTML={{__html: service.title}}>
+                                                                
+                                                            </Typography>
+
+                                                            <Typography 
+                                                                className={classes.serviceDescription} 
+                                                                color="textSecondary"
+                                                                dangerouslySetInnerHTML={{__html: service.description}}>
+                                                                
+                                                            </Typography>
+                                                        <CardActions>
+                                                            <Button size="small">Learn More</Button>
+                                                        </CardActions>
+                                                    </div>
+                                                </Grid>
+                                            </Grid>
+                                            </CardContent>
                                         </Card>
                                     </Slide>
                                 </div>
-
+                            </Grid>
                         ))
                     }
+                    {/* End of list of existing services */}
 
 
-                </Grid>
+                {/* Form to add new service */}
+                <Grid item xs={12} sm={12} md={11}>
+                    <Card className={classes.card}>
+                        <CardContent>
+                            <Grid container spacing={0} className={ classes.topPageStyles }>
+                                
+                                <div className={ 
+                                        `${classes.justifyAlignCenter} ${classes.siteTextColor}` 
+                                    }
+                                    style={{ fontSize: 24 }}>
+                                    <AddIcon />
+                                    <h4> 
+                                        Add service 
+                                    </h4>
+                                </div>
 
-                <Grid item xs={12} sm={12} md={8}>
-                    <Grid container spacing={0} className={ classes.topPageStyles }>
+                                <Grid item xs={12} sm={12} md={12} className={ classes.sectionMargin }>
+                                    {/* Editor to save new project */}
+                                    {/* Editor for about me */}
+                                    <h4 className={ classes.siteTextColor }> Service title </h4>
+                                    <Editor
+                                            apiKey={keys.tinymce_api_key}
+                                            initialValue={ title }
+                                            init={{
+                                                theme: "modern",
+                                                height: 350,
+                                                plugins: ['link image code'],
+                                                toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                        | image | link`,
+                                                file_browser_callback_types: 'file image media',
+                                                images_upload_url: `${environment.serverUrl}/file-upload`
+                                            
+                                            }}
+                                            onChange={event => this.updateFormParametersObject(event.target.getContent(),
+                                                                    "title") }
+                                        />
+                                </Grid>
 
-                        <Grid item xs={12} sm={12} md={12}>
-                            {/* Editor to save new project */}
-                            {/* Editor for about me */}
-                            <h4> Service title </h4>
-                            <Editor
-                                    apiKey={keys.tinymce_api_key}
-                                    initialValue={ title }
-                                    init={{
-                                        theme: "modern",
-                                        height: 350,
-                                        plugins: ['link image code'],
-                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
-                                                 | image | link`,
-                                        file_browser_callback_types: 'file image media',
-                                        images_upload_url: `${environment.serverUrl}/file-upload`
-                                       
-                                    }}
-                                    onChange={event => this.updateFormParametersObject(event.target.getContent(),
-                                                            "title") }
-                                />
-                        </Grid>
+                                <Grid item xs={12} sm={12} md={12} className={ classes.sectionMargin }>
+                                    {/* Editor for about me */}
+                                    <h4 className={ classes.siteTextColor }> Service description </h4>
+                                    <Editor
+                                            apiKey={keys.tinymce_api_key}
+                                            initialValue={ description }
+                                            init={{
+                                                theme: "modern",
+                                                height: 350,
+                                                plugins: ['link image code'],
+                                                toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                        | image | link`,
+                                                file_browser_callback_types: 'file image media',
+                                                images_upload_url: `${environment.serverUrl}/file-upload`
+                                            
+                                            }}
+                                            onChange={event => this.updateFormParametersObject(event.target.getContent(),
+                                                                    "description") }
+                                        />
+                                </Grid>
 
-                        <Grid item xs={12} sm={12} md={12}>
-                            {/* Editor for about me */}
-                            <h4> Service description </h4>
-                            <Editor
-                                    apiKey={keys.tinymce_api_key}
-                                    initialValue={ description }
-                                    init={{
-                                        theme: "modern",
-                                        height: 350,
-                                        plugins: ['link image code'],
-                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
-                                                 | image | link`,
-                                        file_browser_callback_types: 'file image media',
-                                        images_upload_url: `${environment.serverUrl}/file-upload`
-                                       
-                                    }}
-                                    onChange={event => this.updateFormParametersObject(event.target.getContent(),
-                                                            "description") }
-                                />
-                        </Grid>
+                                <Grid item xs={12} sm={12} md={12} className={ classes.sectionMargin }>
+                                    {/* Editor for about me */}
+                                    <h4 className={ classes.siteTextColor }> Service image </h4>
+                                    <Editor 
+                                            apiKey={keys.tinymce_api_key}
+                                            initialValue={ service_img }
+                                            init={{
+                                                theme: "modern",
+                                                height: 350,
+                                                plugins: ['link image code'],
+                                                toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                                        | image | link`,
+                                                file_browser_callback_types: 'file image media',
+                                                images_upload_url: `${environment.serverUrl}/file-upload`
+                                            
+                                            }}
+                                            onChange={event => this.updateFormParametersObject(event.target.getContent(),
+                                                                    "service_img") }
+                                        />
+                                </Grid>
 
-                        <Grid item xs={12} sm={12} md={12}>
-                            {/* Editor for about me */}
-                            <h4> Service image </h4>
-                            <Editor 
-                                    apiKey={keys.tinymce_api_key}
-                                    initialValue={ service_img }
-                                    init={{
-                                        theme: "modern",
-                                        height: 350,
-                                        plugins: ['link image code'],
-                                        toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
-                                                 | image | link`,
-                                        file_browser_callback_types: 'file image media',
-                                        images_upload_url: `${environment.serverUrl}/file-upload`
-                                       
-                                    }}
-                                    onChange={event => this.updateFormParametersObject(event.target.getContent(),
-                                                            "service_img") }
-                                />
-                        </Grid>
-
-                        <Grid item xs={12} sm={12} md={12}>
-                            <Button variant="contained" color="primary"
-                                    className={`sendButton ${classes.button}`}
-                                    onClick={ () => this.saveService() }>
-                                <Icon>send</Icon>&nbsp; &nbsp; Save
-                            </Button>
-                        </Grid>
-                    </Grid>
+                                <Grid item xs={12} sm={12} md={12} className={ classes.justifyAlignCenter }>
+                                    <Button variant="contained" color="primary"
+                                            className={`sendButton ${classes.button}`}
+                                            onClick={ () => this.saveService() }>
+                                        <Icon>send</Icon>&nbsp; &nbsp; Save
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                            {/* End of form to add new service */}
+                        </CardContent>
+                    </Card>
                 </Grid>
             </Grid>
         )
@@ -303,4 +364,4 @@ class Services extends Component{
 
 }
 
-export default compose(graphql(updateServiceMutation, {name: "updateService"}), graphql(ServiceQuery, {name: "serviceData"}))(withStyles(styles)(Services));
+export default compose(graphql(AddServiceMutation, {name: "addService"}), graphql(ServiceQuery, {name: "serviceData"}))(withStyles(styles)(Services));

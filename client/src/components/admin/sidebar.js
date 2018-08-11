@@ -3,17 +3,23 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Icon from '@material-ui/core/Icon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { withStyles } from '@material-ui/core';
 import Work from '@material-ui/icons/Work';
 import Link from 'react-router-dom/Link';
+//import {ResponsiveMenu} from 'material-ui-responsive-menu'
 
 const styles = theme => ({
     sideBarLinks: {
         width: '100%',
         display: "flex",
         justifyContent: "center",
-        textDecoration: "none"
+        textDecoration: "none",
+        padding: '12px 24px'
+    },
+    textWhite:{
+        color: theme.palette.common.white
     }
 });
 
@@ -33,32 +39,36 @@ class Sidebar extends Component{
                     component="nav"
                     subheader={<ListSubheader component="div">Main menu</ListSubheader>}
                     >
-                    <ListItem button>
+                    <ListItem button style={{ padding: 'none' }}>
                         <Link to="/admin/projects" className={ classes.sideBarLinks }>
                         
-                            <ListItemIcon>
-                                <Work />
-                            </ListItemIcon>
+                            <Icon className={ classes.textWhite }>
+                                work
+                            </Icon>
                         
-                            <ListItemText inset primary="Projects" />
+                            <ListItemText inset primary="Projects"  className={ classes.textWhite } />
 
                         </Link>
                     </ListItem>
 
-                    <ListItem button>
+                    <ListItem button className={ classes.textWhite }>
                         <Link to="/admin/bio" className={ classes.sideBarLinks }>
-                            <ListItemIcon>
-                                <Work />
-                            </ListItemIcon>
+
+                            <Icon className={ classes.textWhite }>
+                                person
+                            </Icon>
+                        
                             <ListItemText inset primary="Bio" />
                         </Link>
                     </ListItem>
 
-                    <ListItem button>
+                    <ListItem button className={ classes.textWhite }>
                         <Link to="/admin/services" className={ classes.sideBarLinks }>
-                            <ListItemIcon>
-                                <Work />
-                            </ListItemIcon>
+                            
+                            <Icon className={ classes.textWhite }>
+                                settings
+                            </Icon>
+                        
                             <ListItemText inset primary="Services" />
                         </Link>
                     </ListItem>

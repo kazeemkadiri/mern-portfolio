@@ -12,6 +12,7 @@ hashPassword = async (password) => {
 myFileUploadHandler = (req, res) => {
 
     // req.app.NODE_PRODUCTION_ENV
+    req.app.NODE_PRODUCTION_ENV = true;
 
     if (!req.files)
     return res.status(400).send('No files were uploaded.')
@@ -23,7 +24,7 @@ myFileUploadHandler = (req, res) => {
 
     const fileUploadDir = `${__dirname}/../storage/app/uploads/${fileName}`
 
-    const publicDir = req.app.NODE_PRODUCTION_ENV ?
+    const publicDir = !req.app.NODE_PRODUCTION_ENV ?
                         `${__dirname}/../build/images/${fileName}`:
                         `${__dirname}/../../client/public/images/${fileName}`
 

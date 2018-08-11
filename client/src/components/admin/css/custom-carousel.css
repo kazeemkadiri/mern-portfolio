@@ -1,0 +1,22 @@
+div.carousel-container:nth-child(2){
+    height: 100px;
+}
+
+.carousel .thumbs-wrapper{
+    position: relative;
+    height: inherit;
+}
+
+.carousel .thumb img{
+    height: 100%;
+    position: relative;
+    width: inherit;
+}
+
+.carousel.carousel-slider {
+    height: 400px;
+}
+
+.carousel .slider-wrapper {
+    height: 100%;
+}

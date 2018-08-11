@@ -19,3 +19,8 @@
 .carousel img {
     pointer-events: all;
 }
+
+.carousel .slide{
+    background: white;
+    box-shadow: 1px 2px 2px #000;
+}

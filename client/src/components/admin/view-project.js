@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
 import { Editor } from '@tinymce/tinymce-react';
 import { keys } from '../../keys';
 import { environment } from '../../environment';
+import { extractImageSrc } from '../clients/utils/utils'
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import AddIcon from '@material-ui/icons/Add'
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Carousel } from 'react-responsive-carousel';
+import './css/custom-carousel.css'
+import { Typography } from '@material-ui/core';
 
+import NewSlideComponent from './new-slide'
+
+import { updateProjectSlideMutation } from './graphql/mutations'
 
 const styles = theme => ({
 
@@ -24,8 +34,17 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: 200,
     },
+    carouselContainer: {
+        height: '400px !important'
+    },
+    icon: {
+        margin: theme.spacing.unit,
+        fontSize: 32,
+    }
 
 })
+
+
 
 class AddProject extends Component{
 
@@ -33,54 +52,62 @@ class AddProject extends Component{
 
         super()
 
+        this.slide = {
+            title:"",
+            description: "",
+            image_path: ""
+        }
+
         this.state = {
             
             project: {
             },
-            slide:{
-                title:"",
-                description: "",
-                image_path: ""
-                
-            }
-
+            slide: this.slide
         }
 
     }
 
     componentWillMount() {
 
+        console.log(JSON.parse(localStorage.getItem("project")))
+        
         this.setState({
             project: JSON.parse(localStorage.getItem("project"))
         })
 
     }
 
-    addSlide() {
+    addSlide = (slide) => {
 
-        const { project, project: { slides } } = this.state;
+        console.log(slide)
 
-        slides.push(this.state.slide);
+        // Run mutation to update the project slides`
+        const { project } = this.state;
 
-        this.setState({
 
-            "project": {
-                ...project,
-                "slides":slides
+        this.props.updateProjectSlide({
+            variables:{
+                projectId: project.id,
+                ...slide
+            },
+            update: (store, { data: { addProjectSlide } }) => {
+
+                console.log(addProjectSlide)
+
+                const slides = addProjectSlide
+
+                this.setState({
+
+                    "project": {
+                        ...project,
+                        slides
+                    },
+                    slide:this.slide
+                })
+
+                console.log(this.state.project)
             }
-
         })
-
-        this.setState({
-            slide:{
-                title:"",
-                description: "",
-                image_path: ""
-            }
-        })
-        
-
-        // console.log(this.state.project);
 
     }
 
@@ -128,7 +155,7 @@ class AddProject extends Component{
 
         const { classes } = this.props;
 
-        const { project, slide: { image_path, title } } = this.state;
+        const { project, slide: { image_path, title, description } } = this.state;
 
         return (
             <Grid container spacing={0} className={ classes.topPageStyles }>
@@ -138,16 +165,24 @@ class AddProject extends Component{
                     <h4> Description: </h4> { project.description }
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={8}>
+                <Grid item xs={12} sm={12} md={8} style={{ marginTop: '2rem' }}>
+                    
                     {/* Carousel slides of the project images are rendered here */}
-                    <Carousel>
-                        { (project.slides.length > 0) ? project.slides.map( slide => ( 
+                    <Typography><strong>Slides ({project.title})</strong></Typography>
+
+                    { (project.slides.length > 0) 
+                            && 
+                        <Carousel 
+                            style={{ height: '100%' }} 
+                            className={ `${classes.carouselContainer} carousel-container` } >
+                           
+                           {project.slides.map( slide => ( 
                             
                             <div style={{ position: "relative", height: "100%" }} key={slide}>
                                 
-                                <img src = { slide.image_path } 
+                                <img src = { extractImageSrc(slide.image_path) }
                                     alt = {slide.title} 
-                                    style = {{ height: "100%" }} />
+                                    style = {{ height: '100%', width: 'auto' }} />
 
                                 <p className="legend">
                                     { slide.title }
@@ -172,51 +207,14 @@ class AddProject extends Component{
                             </div>
                             
                             )
-                            ): ""
-                        }
+                            ) }
+                        
                     </Carousel>
+                }
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={8}>
-                    <Button variant="contained" 
-                            color="primary" 
-                            className={classes.button}
-                            onClick = { () => this.addSlide() }>
-                        <Icon></Icon>Attach Slide
-                    </Button>
-                </Grid>
-
-                <Grid item xs={12} sm={12} md={8}>
-                    <TextField
-                        id="slidetitle"
-                        label="Slide title"
-                        className={ classes.textField }
-                        style={{ width: "100%" }}
-                        value={ title }
-                        onChange={ event => this.updateFormParametersObject(event.target.value, "title") }
-                        margin="normal"
-                        />
-                </Grid>
-
-                <Grid item xs={12} sm={12} md={8}>
-                    {/* Editor to attach new slide for project */}
-                    <Editor
-                            apiKey={ keys.tinymce_api_key }
-                            initialValue={ image_path }
-                            init={{
-                                theme: "modern",
-                                height: 350,
-                                plugins: ['link image code'],
-                                toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
-                                         | image | link`,
-                                file_browser_callback_types: 'file image media',
-                                images_upload_url: `${environment.serverUrl}/file-upload`
-                               
-                            }}
-                            onChange={event => this.updateFormParametersObject(event.target.getContent(),
-                                                    "slide_image") }
-                        />
-                </Grid>
+                <NewSlideComponent 
+                    addSlide={this.addSlide} />
 
             </Grid>
         )
@@ -225,4 +223,5 @@ class AddProject extends Component{
 
 }
 
-export default withStyles(styles)(AddProject);
+export default graphql(updateProjectSlideMutation, 
+                        {name: 'updateProjectSlide'})(withStyles(styles)(AddProject))

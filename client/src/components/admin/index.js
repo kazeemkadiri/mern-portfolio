@@ -18,6 +18,7 @@ import ViewProjectComponent from './view-project';
 import BioComponent from './my-bio';
 import ServicesComponent from './my-services';
 import LoginComponent from './login-form';
+import './css/global.css'
 
 
 const LoginMutation = gql`
@@ -83,25 +84,35 @@ class AdminIndex extends Component{
 
         return (
             
-            <div className="AdminIndex" style={{ width: "100%" }}>
+            <div className="AdminIndex" style={{ width: "100%", height: '100%' }}>
                 <Navbar logoutButton={true} logoutUser={this.logoutUser} />
-                <Grid container spacing={0} style={{ display: "flex", justifyContent: "center", marginTop: "10%" }}>
+                
+                <Grid container 
+                      spacing={0} 
+                      style={{ 
+                          flexGrow: 1, 
+                          justifyContent: "center", 
+                          marginTop: "5vh",
+                          height: '95vh'
+                        }}>
+                
                 { checked && authenticated &&
                         <Fragment>
                         <Grid item xs={12} sm={12} md={3}>
                             
-                            <Sidebar style={{ position:"fixed", top:"20%" }}/>
+                            <Sidebar style={{ position:"fixed" }}/>
 
                         </Grid>
                         
                         <Grid item xs={12} sm={12} md={9}>
-                            <div className={ classes.mainContent } style={{ marginTop: "10%" }}> 
+                            <div className={ classes.mainContent } style={{ marginTop: '20px', marginBottom: '20px' }}> 
                                 
                                 <Route path="/admin/projects" exact component={ ProjectComponent } />
                                 <Route path="/admin/projects/add-project" exact component={ ProjectComponent } />
                                 <Route path="/admin/projects/view-project" exact component={ ViewProjectComponent } />
                                 <Route path="/admin/bio" exact component={ BioComponent } />  
-                                <Route path="/admin/services" exact component={ ServicesComponent } />    
+                                <Route path="/admin/services" exact component={ ServicesComponent } />  
+
                             </div>
                         </Grid>
                         </Fragment>

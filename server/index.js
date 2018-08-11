@@ -45,7 +45,7 @@ express.use(fileUpload())
 
 express.use('/file-upload', myFileUploadHandler )
 
-const port = !NODE_PRODUCTION_ENV ? ({ port: 4000 }) : ({})
+const port = !NODE_PRODUCTION_ENV ? ({ port: 4000 }) : ({port: process.env.PORT})
 
 mongoose.connection.once(
     "open", 

@@ -12,6 +12,10 @@ const slide = {
     image_path: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: true
     }
 }
 

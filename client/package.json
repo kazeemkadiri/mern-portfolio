@@ -11,6 +11,7 @@
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "material-ui": "^0.20.1",
+    "material-ui-responsive-menu": "^1.19.3",
     "prettier": "^1.13.7",
     "react": "^16.4.0",
     "react-apollo": "^2.1.4",
@@ -29,11 +30,11 @@
     "validator": "^10.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3100 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "prebuild":"cd ../server && sudo rm -rf build",
+    "prebuild": "cd ../server && sudo rm -rf build",
     "postbuild": "mv build ../server"
   },
   "devDependencies": {

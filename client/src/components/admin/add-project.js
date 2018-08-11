@@ -16,13 +16,17 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import { site_text_color } from './css/global'
 
 
 const styles = theme => ({
 
     topPageStyles:{
-        alignItems: "center"
+        alignItems: 'center',
+        marginTop: '4rem'
     },
     button: {
         margin: theme.spacing.unit,
@@ -32,6 +36,11 @@ const styles = theme => ({
         marginRight: theme.spacing.unit,
         width: 200,
     },
+    title: {
+        marginBottom: 16,
+        fontSize: 24,
+    },
+    siteTextColor: site_text_color
 
 })
 
@@ -71,6 +80,21 @@ class AddProject extends Component{
 
     }
 
+    componentWillMount = () => {
+        
+        this.checkEditProject()
+
+    }
+
+    checkEditProject = () => {
+        
+        if(!this.props.hasOwnProperty('editProject'))
+            return
+
+        this.setState({ formObject: this.props.editProject })
+
+    }
+
     updateFormParametersObject(value, formField) {
 
         const { formObject } = this.state;
@@ -82,20 +106,14 @@ class AddProject extends Component{
             }
         }) 
 
-        //console.log(this.state.formObject);
-
     }
 
     createProject() {
 
-        const { formObject: { title, description, implementation_details } } = this.state;
-
         // Use graphql tag to send a mutation query
         this.props.addProject({
             variables: {
-                title: title,
-                description: description,
-                implementation_details: implementation_details
+                ...this.state.formObject
             },
             update: (store, { data: { addProject } }) => {
 
@@ -133,18 +151,26 @@ class AddProject extends Component{
 
     render() {
 
+        const { classes, editProject } = this.props;
+
+        const { formObject: { title, description, implementation_details } } = this.state;
+
         if( this.state.navigateToViewProject ) {
             return <Redirect to="/admin/projects/view-project" />
         }
 
-        const { classes } = this.props;
-
-        const { formObject: { title, description, implementation_details } } = this.state;
-
         return (
-            <Grid container spacing={0} className={ classes.topPageStyles }>
-                            <Grid item xs={12} sm={12} md={8}>
-                                <Grid container spacing={0} className={ classes.topPageStyles }>
+            
+                    <Grid container spacing={0} className={ classes.topPageStyles }>
+                        <Grid item xs={12} sm={12} md={11}>
+                            <Card className={classes.card}>
+                                <CardContent>
+                                <Grid container spacing={0}>
+                                    <Grid item xs={12} sm={12} md={12}>
+                                        <Typography className={classes.title} color="textSecondary">
+                                           <Icon>playlist_add</Icon> { editProject ? 'Edit Project' : 'Add new project' }
+                                        </Typography>
+                                    </Grid>
                                     <Grid item xs={12} sm={12} md={12}>
                                         <TextField
                                             id="title"
@@ -170,9 +196,9 @@ class AddProject extends Component{
                                             />
                                     </Grid>
 
-                                    <Grid item xs={12} sm={12} md={12}>
+                                    <Grid item xs={12} sm={12} md={12} style={{ marginLeft: '8px' }}>
                                         {/* Editor to save new project */}
-                                        <h4>Implementation details </h4>
+                                        <h4  className={ classes.siteTextColor }>Implementation details </h4>
                                         <Editor
                                                 apiKey={ keys.tinymce_api_key }
                                                 initialValue={ implementation_details }
@@ -191,16 +217,19 @@ class AddProject extends Component{
                                             />
                                     </Grid>
 
-                                    <Grid item xs={12} sm={12} md={12}>
+                                    <Grid item xs={12} sm={12} md={12}  style={{ display: 'flex', justifyContent: 'center' }}>
                                         <Button variant="contained" color="primary"
                                                 className={`sendButton ${classes.button}`}
                                                 onClick={ () => this.createProject() }>
-                                            <Icon>send</Icon>&nbsp; &nbsp; Send
+                                            <Icon>send</Icon>&nbsp; { editProject ? 'Update' : 'Submit' }
                                         </Button>
                                     </Grid>
                                 </Grid>
+                                </CardContent>
+                                </Card>
                             </Grid>
                         </Grid>
+                    
         )
 
     }

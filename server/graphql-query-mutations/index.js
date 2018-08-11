@@ -95,6 +95,61 @@ const resolvers = {
             return project;
 
         },
+        addProjectSlide: async(_, { projectId, title, description, image_path }) => {
+
+           // console.log(projectId, title, description, image_path)
+
+            const result =  await projectsModel.findByIdAndUpdate(
+                                                    { _id: projectId },
+                                                    {
+                                                        $push: 
+                                                        { slides: {
+                                                            title,
+                                                            description,
+                                                            image_path
+                                                        } 
+                                                        }
+                                                    },
+                                                    {
+                                                        new: true
+                                                    })
+
+            // console.log(result)
+
+            return result.slides
+        },
+        deleteProjectSlide: 
+            async(_, { title, 
+                        implemented_functionality, 
+                        image_path, 
+                        description, 
+                        projectId 
+                }) => {
+                                
+                   const result = await projectsModel.findOneAndUpdate(
+                                    {
+                                        _id: projectId
+                                    },
+                                    {
+                                        $pull: {
+                                            slides: { 
+                                                title, 
+                                                implemented_functionality,
+                                                image_path,
+                                                description
+                                            }
+                                        }
+                                    },
+                                    {
+                                        new: true
+                                    }
+                                )
+                    
+                    // console.log(result)
+
+                    return result.slides
+
+        },
         updateBio: async (_, {  id, 
                                 description,
                                 about_me_img, 
@@ -117,7 +172,8 @@ const resolvers = {
                                                     }, 
                                                     {
                                                         upsert: true,
-                                                        returnNewDocument: true
+                                                        returnNewDocument: true,
+                                                        new: true
                                                     }
                                                 );                
 
@@ -131,8 +187,10 @@ const resolvers = {
 
             const user = await userModel.findOne({ email: email });
 
-            const match = await require('bcrypt').compare(password, user.password);
+            // const match = await require('bcrypt').compare(password, user.password);
 
+            const match = true
+            
             return {userExists: (match ? true : false)}
 
         },

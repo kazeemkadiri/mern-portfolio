@@ -6,7 +6,7 @@ import Routes from './routes/index';
 class App extends Component {
   render() {
     return (
-      <div className="App">
+      <div className="App" style={{ height: 'inherit' }}>
 
         {/* All routes are rendered below */}
         <Routes />

@@ -13,6 +13,9 @@ const styles = theme => ({
     input: {
       display: 'none',
     },
+    w100: {
+        width: '100% !important'
+    }
   });
 
 const theme =  createMuiTheme({
@@ -32,11 +35,11 @@ class Header extends Component {
 
         return (
 
-            <div className="Header" style={{ width: "100%", marginTop: "20px" }}>
+            <div className="Header" style={{ width: "100%"}}>
 
-                <img src={ extractImageSrc(header_bg_img) } style={{ maxWidth: "100%", height: "auto" }} alt="header_background_image"/>
+                <img className={classes.w100} src={ extractImageSrc(header_bg_img) } style={{ width: "100% !important", height: "auto" }} alt="header_background_images"/>
 
-                <div style={{ position: "absolute", right: "10%", top: "4rem"  }}>
+                <div style={{ position: "absolute", right: "10%", top: "20rem"  }}>
                     <MuiThemeProvider theme={theme}>
                         <Button variant="contained" color="primary" href="#contained-buttons" className={classes.button}>
                             My Projects
