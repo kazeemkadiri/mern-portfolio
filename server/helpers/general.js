@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const createSymlink = require('create-symlink');
-const {realpathSync} = require('fs');
+const {realpathSync, unlink } = require('fs');
 
 hashPassword = async (password) => {
 
@@ -48,9 +48,39 @@ myFileUploadHandler = (req, res) => {
 
 }
 
+getImageName = imgHtmlElement => {
+    
+    if(!imgHtmlElement || imgHtmlElement === undefined) 
+        return ''
+
+    return imgHtmlElement.split('src="')[1].split('"')[0].split('/').unshift()
+
+}
+
+/**
+ *  @param images (Array of image names)
+ */
+deleteImages = imgNames => {
+
+    console.log('image name', imgNames)
+    
+    const defaultUploadDir = '../storage/app/uploads/'
+
+    imgNames.forEach( imgName => {
+
+        const realImagePath = `${defaultUploadDir}${imgName}`
+
+        unlink(realImagePath, err => console.log(err))
+
+    });
+
+}
+
 module.exports.hashPassword = hashPassword
 
 module.exports.myFileUploadHandler = myFileUploadHandler
+
+module.exports.getImageName = getImageName
 
     
 

@@ -62,7 +62,24 @@ class Navbar extends Component {
 
     }
 
+    // componentWillReceiveProps(nextProps) {
+
+    //     if(!nextProps.authenticated) return
+
+    //     this.setState({ navbarPositioning: 'fixed' })
+
+    // }
+
     registerListenerForWindowScroll = () => {
+        
+        // If logged in
+        if(this.props.authenticated){
+
+            this.setState({ navbarPositioning: 'fixed' })
+
+            return         
+        }
+            
 
         window.onscroll = () => {
 
@@ -97,7 +114,7 @@ class Navbar extends Component {
 
     render() {    
         
-        const { classes, logoutButton, logoutUser, email, phone_no } = this.props
+        const { classes, logoutButton, logoutUser, email, phone_no, authenticated } = this.props
 
         const {  anchorEl, navbarPositioning } = this.state
 
@@ -106,24 +123,27 @@ class Navbar extends Component {
         return (
             <React.Fragment>
                 {/* Contact info placed before main navbar*/}
-                <Grid container spacing={0} className={ classes.siteTextColor } style={{ padding: '4px 0px' }}>
-                    <Grid item sm={4} md={3} className={ classes.justifyAlignCenter }> 
-                        <Icon style={{ fontSize: '14px', padding: '4px' }}>mail</Icon> &nbsp;
-                        { email }
+                {
+                    !authenticated && 
+                    <Grid container spacing={0} className={ classes.siteTextColor } style={{ padding: '4px 0px' }}>
+                        <Grid item sm={4} md={3} className={ classes.justifyAlignCenter }> 
+                            <Icon style={{ fontSize: '14px', padding: '4px' }}>mail</Icon> &nbsp;
+                            { email }
+                        </Grid>
+                        <Grid item 
+                            sm={4} 
+                            md={3} 
+                            className={ classes.justifyAlignCenter } 
+                            style={{ borderLeft: `1px solid ${site_text_color.color}` }}>
+                            <Icon style={{ fontSize: '14px', padding: '4px' }}>phone</Icon> &nbsp; { phone_no }
+                        </Grid>
+                        <Grid item sm={4} md={4}  className={ classes.alignCenter } >
+                            <a href='https://www.facebook.com' 
+                                style={{ color: 'inherit', textDecoration: 'none' }}>
+                                <i  style={{ fontSize: '14px', padding: '4px' }} className='fa fa-facebook' aria-hidden="true"></i></a>
+                        </Grid>
                     </Grid>
-                    <Grid item 
-                          sm={4} 
-                          md={3} 
-                          className={ classes.justifyAlignCenter } 
-                          style={{ borderLeft: `1px solid ${site_text_color.color}` }}>
-                        <Icon style={{ fontSize: '14px', padding: '4px' }}>phone</Icon> &nbsp; { phone_no }
-                    </Grid>
-                    <Grid item sm={4} md={4}  className={ classes.alignCenter } >
-                        <a href='https://www.facebook.com' 
-                            style={{ color: 'inherit', textDecoration: 'none' }}>
-                            <i  style={{ fontSize: '14px', padding: '4px' }} className='fa fa-facebook' aria-hidden="true"></i></a>
-                    </Grid>
-                </Grid>
+                }
 
                 <AppBar position={navbarPositioning}>
                     <Toolbar>

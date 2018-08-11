@@ -106,12 +106,12 @@ class MyCarouselComponent extends React.Component{
 
         return carouselContainer.querySelector('li.slide.selected img')
 
-        return Array.from(carouselContainer.firstChild.firstChild.childNodes[1].firstChild.childNodes)
-                .find(nodeElement => {
+        // return Array.from(carouselContainer.firstChild.firstChild.childNodes[1].firstChild.childNodes)
+        //         .find(nodeElement => {
 
-                    return nodeElement.classList['value'] === 'slide selected'
+        //             return nodeElement.classList['value'] === 'slide selected'
 
-                }).firstChild.firstChild
+        //         }).firstChild.firstChild
 
     }
 

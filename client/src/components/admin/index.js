@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { sessionService } from 'redux-react-session';
 
 import { Route } from 'react-router-dom';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -26,9 +26,16 @@ const LoginMutation = gql`
         loginUser(email: $email, password: $password){
             userExists
         }
+    }`
+    
+const bioQuery = gql`
+    {
+        getBioData{
+            email,
+            phone_no
+        }
     }
-
-` 
+`
 
 const styles = () => ({
 
@@ -80,31 +87,43 @@ class AdminIndex extends Component{
 
     render() {
 
-        const { classes, authenticated, checked } = this.props;
-
+        const { 
+            classes, 
+            authenticated, 
+            checked, 
+            bio: { 
+                getBioData
+            }  
+        } = this.props;
+        
         return (
             
             <div className="AdminIndex" style={{ width: "100%", height: '100%' }}>
-                <Navbar logoutButton={true} logoutUser={this.logoutUser} />
+                <Navbar 
+                    email={ getBioData !== undefined ? getBioData.email : ''} 
+                    phone_no={ getBioData !== undefined ? getBioData.phone_no : ''} 
+                    authenticated={ true }
+                    logoutButton={true} 
+                    logoutUser={this.logoutUser} />
                 
                 <Grid container 
                       spacing={0} 
                       style={{ 
                           flexGrow: 1, 
                           justifyContent: "center", 
-                          marginTop: "5vh",
-                          height: '95vh'
+                          marginTop: "8vh",
+                          height: '92vh'
                         }}>
                 
                 { checked && authenticated &&
                         <Fragment>
-                        <Grid item xs={12} sm={12} md={3}>
+                        <Grid item xs={12} sm={4} md={3}>
                             
                             <Sidebar style={{ position:"fixed" }}/>
 
                         </Grid>
                         
-                        <Grid item xs={12} sm={12} md={9}>
+                        <Grid item xs={12} sm={8} md={9}>
                             <div className={ classes.mainContent } style={{ marginTop: '20px', marginBottom: '20px' }}> 
                                 
                                 <Route path="/admin/projects" exact component={ ProjectComponent } />
@@ -146,4 +165,8 @@ const mapState = ({ session }) => ({
   authenticated: session.authenticated
 });
 
-export default connect(mapState)(graphql(LoginMutation, {name:'LoginMutation'})(withStyles(styles)(AdminIndex)));
+export default connect(mapState)(
+    compose(
+        graphql(LoginMutation, {name:'LoginMutation'}),
+        graphql(bioQuery, {name: 'bio'})
+    )(withStyles(styles)(AdminIndex)));

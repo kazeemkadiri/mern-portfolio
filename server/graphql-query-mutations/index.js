@@ -95,6 +95,24 @@ const resolvers = {
             return project;
 
         },
+        updateProject: async (_, { id, title, description, implementation_details }) => {
+
+            const project = await projectsModel.findOneAndUpdate(
+                                    {_id: id}, 
+                                    { $set:{
+                                        title,
+                                        description,
+                                        implementation_details
+                                        }
+                                    },
+                                    {
+                                      new: true,
+                                      upsert: false  
+                                    })
+
+            return project;
+
+        },
         addProjectSlide: async(_, { projectId, title, description, image_path }) => {
 
            // console.log(projectId, title, description, image_path)
@@ -118,13 +136,15 @@ const resolvers = {
 
             return result.slides
         },
-        deleteProjectSlide: 
-            async(_, { title, 
-                        implemented_functionality, 
-                        image_path, 
-                        description, 
-                        projectId 
-                }) => {
+        deleteProjectSlide: async(_, { 
+                                    title, 
+                                    implemented_functionality, 
+                                    image_path, 
+                                    description, 
+                                    projectId 
+                            }) => {
+                   
+
                                 
                    const result = await projectsModel.findOneAndUpdate(
                                     {
@@ -146,7 +166,13 @@ const resolvers = {
                                 )
                     
                     // console.log(result)
+                    if(result){
 
+                        MyUtil.deleteImages([MyUtil.getImageName(image_path)])
+
+                    }
+                    
+                    
                     return result.slides
 
         },
@@ -160,15 +186,25 @@ const resolvers = {
 
                     const query = (id ? ({ _id: id }) : ({}));        
 
+                    // Delete all former images using node
+                    // Since only one document holds all bio information
+                    const oldBio = await bioModel.find({});
+                    
+                    aboutMeImg = MyUtil.getImageName(oldBio.about_me_img)
+
+                    headerBgImg = MyUtil.getImageName(oldBio.header_bg_img)
+
+                    MyUtil.deleteImages([ aboutMeImg, headerBgImg ])
+
                     const bio = await bioModel.findOneAndUpdate(
                                                      query , 
                                                     {   
-                                                        description: description,
-                                                        about_me_img: about_me_img, 
-                                                        header_bg_img: header_bg_img, 
-                                                        header_bg_img_text: header_bg_img_text,
-                                                        phone_no: phone_no,
-                                                        email: email
+                                                        description,
+                                                        about_me_img, 
+                                                        header_bg_img, 
+                                                        header_bg_img_text,
+                                                        phone_no,
+                                                        email
                                                     }, 
                                                     {
                                                         upsert: true,

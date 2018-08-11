@@ -26,6 +26,7 @@ import './css/global.css'
 
 import { updateProjectSlideMutation } from './graphql/mutations'
 import { justify_align_center, site_text_color } from './css/global';
+import { toast } from 'react-toastify';
 
 const styles = theme => ({
 
@@ -86,8 +87,27 @@ const deleteSlideMutation = gql`
                 image_path
                 description
             }
-    }
+    }`
 
+// Mutation to add a newly created project
+const updateProjectMutation = gql`
+    mutation($id:String!, $title: String!, $description: String!, $implementation_details: String!){
+        updateProject( id: $id,
+                        title: $title, 
+                        description: $description, 
+                        implementation_details: $implementation_details
+                    ){
+                        id,
+                        title,
+                        description,
+                        implementation_details,
+                        slides {
+                            title,
+                            implemented_functionality,
+                            image_path
+                        }
+                    }
+    }
 `
 
 class EditProject extends React.Component {
@@ -135,11 +155,7 @@ class EditProject extends React.Component {
             },
             update: (store, { data, data: { updateProjectSlide, addProjectSlide } }) => {
 
-                console.log(data, updateProjectSlide, addProjectSlide)
-
                 const slides = updateProjectSlide || addProjectSlide
-
-               // console.log(slides)
 
                 this.setState({
 
@@ -195,6 +211,33 @@ class EditProject extends React.Component {
 
     }
 
+    updateProject = (formObject) => {
+
+        // Use graphql tag to send a mutation query
+        this.props.updateProject({
+            variables: {
+                ...formObject
+            },
+            update: (store, { data: { updateProject } }) => {
+
+                if(!updateProject.hasOwnProperty('id')){
+
+                    // Display error notification
+                    toast.error("Operation failed");
+
+                    return;
+
+                }
+
+                this.setState({ project: updateProject })
+
+                toast.success("Operation successful")
+
+            }
+        })        
+
+    }
+
     hideSlidePreview = viewSlide => {
 
         this.setState({
@@ -224,7 +267,7 @@ class EditProject extends React.Component {
                     {/* Project to edit is passed into component and rendered */}
                     <Grid item xs={12} sm={12} md={12}>
 
-                        <EditProjectComponent editProject={project} />
+                        <EditProjectComponent editProject={project} updateProject={this.updateProject} />
 
                     </Grid>
 
@@ -334,5 +377,7 @@ class EditProject extends React.Component {
             }
             
 export default compose(graphql(deleteSlideMutation, {name: "deleteSlideMutation" }),
-                        graphql(updateProjectSlideMutation, {name: "updateProjectSlide" }),)
+                        graphql(updateProjectSlideMutation, {name: "updateProjectSlide" }),
+                        graphql(updateProjectMutation, { name: 'updateProject' })
+                    )
                         (withStyles(styles)(EditProject))

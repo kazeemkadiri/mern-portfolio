@@ -82,11 +82,11 @@ class AddProject extends Component{
 
     componentWillMount = () => {
         
-        this.checkEditProject()
+        this.checkEditingProject()
 
     }
 
-    checkEditProject = () => {
+    checkEditingProject = () => {
         
         if(!this.props.hasOwnProperty('editProject'))
             return
@@ -220,8 +220,14 @@ class AddProject extends Component{
                                     <Grid item xs={12} sm={12} md={12}  style={{ display: 'flex', justifyContent: 'center' }}>
                                         <Button variant="contained" color="primary"
                                                 className={`sendButton ${classes.button}`}
-                                                onClick={ () => this.createProject() }>
+                                                onClick={ () => { 
+                                                    
+                                                    editProject ? this.props.updateProject(this.state.formObject) : this.createProject() }
+
+                                                }>
+
                                             <Icon>send</Icon>&nbsp; { editProject ? 'Update' : 'Submit' }
+
                                         </Button>
                                     </Grid>
                                 </Grid>

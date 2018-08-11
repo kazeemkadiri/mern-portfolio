@@ -20,6 +20,12 @@ const styles = theme => ({
     },
     textWhite:{
         color: theme.palette.common.white
+    },
+    sideBarTitleHeader: {
+        fontWeight: 700,
+        fontSize: 'large',
+        padding: '14px',
+        textAlign: 'center'
     }
 });
 
@@ -37,7 +43,9 @@ class Sidebar extends Component{
 
                 <List
                     component="nav"
-                    subheader={<ListSubheader component="div">Main menu</ListSubheader>}
+                    subheader={
+                        <ListSubheader component="div" className={classes.sideBarTitleHeader}>Main menu</ListSubheader>
+                    }
                     >
                     <ListItem button style={{ padding: 'none' }}>
                         <Link to="/admin/projects" className={ classes.sideBarLinks }>
