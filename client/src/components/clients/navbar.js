@@ -162,25 +162,29 @@ class Navbar extends Component {
                         My Portfolio
                         </Typography>
                         
-                        <Hidden smDown>
-                            <ul style={{ display: "flex", flex: "1", listStyle: "none" }}>
-                                <li variant="title" color="inherit" className={classes.flex}>
-                                    <a href="#home" className={classes.navLinks}>HOME</a>
-                                </li>
-                                <li variant="title" color="inherit" className={classes.flex}>
-                                    <a href="#about-me" className={classes.navLinks}>ABOUT ME</a>
-                                </li>
-                                <li variant="title" color="inherit" className={classes.flex}>
-                                    <a href="#services" className={classes.navLinks}>SERVICES</a>
-                                </li>
-                                <li variant="title" color="inherit" className={classes.flex}>
-                                    <a href="#portfolio" className={classes.navLinks}>WORKS</a>
-                                </li>
-                                <li variant="title" color="inherit" className={classes.flex}>
-                                    <a href="#contact" className={classes.navLinks}>CONTACT ME</a>
-                                </li>
-                            </ul>
-                        </Hidden>
+                        {
+                            !authenticated 
+                                && 
+                            <Hidden smDown>
+                                <ul style={{ display: "flex", flex: "1", listStyle: "none" }}>
+                                    <li variant="title" color="inherit" className={classes.flex}>
+                                        <a href="#home" className={classes.navLinks}>HOME</a>
+                                    </li>
+                                    <li variant="title" color="inherit" className={classes.flex}>
+                                        <a href="#about-me" className={classes.navLinks}>ABOUT ME</a>
+                                    </li>
+                                    <li variant="title" color="inherit" className={classes.flex}>
+                                        <a href="#services" className={classes.navLinks}>SERVICES</a>
+                                    </li>
+                                    <li variant="title" color="inherit" className={classes.flex}>
+                                        <a href="#portfolio" className={classes.navLinks}>WORKS</a>
+                                    </li>
+                                    <li variant="title" color="inherit" className={classes.flex}>
+                                        <a href="#contact" className={classes.navLinks}>CONTACT ME</a>
+                                    </li>
+                                </ul>
+                            </Hidden>
+                        }
 
                         {/* Used to display links for smaller devices on click menu button */}
                         <Hidden mdUp>

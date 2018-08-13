@@ -16,11 +16,13 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
 import Slide from 'react-reveal/Slide';
 
 
 import { styles as serviceStyles } from '../clients/global-component-styles/services-styles';
 import { site_text_color, justify_align_center } from '../clients/global-component-styles/styles';
+import { toast } from 'react-toastify';
 
 
 const styles = theme => ({
@@ -41,7 +43,10 @@ const styles = theme => ({
     sectionMargin: {
         marginBottom: '1.4rem'
     },
-    ...serviceStyles()
+    ...serviceStyles(),
+    containerChild: {
+        marginLeft: '0% !important'                            
+    }
 })
 
 const servicePropsTemplate = ` description,
@@ -60,6 +65,26 @@ const AddServiceMutation = gql`
             title: $title,
             description: $description,
             service_img: $service_img
+        ){
+            ${servicePropsTemplate}
+        }   
+    }
+`;
+
+const updateServiceMutation = gql`
+    mutation(
+             $id: ID!,
+             $description: String!, 
+             $title: String!,
+             $service_img: String!,
+             $old_service_img: String
+            ){
+        updateService(
+            id: $id,
+            title: $title,
+            description: $description,
+            service_img: $service_img,
+            old_service_img: $old_service_img
         ){
             ${servicePropsTemplate}
         }   
@@ -90,6 +115,8 @@ class Services extends Component{
 
         this.state = {
             formObject: this.formObject,
+            isEditService: false,
+            oldServiceImage: null,
             services: []
         }
 
@@ -104,9 +131,11 @@ class Services extends Component{
             }
         }) 
 
-        // console.log(this.state.formObject);
     }
 
+    /**
+     * Creates/Saves a new service
+     */
     saveService = () => {
 
         // Send a gql mutation to save bio
@@ -123,8 +152,6 @@ class Services extends Component{
                     addService
                 ]
 
-                console.log(newServiceList)
-
                 this.setState({
                     services: newServiceList
                 })
@@ -137,34 +164,11 @@ class Services extends Component{
 
     }
 
-    initialiseServiceDataState = (serviceData) => {
+    initialiseServiceDataState = services => {
 
-        serviceData.forEach((service) => {
-
-            const { services } = this.state;
-
-            let newServices = services;
-    
-            let newService = {
-                id:'',
-                title: '',
-                description: '',
-                service_img: ''
-            };
-    
-            Object.keys(newService).forEach((key) => {
-    
-                newService[key] = service[key];
-    
-            });
-            
-            newServices.push(newService);
-
-            this.setState({
-                services: newServices
-            });
-
-        });
+        this.setState({
+            services
+        })
         
 
     }
@@ -181,13 +185,93 @@ class Services extends Component{
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    /**
+     * @param formObject is passed in service to edit
+     */
+
+    editService = formObject => {
+
+        this.setState({ 
+            formObject,
+            old_service_img: formObject.image_path,
+            isEditService: true
+         })
+
+         this.scrollToEditServiceForm()
+
+    }
+
+    scrollToEditServiceForm = () => {
+
+        document.querySelector('.new-service-form').scrollIntoView(true)
+
+    }
+
+    /**
+     * Updates the service being edited currently
+     */
+    updateService = () => {
+
+        const { formObject } = this.state
+
+        this.props.updateService(
+            {
+                variables: {
+                    ...formObject
+                },
+                update: async (store, { data }) => {
+
+                    const { updateService } = data
+
+                    if(!updateService){
+
+                        toast.error("Update Failed")
+
+                        return
+
+                    }
+
+                    toast.success("Update successful")
+
+                    const updatedServicesList = this.state.services.map( service => {
+
+                        if(updateService.id === service.id)
+                        return updateService
+
+                        return service
+
+                    })
+
+                    this.setState({ 
+                        services: updatedServicesList,
+                        isEditService: false
+                     })
+
+                }
+            }
+        )
+
+    }
+
+    componentWillReceiveProps({ serviceData }) {
 
         if(this.state.services.length > 0) return;
 
-        const { serviceData } = nextProps;
+        this.checkAndInitializeServiceData(serviceData)
+    }
+
+    componentWillMount() {
+
+        const { serviceData } = this.props
+
+        this.checkAndInitializeServiceData(serviceData)
+        
+    }
+
+    checkAndInitializeServiceData = (serviceData) => {
 
         if( (serviceData.error  === undefined) && 
+            (!serviceData.loading) &&
             (serviceData.hasOwnProperty("serviceData")) ) {
 
             this.initialiseServiceDataState(serviceData.serviceData);
@@ -202,7 +286,17 @@ class Services extends Component{
 
         if(loading) return '';
 
-        const { services, formObject: { title, description, service_img} } = this.state;
+        const { 
+            services, 
+            isEditService,
+            formObject: { 
+                title, 
+                description, 
+                service_img
+            }, 
+            formObject 
+        } = this.state;
+
 
         return (
             <Grid container spacing={0} className={ classes.topPageStyles }>
@@ -211,8 +305,9 @@ class Services extends Component{
                     {
                         services.length > 0 &&
                         services.map((service, index) => (
-                            <Grid item xs={12} sm={12} md={5} key={ index }>
-                                <div className={ classes.containerChild } key={service.id}>
+                            <Grid item xs={12} sm={12} md={8} key={ index }>
+                                <div className={ classes.containerChild }
+                                     key={service.id}>
                                     <Slide left={ index % 2 === 0 } right={ index % 2 === 1 } >
                                         <Card className={ `${classes.card} ${classes.serviceContainer}` }>
                                             <CardContent style={{ width: '100%' }}>
@@ -250,7 +345,10 @@ class Services extends Component{
                                                                 
                                                             </Typography>
                                                         <CardActions>
-                                                            <Button size="small">Learn More</Button>
+                                                            <Button 
+                                                                size="small" 
+                                                                variant="contained"
+                                                                onClick={ () => this.editService(service) }>Edit</Button>
                                                         </CardActions>
                                                     </div>
                                                 </Grid>
@@ -266,7 +364,7 @@ class Services extends Component{
 
 
                 {/* Form to add new service */}
-                <Grid item xs={12} sm={12} md={11}>
+                <Grid item xs={12} sm={12} md={11} className="new-service-form">
                     <Card className={classes.card}>
                         <CardContent>
                             <Grid container spacing={0} className={ classes.topPageStyles }>
@@ -275,9 +373,9 @@ class Services extends Component{
                                         `${classes.justifyAlignCenter} ${classes.siteTextColor}` 
                                     }
                                     style={{ fontSize: 24 }}>
-                                    <AddIcon />
+                                    { isEditService ? <AddIcon /> : <EditIcon /> }
                                     <h4> 
-                                        Add service 
+                                        { isEditService ? 'Edit service' : 'Add service' }
                                     </h4>
                                 </div>
 
@@ -287,7 +385,7 @@ class Services extends Component{
                                     <h4 className={ classes.siteTextColor }> Service title </h4>
                                     <Editor
                                             apiKey={keys.tinymce_api_key}
-                                            initialValue={ title }
+                                            value={ title }
                                             init={{
                                                 theme: "modern",
                                                 height: 350,
@@ -308,7 +406,7 @@ class Services extends Component{
                                     <h4 className={ classes.siteTextColor }> Service description </h4>
                                     <Editor
                                             apiKey={keys.tinymce_api_key}
-                                            initialValue={ description }
+                                            value={ description }
                                             init={{
                                                 theme: "modern",
                                                 height: 350,
@@ -329,7 +427,7 @@ class Services extends Component{
                                     <h4 className={ classes.siteTextColor }> Service image </h4>
                                     <Editor 
                                             apiKey={keys.tinymce_api_key}
-                                            initialValue={ service_img }
+                                            value={ service_img }
                                             init={{
                                                 theme: "modern",
                                                 height: 350,
@@ -348,7 +446,10 @@ class Services extends Component{
                                 <Grid item xs={12} sm={12} md={12} className={ classes.justifyAlignCenter }>
                                     <Button variant="contained" color="primary"
                                             className={`sendButton ${classes.button}`}
-                                            onClick={ () => this.saveService() }>
+                                            onClick={ () => {
+                                                 isEditService ? this.updateService() : this.saveService() 
+                                                } 
+                                            }>
                                         <Icon>send</Icon>&nbsp; &nbsp; Save
                                     </Button>
                                 </Grid>
@@ -364,4 +465,6 @@ class Services extends Component{
 
 }
 
-export default compose(graphql(AddServiceMutation, {name: "addService"}), graphql(ServiceQuery, {name: "serviceData"}))(withStyles(styles)(Services));
+export default compose(graphql(AddServiceMutation, {name: "addService"}), 
+                        graphql(updateServiceMutation, {name: 'updateService'}),
+                        graphql(ServiceQuery, {name: "serviceData"}))(withStyles(styles)(Services));

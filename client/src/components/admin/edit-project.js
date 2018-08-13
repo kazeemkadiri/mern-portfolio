@@ -48,7 +48,7 @@ const styles = theme => ({
     icon: {
         margin: theme.spacing.unit,
         fontSize: 32,
-        '&:hover':{
+        '&:hover': {
             cursor: 'pointer'
         }
     },
@@ -91,7 +91,7 @@ const deleteSlideMutation = gql`
 
 // Mutation to add a newly created project
 const updateProjectMutation = gql`
-    mutation($id:String!, $title: String!, $description: String!, $implementation_details: String!){
+    mutation($id:ID!, $title: String!, $description: String!, $implementation_details: String!){
         updateProject( id: $id,
                         title: $title, 
                         description: $description, 
@@ -115,6 +115,7 @@ class EditProject extends React.Component {
     state = {
         project: null,
         editSlide: null,
+        editingSlideIndex: null,
         newSlide: false,
         isSlideOperation: false,
         viewSlide: null
@@ -126,10 +127,12 @@ class EditProject extends React.Component {
 
     }
 
-    editSlide = (editSlide) => {
-
+    editSlide = (editSlide, editingSlideIndex) => {
+        
         this.setState({
             editSlide,
+            editingSlideIndex,
+            oldSlide: editSlide,
             isSlideOperation: true
         })
 
@@ -143,30 +146,42 @@ class EditProject extends React.Component {
 
     }
 
-    addSlide = (slide) => {
+    isNewSlide = () => {
+
+        const { oldSlide, newSlide } = this.state
+
+        return oldSlide.image_path !== newSlide.image_path
+
+    }
+
+    updateSlide = (slide) => {
 
         // Run mutation to update the project slides`
-        const { project, project: { slides } } = this.state;
+        const { project, editingSlideIndex } = this.state;
+
+        let oldSlide = ''
+
+        if(this.isNewSlide()){
+            oldSlide = this.state.oldSlide
+        }
 
         this.props.updateProjectSlide({
-            variables:{
+            variables: {
+                oldSlide,
+                editingSlideIndex,
                 projectId: project.id,
                 ...slide
             },
-            update: (store, { data, data: { updateProjectSlide, addProjectSlide } }) => {
+            update: (store, { data, data: { updateProjectSlide } }) => {
 
-                const slides = updateProjectSlide || addProjectSlide
+                const slides = updateProjectSlide
 
                 this.setState({
 
                     "project": {
                         ...project,
                         slides
-                    }
-
-                })
-
-                this.setState({
+                    },
                     editSlide: null,
                     newSlide: false,
                     isSlideOperation: false
@@ -181,7 +196,7 @@ class EditProject extends React.Component {
 
         this.setState({
             newSlide: true,
-            isSlideOperation: true 
+            isSlideOperation: true
         })
 
     }
@@ -201,7 +216,7 @@ class EditProject extends React.Component {
 
                 const modifiedProject = {
                     ...project,
-                    slides: deleteProjectSlide 
+                    slides: deleteProjectSlide
                 }
 
                 this.setState({ project: modifiedProject })
@@ -220,7 +235,7 @@ class EditProject extends React.Component {
             },
             update: (store, { data: { updateProject } }) => {
 
-                if(!updateProject.hasOwnProperty('id')){
+                if (!updateProject.hasOwnProperty('id')) {
 
                     // Display error notification
                     toast.error("Operation failed");
@@ -234,7 +249,7 @@ class EditProject extends React.Component {
                 toast.success("Operation successful")
 
             }
-        })        
+        })
 
     }
 
@@ -250,11 +265,11 @@ class EditProject extends React.Component {
 
         const { classes } = this.props
 
-        const { 
-            project, 
-            editProject, 
-            editSlide, 
-            newSlide, 
+        const {
+            project,
+            editProject,
+            editSlide,
+            newSlide,
             isSlideOperation,
             viewSlide
         } = this.state
@@ -272,21 +287,21 @@ class EditProject extends React.Component {
                     </Grid>
 
                     {/* Project slides are displayed in tabular form */}
-                    { !isSlideOperation && 
+                    {!isSlideOperation &&
                         <Grid item xs={12} sm={12} md={12}>
 
                             <Grid container spacing={0}>
                                 <Grid item md={6} style={{ display: 'flex', alignItems: 'center' }}>
-                                    <h3 className={ `${classes.justifyAlignCenter} ${classes.siteTextColor}` }>
+                                    <h3 className={`${classes.justifyAlignCenter} ${classes.siteTextColor}`}>
                                         SLIDES
                                     </h3>
                                 </Grid>
                                 <Grid item md={6}>
                                     {/* New slide button */}
-                                    <Button variant="extendedFab" 
-                                            size='small'
-                                            className={ `${classes.button} ${classes.createButton}` }
-                                            onClick = { () => this.newSlide() }>
+                                    <Button variant="raised"
+                                        size='small'
+                                        className={`${classes.button} ${classes.createButton}`}
+                                        onClick={() => this.newSlide()}>
                                         <AddIcon className={classes.icon} /> New Slide
                                     </Button>
                                 </Grid>
@@ -302,7 +317,7 @@ class EditProject extends React.Component {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        { (project.slides.length > 0) && project.slides.map((slide, index) => {
+                                        {(project.slides.length > 0) && project.slides.map((slide, index) => {
                                             return (
                                                 <TableRow key={index}>
 
@@ -322,18 +337,18 @@ class EditProject extends React.Component {
 
                                                         <EditIcon
                                                             className={classes.icon}
-                                                            onClick={() => this.editSlide(slide)} />
+                                                            onClick={() => this.editSlide(slide, index)} />
 
 
                                                         <DeleteIcon
-                                                            className={ `${classes.icon} bg-red` }
+                                                            className={`${classes.icon} bg-red`}
                                                             onClick={() => this.deleteSlide(slide, project)} />
-                                            
+
                                                     </TableCell>
 
                                                 </TableRow>
-                                                    );
-                                                })}
+                                            );
+                                        })}
                                     </TableBody>
                                 </Table>
                             </Paper>
@@ -345,14 +360,12 @@ class EditProject extends React.Component {
                     {
                         isSlideOperation &&
 
-                        <Grid item xs={12} sm={12} md={12}>
+                        <Grid item xs={12} sm={12} md={12} style={{ marginTop: "20px" }}>
 
-                            <h3 className={ classes.siteTextColor }>EDIT SLIDE </h3>
-
-                            <EditSlideComponent 
-                                addSlide={ this.addSlide }
-                                editSlide={ editSlide }
-                                newSlide={ newSlide } />
+                            <EditSlideComponent
+                                updateSlide={this.updateSlide}
+                                editSlide={editSlide}
+                                newSlide={newSlide} />
 
                         </Grid>
 
@@ -362,22 +375,22 @@ class EditProject extends React.Component {
                     {
                         viewSlide &&
 
-                        <SlidePreviewComponent 
-                            slide={viewSlide} 
-                            slidePreviewClosed={ previewState => this.hideSlidePreview(previewState) } />
+                        <SlidePreviewComponent
+                            slide={viewSlide}
+                            slidePreviewClosed={previewState => this.hideSlidePreview(previewState)} />
                     }
 
                 </Grid>
 
             </div>
-                    )
-            
-                }
-            
-            }
-            
-export default compose(graphql(deleteSlideMutation, {name: "deleteSlideMutation" }),
-                        graphql(updateProjectSlideMutation, {name: "updateProjectSlide" }),
-                        graphql(updateProjectMutation, { name: 'updateProject' })
-                    )
-                        (withStyles(styles)(EditProject))
+        )
+
+    }
+
+}
+
+export default compose(graphql(deleteSlideMutation, { name: "deleteSlideMutation" }),
+    graphql(updateProjectSlideMutation, { name: "updateProjectSlide" }),
+    graphql(updateProjectMutation, { name: 'updateProject' })
+)
+    (withStyles(styles)(EditProject))

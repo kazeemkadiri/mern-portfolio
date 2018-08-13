@@ -43,7 +43,7 @@ const bioPropsTemplate = `  id,
 
 const updateBioMutation = gql`
     mutation(
-             $id: String!,
+             $id: String,
              $phone_no: String!, 
              $email: String!,
              $header_bg_img_text: String!,
@@ -68,7 +68,6 @@ const updateBioMutation = gql`
 const BioQuery = gql`
     {
         getBioData {
-            id,
             ${bioPropsTemplate}
         }
     }
@@ -136,6 +135,8 @@ class MyBio extends Component{
             formObject[key] = getBioData[key];
 
         });
+        
+        formObject.id = getBioData.id
 
         this.setState({
             formObject: { ...formObject }
@@ -162,7 +163,9 @@ class MyBio extends Component{
         if(loading) return '';
 
         const { formObject: { description, about_me_img, header_bg_img, header_bg_img_text, phone_no, email} } = this.state;
-
+        
+        console.log(this.state.formObject)
+        
         return (
             <Grid container spacing={0} className={ classes.topPageStyles }>
                 <Grid item xs={12} sm={12} md={8}>

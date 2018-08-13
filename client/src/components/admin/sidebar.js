@@ -18,8 +18,11 @@ const styles = theme => ({
         textDecoration: "none",
         padding: '12px 24px'
     },
-    textWhite:{
-        color: theme.palette.common.white
+    textWhite: {
+        color: theme.palette.common.white,
+        ' > span': {
+            color: theme.palette.common.white
+        }
     },
     sideBarTitleHeader: {
         fontWeight: 700,
@@ -30,10 +33,24 @@ const styles = theme => ({
 });
 
 
-class Sidebar extends Component{
+class Sidebar extends Component {
 
-    
-    render(){
+    styleMenuList = node => {
+
+        if (!node) {
+            setTimeout(() => {
+                this.styleMenuList(node)
+            }, 1000)
+            return
+        }
+
+        const menuNode = node._reactInternalFiber.child.child.stateNode.childNodes[0]
+
+        menuNode.style.color = "inherit"
+
+    }
+
+    render() {
 
         const { classes } = this.props;
 
@@ -46,42 +63,54 @@ class Sidebar extends Component{
                     subheader={
                         <ListSubheader component="div" className={classes.sideBarTitleHeader}>Main menu</ListSubheader>
                     }
-                    >
+                >
                     <ListItem button style={{ padding: 'none' }}>
-                        <Link to="/admin/projects" className={ classes.sideBarLinks }>
-                        
-                            <Icon className={ classes.textWhite }>
+                        <Link to="/admin/projects" className={classes.sideBarLinks}>
+
+                            <Icon className={classes.textWhite}>
                                 work
                             </Icon>
-                        
-                            <ListItemText inset primary="Projects"  className={ classes.textWhite } />
+
+                            <ListItemText
+                                inset
+                                primary="Projects"
+                                className={classes.textWhite}
+                                ref={node => this.styleMenuList(node)} />
 
                         </Link>
                     </ListItem>
 
-                    <ListItem button className={ classes.textWhite }>
-                        <Link to="/admin/bio" className={ classes.sideBarLinks }>
+                    <ListItem button className={classes.textWhite}>
+                        <Link to="/admin/bio" className={classes.sideBarLinks}>
 
-                            <Icon className={ classes.textWhite }>
+                            <Icon className={classes.textWhite}>
                                 person
                             </Icon>
-                        
-                            <ListItemText inset primary="Bio" />
+
+                            <ListItemText
+                                inset
+                                primary="Bio"
+                                className={classes.textWhite}
+                                ref={node => this.styleMenuList(node)} />
                         </Link>
                     </ListItem>
 
-                    <ListItem button className={ classes.textWhite }>
-                        <Link to="/admin/services" className={ classes.sideBarLinks }>
-                            
-                            <Icon className={ classes.textWhite }>
+                    <ListItem button className={classes.textWhite}>
+                        <Link to="/admin/services" className={classes.sideBarLinks}>
+
+                            <Icon className={classes.textWhite}>
                                 settings
                             </Icon>
-                        
-                            <ListItemText inset primary="Services" />
+
+                            <ListItemText
+                                inset
+                                primary="Services"
+                                className={classes.textWhite}
+                                ref={node => this.styleMenuList(node)} />
                         </Link>
                     </ListItem>
                 </List>
-                
+
             </aside>
 
         )

@@ -85,7 +85,7 @@ class FullProjectDisplay extends Component {
                             <React.Fragment>
                             <h5> Implementation Details </h5> 
                             <p>
-                                { activeSlide && activeSlide.implemented_functionality }
+                                { activeSlide && activeSlide.description }
                             </p>
                             </React.Fragment>
                         }

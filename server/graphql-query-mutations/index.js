@@ -81,6 +81,40 @@ const resolvers = {
             return service;
 
         },
+        updateService: async (_, { id, title, description, service_img, old_service_img }) => {
+
+            const service = await servicesModel.findByIdAndUpdate(
+                                                 id ,
+                                                {
+                                                    $set: {
+                                                        title,
+                                                        description,
+                                                        service_img
+                                                    }
+                                                },
+                                                {
+                                                    new: true,
+                                                    upsert: false
+                                                }
+                                            )
+
+            if(service){
+
+                // Note they contain html markup (from editor)
+                if(old_service_img !== service_img){
+                    
+                    //Means service image was updated hence delete old image
+                    const image = MyUtil.getImageName(old_service_img)
+
+                    MyUtil.deleteImages([image])
+
+                }
+
+            }
+            
+            return service
+
+        },
         addProject: async (_, { title, description, implementation_details }) => {
 
             const project = new projectsModel({
@@ -98,7 +132,7 @@ const resolvers = {
         updateProject: async (_, { id, title, description, implementation_details }) => {
 
             const project = await projectsModel.findOneAndUpdate(
-                                    {_id: id}, 
+                                     id, 
                                     { $set:{
                                         title,
                                         description,
@@ -115,63 +149,91 @@ const resolvers = {
         },
         addProjectSlide: async(_, { projectId, title, description, image_path }) => {
 
-           // console.log(projectId, title, description, image_path)
-
             const result =  await projectsModel.findByIdAndUpdate(
-                                                    { _id: projectId },
+                                                    projectId,
                                                     {
-                                                        $push: 
-                                                        { slides: {
-                                                            title,
-                                                            description,
-                                                            image_path
-                                                        } 
+                                                        $push: {
+                                                            slides: {
+                                                                title,
+                                                                description,
+                                                                image_path
+                                                            } 
                                                         }
                                                     },
                                                     {
                                                         new: true
                                                     })
 
-            // console.log(result)
-
             return result.slides
         },
-        deleteProjectSlide: async(_, { 
+        updateProjectSlide: async(_, { projectId, oldSlide, editingSlideIndex, title, description, image_path }) => {
+
+            // console.log(projectId, title, description, image_path)
+            
+            const slidePosition = `slides.${editingSlideIndex}`
+
+            const result = await projectsModel.findByIdAndUpdate(
+                    projectId,
+                    {
+                        $set:{
+                            [slidePosition] : {
+                                title,
+                                description,
+                                image_path
+                            }
+                        }, 
+                    },
+                    {
+                        upsert: false,
+                        new: true
+                    })     
+ 
+            if(oldSlide !== ''){
+
+                const image = MyUtil.getImageName(oldSlide.image_path)
+
+                MyUtil.deleteImages([image])
+
+            }
+ 
+            return result.slides
+
+         },
+        deleteProjectSlide: async(_, 
+                            { 
                                     title, 
                                     implemented_functionality, 
                                     image_path, 
                                     description, 
                                     projectId 
-                            }) => {
-                   
-
-                                
+                            }) => 
+                {
+                           
                    const result = await projectsModel.findOneAndUpdate(
-                                    {
-                                        _id: projectId
-                                    },
-                                    {
-                                        $pull: {
-                                            slides: { 
-                                                title, 
-                                                implemented_functionality,
-                                                image_path,
-                                                description
-                                            }
-                                        }
-                                    },
-                                    {
-                                        new: true
-                                    }
-                                )
+                                                        projectId,
+                                                        {
+                                                            $pull: {
+                                                                slides: { 
+                                                                    title, 
+                                                                    implemented_functionality,
+                                                                    image_path,
+                                                                    description
+                                                                }
+                                                            }
+                                                        },
+                                                        {
+                                                            new: true
+                                                        }
+                                                    )
                     
-                    // console.log(result)
                     if(result){
+                        
+                        // Delete slide image
+                        const images = [MyUtil.getImageName(image_path)]
 
-                        MyUtil.deleteImages([MyUtil.getImageName(image_path)])
+                        MyUtil.deleteImages(images)
 
-                    }
-                    
+                   }
                     
                     return result.slides
 
@@ -186,15 +248,7 @@ const resolvers = {
 
                     const query = (id ? ({ _id: id }) : ({}));        
 
-                    // Delete all former images using node
-                    // Since only one document holds all bio information
-                    const oldBio = await bioModel.find({});
-                    
-                    aboutMeImg = MyUtil.getImageName(oldBio.about_me_img)
-
-                    headerBgImg = MyUtil.getImageName(oldBio.header_bg_img)
-
-                    MyUtil.deleteImages([ aboutMeImg, headerBgImg ])
+                    const oldBio = await bioModel.find({}, {about_me_img: 1, header_bg_img: 1})
 
                     const bio = await bioModel.findOneAndUpdate(
                                                      query , 
@@ -214,6 +268,16 @@ const resolvers = {
                                                 );                
 
                     // console.log(bio);
+                    
+                    if(bio){
+
+                        aboutMeImg = MyUtil.getImageName(oldBio.about_me_img)
+
+                        headerBgImg = MyUtil.getImageName(oldBio.header_bg_img)
+
+                        MyUtil.deleteImages([ aboutMeImg, headerBgImg ])
+                    }
+                    
 
                     return bio;
         },
@@ -259,7 +323,14 @@ const resolvers = {
 
             const hashedPassword = await MyUtil.hashPassword(password);
 
-            const result = await userModel.findOneAndUpdate({ _id: userId }, {$set: { password:  hashedPassword, token: ''}});
+            const result = await userModel.findOneAndUpdate( 
+                                                userId, 
+                                                {
+                                                    $set: {
+                                                         password:  hashedPassword, 
+                                                         token: ''
+                                                        }
+                                                });
 
             return { updateStatus: (result !== null ? true: false)   };
 

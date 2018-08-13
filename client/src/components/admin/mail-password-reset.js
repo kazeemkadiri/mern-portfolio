@@ -25,7 +25,7 @@ const ConfirmPasswordResetTokenMutation = gql`
 `;
 
 const NewPasswordMutation = gql`
-    mutation($userId: String!, $password: String!) {
+    mutation($userId: ID!, $password: String!) {
         newPasswordUpdate(userId: $userId, password: $password){
             updateStatus
         }
@@ -104,7 +104,12 @@ class MailPasswordReset extends Component{
 
     updateFormParametersObject = (event) => {
 
-        this.setState({data: { ...this.state.data, [event.target.id]: event.target.value }});
+        this.setState({
+            data: { 
+                ...this.state.data, 
+                [event.target.id]: event.target.value 
+            }
+        });
 
         this.confirmPasswordsMatch(event)
 

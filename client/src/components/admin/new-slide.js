@@ -5,9 +5,11 @@ import { keys } from '../../keys';
 import { environment } from '../../environment';
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { Typography } from '@material-ui/core';
+import { site_text_color } from './css/global'
 
 const styles = theme => ({
 
@@ -28,7 +30,8 @@ const styles = theme => ({
     icon: {
         margin: theme.spacing.unit,
         fontSize: 32,
-    }
+    },
+    siteTextColor: site_text_color
 
 })
 
@@ -51,11 +54,12 @@ class NewSlide extends React.Component{
 
     checkEditingSlide = () => {
 
-        if(!this.props.hasOwnProperty('editSlide') || 
-            (this.props.hasOwnProperty('newSlide')) )
+        const { editSlide } = this.props
+
+        if( !editSlide )
             return
 
-        this.setState({ slide: this.props.editSlide })
+        this.setState({ slide: {...this.props.editSlide} })
 
         
     }
@@ -80,14 +84,26 @@ class NewSlide extends React.Component{
 
         return (
                 <Grid container>
-                { 
-                    (editSlide === null) && 
                     <Grid item xs={12} sm={12} md={8}>
-                        <Typography>    
-                            <AddIcon className={ classes.icon } /> Attach Slide
+                        <Typography style={{ display: "flex", justifyContent: 'flex-start' }}>    
+                        
+                        { editSlide ?
+                            <React.Fragment>
+                                <EditIcon className={ classes.icon } /> 
+                                <h3 className={classes.siteTextColor}>
+                                "Edit Slide" 
+                                </h3>
+                            </React.Fragment>
+                            :
+                            <React.Fragment>
+                                <AddIcon className={ classes.icon } /> 
+                                <h3 className={classes.siteTextColor}>
+                                "New Slide" 
+                                </h3>
+                            </React.Fragment>
+                        }
                         </Typography>
                     </Grid>
-                }
 
                 <Grid item xs={12} sm={12} md={8}>
                     <TextField
@@ -102,16 +118,23 @@ class NewSlide extends React.Component{
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={8}>
-                    <TextField
-                        id="description"
-                        label="Description"
-                        multiline
-                        rows="3"
-                        className={ classes.textField }
-                        style={{ width: "100%" }}
-                        value={ description }
-                        onChange={ event => this.updateFormParametersObject(event.target.value, "description") }
-                        margin="normal"
+                    
+                    {/* Editor for slide description/details */}
+                    <Editor
+                            apiKey={ keys.tinymce_api_key }
+                            initialValue={ description }
+                            init={{
+                                theme: "modern",
+                                height: 300,
+                                plugins: ['link image code'],
+                                toolbar: `undo redo | bold italic | alignleft aligncenter alignright | code
+                                         | image | link`,
+                                file_browser_callback_types: 'file image media',
+                                images_upload_url: `${environment.serverUrl}/file-upload`
+                               
+                            }}
+                            onChange={event => this.updateFormParametersObject(event.target.getContent(),
+                                                    "description") }
                         />
                 </Grid>
 
@@ -139,7 +162,12 @@ class NewSlide extends React.Component{
                     <Button variant="contained" 
                             color="primary" 
                             className={classes.button}
-                            onClick = { () => this.props.addSlide(this.state.slide) }>
+                            onClick = { () => {
+                                this.props.editSlide ? 
+                                    this.props.updateSlide(this.state.slide):
+                                    this.props.addSlide(this.state.slide)
+                                }
+                            }>
                         <AddIcon className={classes.icon} /> 
                         { this.props.editSlide ? 'Update slide' : 'Attach Slide' }
                     </Button>
