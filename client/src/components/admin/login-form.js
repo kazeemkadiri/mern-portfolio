@@ -93,7 +93,7 @@ class Login extends React.Component{
         }
 
         return (
-            <Card>
+            <Card style={{ }}>
             <CardContent>
             <Grid   container 
                     spacing={0} 
@@ -110,8 +110,12 @@ class Login extends React.Component{
                         onChange={ this.updateFormParametersObject }
                         margin="normal"
                         />
-                    { errors.hasOwnProperty('email') && 
-                        <span style={{ color: '#f36e62', marginLeft: "0.5rem" }}>{ errors.email }</span> }
+                    { 
+                        errors.hasOwnProperty('email') && 
+                        <span style={{ color: '#f36e62', marginLeft: "0.5rem" }}>
+                            { errors.email }
+                        </span> 
+                    }
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={8}>
@@ -125,7 +129,10 @@ class Login extends React.Component{
                         margin="normal"
                         />
                         { errors.hasOwnProperty('password') && 
-                            <span style={{ color: '#f36e62', marginLeft: "0.5rem" }}>{ errors.password }</span> }
+                            <span style={{ color: '#f36e62', marginLeft: "0.5rem" }}>
+                                { errors.password }
+                            </span>
+                        }
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={8} style={{ display: "flex", justifyContent: "center" }}>

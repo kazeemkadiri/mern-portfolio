@@ -91,14 +91,14 @@ class NewSlide extends React.Component{
                             <React.Fragment>
                                 <EditIcon className={ classes.icon } /> 
                                 <h3 className={classes.siteTextColor}>
-                                "Edit Slide" 
+                                    Edit Slide
                                 </h3>
                             </React.Fragment>
                             :
                             <React.Fragment>
                                 <AddIcon className={ classes.icon } /> 
                                 <h3 className={classes.siteTextColor}>
-                                "New Slide" 
+                                    New Slide
                                 </h3>
                             </React.Fragment>
                         }

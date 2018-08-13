@@ -18,6 +18,7 @@ import ViewProjectComponent from './view-project';
 import BioComponent from './my-bio';
 import ServicesComponent from './my-services';
 import LoginComponent from './login-form';
+import { justify_align_center } from './css/global'
 import './css/global.css'
 
 
@@ -39,6 +40,7 @@ const bioQuery = gql`
 
 const styles = () => ({
 
+    justifyAlignCenter: justify_align_center,
     mainContent: {
         marginTop: "10%"
     }
@@ -50,16 +52,22 @@ const styles = () => ({
 
 class AdminIndex extends Component{
 
+    state = {
+        notLoggedOut: true
+    }
+
     componentWillMount() {
 
         //sessionService.deleteSession();
 
     }
 
-    logoutUser = (param) => {
+    logoutUser = (logoutClicked) => {
 
-        if(param)
+        if(!logoutClicked) return
+
         sessionService.deleteSession()
+        this.setState({ notLoggedOut: false })
 
     }
 
@@ -95,6 +103,8 @@ class AdminIndex extends Component{
                 getBioData
             }  
         } = this.props;
+
+        const { notLoggedOut } = this.state
         
         return (
             
@@ -102,8 +112,7 @@ class AdminIndex extends Component{
                 <Navbar 
                     email={ getBioData !== undefined ? getBioData.email : ''} 
                     phone_no={ getBioData !== undefined ? getBioData.phone_no : ''} 
-                    authenticated={ true }
-                    logoutButton={true} 
+                    authenticated={ notLoggedOut }
                     logoutUser={this.logoutUser} />
                 
                 <Grid container 
@@ -140,7 +149,7 @@ class AdminIndex extends Component{
                 {
                     checked && !authenticated  &&
                     
-                        <Grid item xs={12} sm={12} md={9}>
+                        <Grid item xs={12} sm={12} md={9} className={ classes.justifyAlignCenter }>
                             <LoginComponent submit={this.loginUser} />
                         </Grid>
                 }

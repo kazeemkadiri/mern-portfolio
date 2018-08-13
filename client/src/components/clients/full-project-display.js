@@ -4,10 +4,12 @@ import Grid from '@material-ui/core/Grid';
 import MyCarouselComponent from './carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import './css/custom-carousel.css';
+import { site_text_color } from './global-component-styles/styles'
 
 
 const styles = () => ({
 
+    siteTextColor: site_text_color,
     root: {
         flexGrow: "1"
     }
@@ -51,9 +53,6 @@ class FullProjectDisplay extends Component {
 
     }
 
-    gridNodeRef = (node) => {
-        // console.log(node);
-    }
 
     render() {
 
@@ -77,13 +76,12 @@ class FullProjectDisplay extends Component {
                         }
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={ projectSlidesExist ? 4 : 12 } 
-                                style={{ display: "flex", justifyContent: "center" }}>
+                    <Grid item xs={12} sm={6} md={ projectSlidesExist ? 4 : 12 }>
                         {/*  Implementation details are rendered here */}
                         { 
                             projectSlidesExist && 
                             <React.Fragment>
-                            <h5> Implementation Details </h5> 
+                            <h3 className={classes.siteTextColor} style={{ textAlign: 'center'}}> Implementation Details </h3> 
                             <p>
                                 { activeSlide && activeSlide.description }
                             </p>

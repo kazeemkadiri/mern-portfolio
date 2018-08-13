@@ -29,8 +29,6 @@ class MyCarouselComponent extends React.Component{
 
         let activeSlideImg = this.getActiveSlide(carouselContainer)
 
-        console.log('active from car comp',activeSlideImg)
-
         this.props.setActiveSlide(activeSlideImg.alt)
         
     }

@@ -19,7 +19,7 @@ const styles = () => ({
     containerChild: {
         flex: 1,
         flexBasis: "25%",
-        maxHeight: "200px !important",
+        height: "200px !important",
         margin: "10px 0px",
         display: "flex",
         alignItems: "center",
@@ -224,7 +224,6 @@ class MyPortfolio extends Component {
                     <h1 className={ classes.removeWebKit }>MY PORTFOLIO</h1>
                     <hr className={ classes.underLine } />
                 </div>
-                
 
                 {/* Brief service description goes here */}
                 <div className={classes.container} style={ authenticated ? { paddingLeft: '0%' }: { marginTop: "4em", ...servicesAlignment }}>

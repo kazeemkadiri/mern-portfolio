@@ -65,7 +65,7 @@ class SlidePreview extends React.Component{
 
         const { modalIsOpen } = this.state
 
-        console.log(slide)
+        // console.log(slide)
 
         return (
             <React.Fragment>

@@ -164,7 +164,7 @@ class MyBio extends Component{
 
         const { formObject: { description, about_me_img, header_bg_img, header_bg_img_text, phone_no, email} } = this.state;
         
-        console.log(this.state.formObject)
+        // console.log(this.state.formObject)
         
         return (
             <Grid container spacing={0} className={ classes.topPageStyles }>

@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import Icon from '@material-ui/core/Icon'
 import Typography from '@material-ui/core/Typography';
@@ -62,14 +63,6 @@ class Navbar extends Component {
 
     }
 
-    // componentWillReceiveProps(nextProps) {
-
-    //     if(!nextProps.authenticated) return
-
-    //     this.setState({ navbarPositioning: 'fixed' })
-
-    // }
-
     registerListenerForWindowScroll = () => {
         
         // If logged in
@@ -99,22 +92,10 @@ class Navbar extends Component {
       
         };
     }
-
-    changeSubMenuStyles = node => {
-
-        console.log(node)
-
-        const menuContainer = node.childNodes[1]
-
-        menuContainer.style.width = '100%'
-
-        menuContainer.style.paddingLeft = '0px'
-
-    }
-
+    
     render() {    
         
-        const { classes, logoutButton, logoutUser, email, phone_no, authenticated } = this.props
+        const { classes, logoutUser, email, phone_no, authenticated } = this.props
 
         const {  anchorEl, navbarPositioning } = this.state
 
@@ -186,7 +167,30 @@ class Navbar extends Component {
                             </Hidden>
                         }
 
+                        {/* If user is authenticated, display logout button */}
+                        {
+                            authenticated 
+                            &&
+                            <Button 
+                                variant="text" 
+                                style={
+                                        { 
+                                            float: 'right !important', 
+                                            marginRight: '8px',
+                                            background: "#ca7739",
+                                            color: 'white'  
+                                        }
+                                    }
+                                onClick={() => logoutUser(true) }>
+                                Logout
+                            </Button>
+                        }
+
                         {/* Used to display links for smaller devices on click menu button */}
+                        
+                        {
+                            !authenticated
+                                &&
                         <Hidden mdUp>
                         
                         <Menu   id="menu-appbar"
@@ -224,6 +228,7 @@ class Navbar extends Component {
                                 </MenuItem>
                             </Menu>
                         </Hidden>
+                        }
 
                         {/* Do handle logout if authenticated*/}
                     </Toolbar>

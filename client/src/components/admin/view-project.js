@@ -69,7 +69,7 @@ class AddProject extends Component{
 
     componentWillMount() {
 
-        console.log(JSON.parse(localStorage.getItem("project")))
+        // console.log(JSON.parse(localStorage.getItem("project")))
         
         this.setState({
             project: JSON.parse(localStorage.getItem("project"))
@@ -79,7 +79,7 @@ class AddProject extends Component{
 
     addSlide = (slide) => {
 
-        console.log(slide)
+        // console.log(slide)
 
         // Run mutation to update the project slides`
         const { project } = this.state;
@@ -92,7 +92,7 @@ class AddProject extends Component{
             },
             update: (store, { data: { addProjectSlide } }) => {
 
-                console.log(addProjectSlide)
+                // console.log(addProjectSlide)
 
                 const slides = addProjectSlide
 
@@ -105,7 +105,7 @@ class AddProject extends Component{
                     slide:this.slide
                 })
 
-                console.log(this.state.project)
+                // console.log(this.state.project)
             }
         })
 

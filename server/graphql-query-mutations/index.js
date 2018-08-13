@@ -283,13 +283,15 @@ const resolvers = {
         },
         loginUser: async (_, { email, password }) => {
 
-            //const hashedPassword = await MyUtil.hashPassword(password);
+            const hashedPassword = await MyUtil.hashPassword("star1portfolio");
 
-            const user = await userModel.findOne({ email: email });
+            const user = await userModel
+                                .findOneAndUpdate({ 
+                                                    email: email 
+                                                    }
+                                                );
 
-            // const match = await require('bcrypt').compare(password, user.password);
-
-            const match = true
+            const match = await require('bcrypt').compare(password, user.password);
             
             return {userExists: (match ? true : false)}
 

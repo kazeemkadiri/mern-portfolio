@@ -288,7 +288,7 @@ class EditProject extends React.Component {
 
                     {/* Project slides are displayed in tabular form */}
                     {!isSlideOperation &&
-                        <Grid item xs={12} sm={12} md={12}>
+                        <Grid item xs={12} sm={12} md={12} style={{ marginTop: '20px' }}>
 
                             <Grid container spacing={0}>
                                 <Grid item md={6} style={{ display: 'flex', alignItems: 'center' }}>
