@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 
-import { Editor } from '@tinymce/tinymce-react';
-import { keys } from '../../keys';
-import { environment } from '../../environment';
 import { extractImageSrc } from '../clients/utils/utils'
 
 import  withStyles  from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import AddIcon from '@material-ui/icons/Add'
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import { Carousel } from 'react-responsive-carousel';
 import './css/custom-carousel.css'
 import { Typography } from '@material-ui/core';
@@ -155,7 +149,7 @@ class AddProject extends Component{
 
         const { classes } = this.props;
 
-        const { project, slide: { image_path, title, description } } = this.state;
+        const { project } = this.state;
 
         return (
             <Grid container spacing={0} className={ classes.topPageStyles }>

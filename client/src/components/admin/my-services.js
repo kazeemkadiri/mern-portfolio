@@ -293,8 +293,7 @@ class Services extends Component{
                 title, 
                 description, 
                 service_img
-            }, 
-            formObject 
+            }
         } = this.state;
 
 

@@ -53,12 +53,16 @@ const styles = () => ({
 class AdminIndex extends Component{
 
     state = {
-        notLoggedOut: true
+        isLoggedIn: false
     }
 
     componentWillMount() {
 
-        //sessionService.deleteSession();
+        if(this.props.authenticated) {
+            this.setState({
+                isLoggedIn: true
+            })
+        }
 
     }
 
@@ -67,7 +71,7 @@ class AdminIndex extends Component{
         if(!logoutClicked) return
 
         sessionService.deleteSession()
-        this.setState({ notLoggedOut: false })
+        this.setState({ isLoggedIn: false })
 
     }
 
@@ -104,7 +108,7 @@ class AdminIndex extends Component{
             }  
         } = this.props;
 
-        const { notLoggedOut } = this.state
+        const { isLoggedIn } = this.state
         
         return (
             
@@ -112,7 +116,8 @@ class AdminIndex extends Component{
                 <Navbar 
                     email={ getBioData !== undefined ? getBioData.email : ''} 
                     phone_no={ getBioData !== undefined ? getBioData.phone_no : ''} 
-                    authenticated={ notLoggedOut }
+                    authenticated = { isLoggedIn }
+                    navbarFixed = {true}
                     logoutUser={this.logoutUser} />
                 
                 <Grid container 

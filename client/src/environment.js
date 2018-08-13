@@ -1,4 +1,4 @@
 export const environment = {
-    sserverUrl: "https://kazeemkadiri-mern-portfolio.herokuapp.com",
-    serverUrl: "http://localhost:4000"
+    serverUrl: "https://kazeemkadiri-mern-portfolio.herokuapp.com",
+    homeserverUrl: "http://localhost:4000"
 }

@@ -66,7 +66,7 @@ class Navbar extends Component {
     registerListenerForWindowScroll = () => {
         
         // If logged in
-        if(this.props.authenticated){
+        if(this.props.navbarFixed){
 
             this.setState({ navbarPositioning: 'fixed' })
 
@@ -95,11 +95,13 @@ class Navbar extends Component {
     
     render() {    
         
-        const { classes, logoutUser, email, phone_no, authenticated } = this.props
+        const { classes, logoutUser, email, phone_no, authenticated, navbarFixed } = this.props
 
         const {  anchorEl, navbarPositioning } = this.state
 
         const open = Boolean(anchorEl)
+
+        console.log(authenticated)
 
         return (
             <React.Fragment>
@@ -126,7 +128,7 @@ class Navbar extends Component {
                     </Grid>
                 }
 
-                <AppBar position={navbarPositioning}>
+                <AppBar position={ navbarPositioning}>
                     <Toolbar>
                         <Hidden mdUp>
                             <IconButton 

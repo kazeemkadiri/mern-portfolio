@@ -13,6 +13,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 
+import Navbar from '../clients/navbar'
+
 const ResetPasswordMutation = gql`
     mutation($email: String!) {
         resetPassword(email: $email){
@@ -94,6 +96,9 @@ class ResetPassword extends Component{
 
         return (
             <Grid container spacing={0} style={{ display: "flex", justifyContent: "center" }}>
+
+            <Navbar navbarFixed={ true } />
+
             <div className={ classes.mainContent } style={{ marginTop: "10%" }}>
                     
             
@@ -101,11 +106,11 @@ class ResetPassword extends Component{
                  style={{ width: "100%"}}>
                 
                 {/* Snackbar to display mail status notification */}
-                <Grid container spacing={0}>
+                <Grid container spacing={0} style={{ maxWidth: '100%', position: 'relative' }}>
                     { 
                         this.mailStatusChanged()  && 
                         
-                        <Grid item xs={12} sm={12} md={12}>
+                        <Grid item xs={12} sm={12} md={12} style={{ maxWidth: '100%' }}>
 
                             <SnackbarContent className={classes.snackbar} 
                                             autoHideDuration={5000}

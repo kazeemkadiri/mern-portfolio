@@ -195,7 +195,7 @@ class MyPortfolio extends Component {
 
     render() {
         
-        const { classes, projects, editProject, authenticated } = this.props;
+        const { classes, projects, authenticated } = this.props;
 
         // Obtain the projects from the state object 
         const { currentViewingProject, modalIsOpen } = this.state;
