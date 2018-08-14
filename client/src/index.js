@@ -4,9 +4,8 @@ import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
 import { Provider } from 'react-redux'
-import { combineReducers, createStore, compose, applyMiddleware } from 'redux';
-import { sessionReducer, sessionService } from 'redux-react-session';
-import thunkMiddleware from 'redux-thunk';
+import store from './store'
+
 
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
@@ -20,17 +19,6 @@ const graphqlServerEndPoint = host.match(/(.\.com)/) ?
 const client = new ApolloClient({
     uri: graphqlServerEndPoint
 })
-
-const reducers = {
-    // ... your other reducers here ...
-    session: sessionReducer
-};
-
-const reducer = combineReducers(reducers);
-
-const store = createStore(reducer, undefined, compose(applyMiddleware(thunkMiddleware)))
- 
-sessionService.initSessionService(store);
 
 
 ReactDOM.render(   <ApolloProvider client={client}>

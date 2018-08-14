@@ -95,7 +95,7 @@ class Navbar extends Component {
     
     render() {    
         
-        const { classes, logoutUser, email, phone_no, authenticated } = this.props
+        const { classes, logoutUser, email, phone_no, authenticated, navbarFixed } = this.props
 
         const {  anchorEl, navbarPositioning } = this.state
 
@@ -144,7 +144,7 @@ class Navbar extends Component {
                         </Typography>
                         
                         {
-                            !authenticated 
+                            !navbarFixed
                                 && 
                             <Hidden smDown>
                                 <ul style={{ display: "flex", flex: "1", listStyle: "none" }}>

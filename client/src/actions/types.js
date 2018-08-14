@@ -1,0 +1,1 @@
+export const EDIT_PROJECT = "EDIT PROJECT"

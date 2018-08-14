@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -26,6 +27,9 @@ import './css/global.css'
 import { updateProjectSlideMutation } from './graphql/mutations'
 import { justify_align_center, site_text_color } from './css/global';
 import { toast } from 'react-toastify';
+
+import { connect } from 'react-redux'
+
 
 const styles = theme => ({
 
@@ -122,7 +126,7 @@ class EditProject extends React.Component {
 
     componentWillMount() {
 
-        this.setState({ project: this.props.project })
+        this.setState({ project: this.props.editProject })
 
     }
 
@@ -387,7 +391,17 @@ class EditProject extends React.Component {
 
 }
 
+EditProject.propTypes = {
+    editProject: PropTypes.object.isRequired
+}
+
+const mapStateToProps = ({ project }) => ({
+
+    editProject: project.editProject
+
+})
+
 export default compose(graphql(deleteSlideMutation, { name: "deleteSlideMutation" }),
     graphql(updateProjectSlideMutation, { name: "updateProjectSlide" }),
     graphql(updateProjectMutation, { name: 'updateProject' })
-)(withStyles(styles)(EditProject))
+)(withStyles(styles)( connect( mapStateToProps )(EditProject) ))

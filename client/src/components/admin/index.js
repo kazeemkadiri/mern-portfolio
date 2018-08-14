@@ -54,7 +54,8 @@ const styles = () => ({
 class AdminIndex extends Component{
 
     state = {
-        isLoggedIn: false
+        isLoggedIn: false,
+        authenticationState: 'pending'
     }
 
     componentWillMount() {
@@ -72,7 +73,7 @@ class AdminIndex extends Component{
         if(!logoutClicked) return
 
         sessionService.deleteSession()
-        this.setState({ isLoggedIn: false })
+        this.setState({ isLoggedIn: false, authenticationState: 'pending' })
 
     }
 
@@ -82,15 +83,18 @@ class AdminIndex extends Component{
             variables:{
                 ...formData
             },
-            update: (_, { data: { loginUser } }) => {
+            update: (_, { data: { loginUser: { userExists } } }) => {
+            
+                if(!userExists){
 
-                // console.log(loginUser);
-                if(loginUser.userExists){
-                    sessionService.saveSession( { formData } )
+                    this.setState({authenticationState: 'failed' })
+
+                    return
                 }
-                
 
-                this.setState({ isLoggedIn: loginUser.userExists });
+                sessionService.saveSession( { formData } )
+                
+                this.setState({ isLoggedIn: userExists });
 
             }
         })
@@ -107,9 +111,9 @@ class AdminIndex extends Component{
             bio: { 
                 getBioData
             }  
-        } = this.props;
+        } = this.props
 
-        console.log(this.props)
+        const { authenticationState } = this.state
         return (
             
             <div className="AdminIndex" style={{ width: "100%", height: '100%' }}>
@@ -156,7 +160,9 @@ class AdminIndex extends Component{
                     checked && !authenticated  &&
                     
                         <Grid item xs={12} sm={12} md={9} className={ classes.justifyAlignCenter }>
-                            <LoginComponent submit={this.loginUser} />
+                            <LoginComponent 
+                                submit={this.loginUser} 
+                                authenticationState={authenticationState} />
                         </Grid>
                 }
                                 

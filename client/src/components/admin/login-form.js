@@ -11,8 +11,12 @@ import TextField from '@material-ui/core/TextField';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
+import { justify_align_center } from  './css/global'
+
 const styles = theme => ({
 
+
+    justifyAlignCenter: justify_align_center,
     topPageStyles:{
         alignItems: "center",
         justifyContent: "center",
@@ -48,8 +52,13 @@ class Login extends React.Component{
 
     }
 
-    onSubmit = () => {
+    onSubmit = (event) => {
 
+        if(!event && !(event.key.toUpperCase() === "ENTER") )
+        return 
+
+        console.log(event.key.toUpperCase())
+        
         const errors = this.validateFormData();
 
         if( Object.keys(errors).length > 0 )
@@ -84,7 +93,7 @@ class Login extends React.Component{
 
     render() {
 
-        const { classes } = this.props;
+        const { classes, authenticationState } = this.props;
 
         const { data, errors } = this.state;
 
@@ -99,6 +108,16 @@ class Login extends React.Component{
                     spacing={0} 
                     className={ classes.topPageStyles } 
                     styles={{ display: "flex", justifyContent: "center" }} >
+
+                {
+                    authenticationState === 'failed' 
+                        &&
+                    <Grid item xs={12} sm={12} md={8} className={ classes.justifyAlignCenter }>     
+                        <h4 style={{ color: 'orangered' }}>
+                            Invalid Email and/or Password provided
+                        </h4>
+                    </Grid>
+                }
 
                 <Grid item xs={12} sm={12} md={8}>
                     <TextField
@@ -127,6 +146,7 @@ class Login extends React.Component{
                         style={{ width: "100%"}}
                         value={ data.password || '' }
                         onChange={ this.updateFormParametersObject }
+                        onKeyUp={ e =>  this.onSubmit(e) }
                         margin="normal"
                         />
                         { errors.hasOwnProperty('password') && 

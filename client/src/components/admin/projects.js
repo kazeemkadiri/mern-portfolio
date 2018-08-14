@@ -11,9 +11,15 @@ import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import Grid from '@material-ui/core/Grid'
 
+import { connect } from "react-redux"
+import { setEditProject } from '../../actions/projectActions'
+
+import { site_text_color } from './css/global'
+
 
 const styles = theme => ({
 
+    siteTextColor: site_text_color,
     topPageStyles: {
         alignItems: "center"
     },
@@ -24,7 +30,7 @@ const styles = theme => ({
         marginLeft: theme.spacing.unit,
         marginRight: theme.spacing.unit,
         width: 200,
-    },
+    }
 
 })
 
@@ -65,7 +71,7 @@ class ProjectComponent extends Component {
 
         this.setState({ editProject })
 
-        return <Redirect to="/admin/projects/edit-project" />
+        this.props.setEditProject(editProject)
 
     }
 
@@ -78,10 +84,17 @@ class ProjectComponent extends Component {
     render() {
 
         if (this.state.redirectToAddProject === true) {
-            // console.log('Redirecting')
 
             return <Redirect to="/admin/projects/add-project" />
+
         }
+
+        if (this.state.editProject) {
+
+            return <Redirect to="/admin/projects/edit-project" />
+            
+        }
+
 
         const { classes, projects: { projects, loading } } = this.props;
 
@@ -98,7 +111,7 @@ class ProjectComponent extends Component {
 
                         <Grid container spacing={0} className={classes.topPageStyles}>
                             <Grid item xs={12} sm={12} md={2}>
-                                <h3>Projects</h3>
+                                <h3 className={ classes.siteTextColor }>Projects</h3>
                             </Grid>
 
                             <Grid item xs={12} sm={12} md={10} style={{ display: "flex", justifyContent: "center" }}>
@@ -135,9 +148,6 @@ class ProjectComponent extends Component {
                 {/* The above is displayed if not editing project */}
                 
 
-               
-                
-
             </div>
 
         )
@@ -146,4 +156,8 @@ class ProjectComponent extends Component {
 
 }
 
-export default graphql(ProjectsQuery, { name: 'projects' })(withStyles(styles)(ProjectComponent))
+export default graphql(ProjectsQuery, { name: 'projects' })(
+                    withStyles(styles)(
+                        connect(null, { setEditProject })(ProjectComponent)
+                    )
+                )
