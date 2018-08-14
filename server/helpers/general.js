@@ -26,7 +26,7 @@ myFileUploadHandler = (req, res) => {
 
     const fileUploadDir = `${__dirname}/../storage/app/uploads/${fileName}`
 
-    const publicDir = !req.app.NODE_PRODUCTION_ENV ?
+    const publicDir = req.app.NODE_PRODUCTION_ENV ?
                         `${__dirname}/../build/images/${fileName}`:
                         `${__dirname}/../../client/public/images/${fileName}`
 
