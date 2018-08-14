@@ -23,7 +23,7 @@ mongoose.connect(
 
 
 
-if( !NODE_PRODUCTION_ENV ){
+if( NODE_PRODUCTION_ENV ){
 
     const staticPath = path.resolve(__dirname, 'build')
 
