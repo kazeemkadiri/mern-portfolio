@@ -157,6 +157,38 @@ class EditProject extends React.Component {
 
     }
 
+    addSlide = (slide) => {
+
+        // Run mutation to update the project slides`
+        const { project } = this.state;
+
+
+        this.props.updateProjectSlide({
+            variables:{
+                projectId: project.id,
+                ...slide
+            },
+            update: (store, { data: { addProjectSlide } }) => {
+
+                // console.log(addProjectSlide)
+
+                const slides = addProjectSlide
+
+                this.setState({
+
+                    "project": {
+                        ...project,
+                        slides
+                    },
+                    slide:this.slide
+                })
+
+                // console.log(this.state.project)
+            }
+        })
+
+    }
+
     updateSlide = (slide) => {
 
         // Run mutation to update the project slides`
@@ -366,6 +398,7 @@ class EditProject extends React.Component {
 
                             <EditSlideComponent
                                 updateSlide={this.updateSlide}
+                                addSlide={ this.addSlide }
                                 editSlide={editSlide}
                                 newSlide={newSlide} />
 

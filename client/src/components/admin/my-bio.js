@@ -43,7 +43,7 @@ const bioPropsTemplate = `  id,
 
 const updateBioMutation = gql`
     mutation(
-             $id: String,
+             $id: ID,
              $phone_no: String!, 
              $email: String!,
              $header_bg_img_text: String!,

@@ -73,8 +73,6 @@ class AddProject extends Component{
 
     addSlide = (slide) => {
 
-        // console.log(slide)
-
         // Run mutation to update the project slides`
         const { project } = this.state;
 

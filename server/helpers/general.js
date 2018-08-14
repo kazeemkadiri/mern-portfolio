@@ -30,6 +30,10 @@ myFileUploadHandler = (req, res) => {
                         `${__dirname}/../build/images/${fileName}`:
                         `${__dirname}/../../client/public/images/${fileName}`
 
+    console.log('file upload dir',
+                fileUploadDir, 
+                fs.existsSync(`${__dirname}/../storage/app/uploads`))
+
     // Use the mv() method to place the file somewhere on your server
     uploadedFile.mv(    
         fileUploadDir,
