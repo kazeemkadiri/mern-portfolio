@@ -18,6 +18,7 @@ import ViewProjectComponent from './view-project';
 import BioComponent from './my-bio';
 import ServicesComponent from './my-services';
 import LoginComponent from './login-form';
+import EditProjectComponent from './edit-project';
 import { justify_align_center } from './css/global'
 import './css/global.css'
 
@@ -108,15 +109,14 @@ class AdminIndex extends Component{
             }  
         } = this.props;
 
-        const { isLoggedIn } = this.state
-        
+        console.log(this.props)
         return (
             
             <div className="AdminIndex" style={{ width: "100%", height: '100%' }}>
                 <Navbar 
                     email={ getBioData !== undefined ? getBioData.email : ''} 
                     phone_no={ getBioData !== undefined ? getBioData.phone_no : ''} 
-                    authenticated = { isLoggedIn }
+                    authenticated = { authenticated }
                     navbarFixed = {true}
                     logoutUser={this.logoutUser} />
                 
@@ -142,6 +142,7 @@ class AdminIndex extends Component{
                                 
                                 <Route path="/admin/projects" exact component={ ProjectComponent } />
                                 <Route path="/admin/projects/add-project" exact component={ ProjectComponent } />
+                                <Route path="/admin/projects/edit-project" exact component={ EditProjectComponent } />
                                 <Route path="/admin/projects/view-project" exact component={ ViewProjectComponent } />
                                 <Route path="/admin/bio" exact component={ BioComponent } />  
                                 <Route path="/admin/services" exact component={ ServicesComponent } />  

@@ -10,7 +10,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import Grid from '@material-ui/core/Grid'
-import EditProject from './edit-project';
+
 
 const styles = theme => ({
 
@@ -64,6 +64,8 @@ class ProjectComponent extends Component {
     editProject = editProject => {
 
         this.setState({ editProject })
+
+        return <Redirect to="/admin/projects/edit-project" />
 
     }
 
@@ -133,10 +135,8 @@ class ProjectComponent extends Component {
                 {/* The above is displayed if not editing project */}
                 
 
-                {/* Below is displayed if editing project */}
-                {
-                    editProject && <EditProject project={this.state.editProject} />
-                }
+               
+                
 
             </div>
 

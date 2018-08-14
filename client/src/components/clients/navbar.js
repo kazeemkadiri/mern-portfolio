@@ -95,13 +95,11 @@ class Navbar extends Component {
     
     render() {    
         
-        const { classes, logoutUser, email, phone_no, authenticated, navbarFixed } = this.props
+        const { classes, logoutUser, email, phone_no, authenticated } = this.props
 
         const {  anchorEl, navbarPositioning } = this.state
 
         const open = Boolean(anchorEl)
-
-        console.log(authenticated)
 
         return (
             <React.Fragment>

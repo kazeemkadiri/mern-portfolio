@@ -122,6 +122,7 @@ class Login extends React.Component{
                     <TextField
                         id="password"
                         label="Password"
+                        type="password"
                         className={ classes.textField }
                         style={{ width: "100%"}}
                         value={ data.password || '' }
