@@ -57,7 +57,7 @@ module.exports = `
         updateProjectSlide(
             projectId: ID!, 
             oldSlide: String, 
-            editingSlideIndex: Int!, 
+            editingSlideIndex: Int, 
             title: String!, 
             description: String!, 
             image_path: String!
