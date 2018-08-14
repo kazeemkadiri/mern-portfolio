@@ -170,18 +170,31 @@ const resolvers = {
 
             // console.log(projectId, title, description, image_path)
             
-            const slidePosition = `slides.${editingSlideIndex}`
+            const slidePosition = editingSlideIndex ? `slides.${editingSlideIndex}` : ''
+
+            const operation = editingSlideIndex ? 
+                                { $push: {
+                                    slides: {
+                                        title,
+                                        description,
+                                        image_path
+                                    } 
+                                } } :
+
+                                {
+                                    $set:{
+                                        [slidePosition] : {
+                                            title,
+                                            description,
+                                            image_path
+                                        }
+                                    }
+                                }
 
             const result = await projectsModel.findByIdAndUpdate(
                     projectId,
                     {
-                        $set:{
-                            [slidePosition] : {
-                                title,
-                                description,
-                                image_path
-                            }
-                        }, 
+                        ...operation
                     },
                     {
                         upsert: false,
