@@ -35,7 +35,7 @@ module.exports = `
         ): Project!
 
         updateBio ( 
-            id: ID!, 
+            id: ID, 
             description: String!, 
             about_me_img: String!, 
             header_bg_img: String!, 
