@@ -57,8 +57,6 @@ class Login extends React.Component{
         if(!event && !(event.key.toUpperCase() === "ENTER") )
         return 
 
-        console.log(event.key.toUpperCase())
-        
         const errors = this.validateFormData();
 
         if( Object.keys(errors).length > 0 )
