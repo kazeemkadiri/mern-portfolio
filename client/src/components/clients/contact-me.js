@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
 import { withStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
@@ -45,6 +49,16 @@ const styles = () => (
 )
 
 
+const sendMailMutation = gql`
+    mutation($name: String!, $email: String!, $subject: String!, $message: String!){
+
+        sendMail(name:$name, email:$email, subject:$subject, message:$message){
+            status
+        }
+
+    }
+`
+
 class ContactMe extends Component{
 
     state = {
@@ -52,7 +66,8 @@ class ContactMe extends Component{
         contactDetails: {
             phone_no: "",
             email: ""
-        }
+        },
+        mailStatus: undefined
 
     }
 
@@ -64,8 +79,6 @@ class ContactMe extends Component{
 
     initializeStateWithProps = () => {
 
-        // console.log("contact",this.props);
-
         const { contactMe } = this.props;
 
         this.setState({ contactDetails: {
@@ -76,15 +89,34 @@ class ContactMe extends Component{
 
     }
 
+    onSubmit = contactFormObject => {
+
+        this.props.sendMail({
+            variables: {
+                ...contactFormObject
+            },
+            update: async (store, { data: { sendMail } }) => {
+
+                console.log(sendMail)
+                
+                this.setState({
+                    mailStatus: sendMail.status
+                })
+
+            }
+        })
+
+    }
+
     render() {
 
-        const { contactDetails } = this.state; // Should be obtained form props
+        const { contactDetails, mailStatus } = this.state; // Should be obtained form props
 
         const { classes } = this.props;
 
         return (
 
-            <div className="contactMe">
+            <div className="contactMe" id="contact">
 
             <div className={ classes.sectionHeader }>
                 <h1 className={ classes.removeWebKit }>CONTACT ME</h1>
@@ -126,7 +158,7 @@ class ContactMe extends Component{
 
              <Grid container spacing={0}>
 
-                   <ContactForm />
+                   <ContactForm onSubmit={this.onSubmit} mailStatus={mailStatus}/>
 
              </Grid>
 
@@ -138,4 +170,4 @@ class ContactMe extends Component{
 
 }
 
-export default withStyles(styles)(ContactMe);
+export default graphql( sendMailMutation, { name: "sendMail" })(withStyles(styles)(ContactMe))

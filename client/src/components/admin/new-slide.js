@@ -97,9 +97,9 @@ class NewSlide extends React.Component{
                             :
                             <React.Fragment>
                                 <AddIcon className={ classes.icon } /> 
-                                <h3 className={classes.siteTextColor}>
+                                <span className={classes.siteTextColor}>
                                     New Slide
-                                </h3>
+                                </span>
                             </React.Fragment>
                         }
                         </Typography>

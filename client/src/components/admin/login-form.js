@@ -54,7 +54,9 @@ class Login extends React.Component{
 
     onSubmit = (event) => {
 
-        if(!event && !(event.key.toUpperCase() === "ENTER") )
+        console.log(event)
+        
+        if( (event !== undefined) && (!event.key.toUpperCase() === "ENTER") ) 
         return 
 
         const errors = this.validateFormData();
@@ -164,7 +166,9 @@ class Login extends React.Component{
 
                 <Grid item xs={12} sm={12} md={8} style={{ display: "flex", justifyContent: "flex-end" }}>
                     <span onClick={this.displayResetPasswordForm}
-                          style={{ color: "red", cursor: "pointer" }}>Forgot password ? </span>
+                          style={{ color: "red", cursor: "pointer" }}>
+                          Forgot password ? 
+                    </span>
                 </Grid>
 
             </Grid>

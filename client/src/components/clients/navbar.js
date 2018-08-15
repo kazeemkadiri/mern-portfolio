@@ -108,7 +108,7 @@ class Navbar extends Component {
                     !authenticated && 
                     <Grid container spacing={0} className={ classes.siteTextColor } style={{ padding: '4px 0px' }}>
                         <Grid item sm={4} md={3} className={ classes.justifyAlignCenter }> 
-                            <Icon style={{ fontSize: '14px', padding: '4px' }}>mail</Icon> &nbsp;
+                            <Icon style={{ fontSize: '14px', padding: '4px', color: '#50d8af' }}>mail</Icon> &nbsp;
                             { email }
                         </Grid>
                         <Grid item 
@@ -116,7 +116,7 @@ class Navbar extends Component {
                             md={3} 
                             className={ classes.justifyAlignCenter } 
                             style={{ borderLeft: `1px solid ${site_text_color.color}` }}>
-                            <Icon style={{ fontSize: '14px', padding: '4px' }}>phone</Icon> &nbsp; { phone_no }
+                            <Icon style={{ fontSize: '14px', padding: '4px', color: '#50d8af' }}>phone</Icon> &nbsp; { phone_no }
                         </Grid>
                         <Grid item sm={4} md={4}  className={ classes.alignCenter } >
                             <a href='https://www.facebook.com' 
@@ -147,7 +147,7 @@ class Navbar extends Component {
                             !navbarFixed
                                 && 
                             <Hidden smDown>
-                                <ul style={{ display: "flex", flex: "1", listStyle: "none" }}>
+                                <ul style={{ display: "flex", flex: "1.2", listStyle: "none" }}>
                                     <li variant="title" color="inherit" className={classes.flex}>
                                         <a href="#home" className={classes.navLinks}>HOME</a>
                                     </li>

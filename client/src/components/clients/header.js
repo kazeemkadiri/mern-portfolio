@@ -35,7 +35,7 @@ class Header extends Component {
 
         return (
 
-            <div className="Header" style={{ width: "100%"}}>
+            <div className="Header" id="home" style={{ width: "100%"}}>
 
                 <img className={classes.w100} src={ extractImageSrc(header_bg_img) } style={{ width: "100% !important", height: "auto" }} alt="header_background_images"/>
 

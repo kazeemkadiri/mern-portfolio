@@ -165,6 +165,7 @@ const resolvers = {
                                                     })
 
             return result.slides
+            
         },
         updateProjectSlide: async(_, { projectId, oldSlide, editingSlideIndex, title, description, image_path }) => {
 
@@ -348,6 +349,16 @@ const resolvers = {
                                                 });
 
             return { updateStatus: (result !== null ? true: false)   };
+
+        },
+        sendMail: async(_, { name, email, subject, message }) => {
+
+           const response = await MailHelper.sendContactMail( { name, email, subject, message } )
+
+           if( response.hasOwnProperty('accepted') && response.accepted.length >= 0 )
+           return  { status: true }
+           
+           return { status: false }
 
         }
 

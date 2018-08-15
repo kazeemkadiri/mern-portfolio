@@ -27,7 +27,7 @@ const ConfirmPasswordResetTokenMutation = gql`
 const NewPasswordMutation = gql`
     mutation($userId: ID!, $password: String!) {
         newPasswordUpdate(userId: $userId, password: $password){
-            updateStatus
+            status
         }
     }
 
@@ -95,7 +95,7 @@ class MailPasswordReset extends Component{
 
                 // console.log(newPasswordUpdate);
 
-                this.setState({ updateStatus: newPasswordUpdate.operationStatus });
+                this.setState({ updateStatus: newPasswordUpdate.status });
 
             }
         })

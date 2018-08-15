@@ -27,7 +27,7 @@ class AboutMe extends Component {
 
         return (
 
-            <div className="AboutMe" style={{ width: "100%", marginTop: "40px" }}>
+            <div className="AboutMe" id="about-me" style={{ width: "100%", marginTop: "40px" }}>
                 <div className={classes.container}>
                     <div className={ classes.containerChild }>
                         <img src={ extractImageSrc(about_me_img) } style={{ maxWidth: "100%" }} alt="about_me_background_image"/>

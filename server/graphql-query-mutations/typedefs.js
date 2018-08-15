@@ -44,15 +44,38 @@ module.exports = `
             email: String!
         ): Bio!
 
-        loginUser(email: String!, password: String!): UserExists!
+        loginUser(
+            email: String!, 
+            password: String!
+        ): UserExists!
         
-        resetPassword(email: String!): ResetMailStatus!
+        resetPassword(
+            email: String!
+        ): ResetMailStatus!
         
-        confirmPasswordResetToken(token: String!): UserId!
+        confirmPasswordResetToken(
+            token: String!
+        ): UserId!
+
         
-        newPasswordUpdate(userId: ID!, password: String!): StatusNotification!
+        newPasswordUpdate(
+            userId: ID!, 
+            password: String!
+        ): StatusNotification!
+
+        sendMail(
+            name: String!, 
+            email: String!, 
+            subject: String!, 
+            message: String!
+        ): StatusNotification!
         
-        addProjectSlide(projectId: ID!, title: String!, description: String!, image_path: String!): [Slide]
+        addProjectSlide(
+            projectId: ID!, 
+            title: String!, 
+            description: String!, 
+            image_path: String!
+        ): [Slide]
         
         updateProjectSlide(
             projectId: ID!, 
@@ -78,7 +101,7 @@ module.exports = `
     }
 
     type StatusNotification{
-        updateStatus: Boolean!
+        status: Boolean!
     }
 
     type ResetMailStatus{

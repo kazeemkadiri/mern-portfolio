@@ -4,7 +4,7 @@ const mailerDetails = require('../config/keys');
 const nodemailer = require('nodemailer');
 const userModel = require('../models/user');
 
-generateMailMessage = (resetPasswordUrl) => {
+const generateResetPasswordMailMessage = (resetPasswordUrl) => {
 
     return `
         <p> You are receiving this mail based on your request to reset your password</p>
@@ -12,6 +12,51 @@ generateMailMessage = (resetPasswordUrl) => {
     `;
 
 }
+
+const generateContactMailMessage = ({name, email, subject, message}) => {
+
+    return `
+        <p> Message from ${name} </p>
+        <p> <strong>Email:</strong> ${email} </p>
+        <p> <strong>Subject:</strong> ${ subject }</p>
+        
+        <br />
+        
+        <p>
+            ${ message } 
+        </p>
+    `;
+
+}
+
+const generateMailOptions = (mailSubject, messageBody) => ({
+    from: mailerDetails.email, // sender address
+    to: mailerDetails.email, // list of receivers
+    subject: mailSubject, // Subject line
+    html: messageBody// plain text body
+})
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+           user: mailerDetails.email,
+           pass: mailerDetails.password
+       }
+   });
+
+
+module.exports.sendContactMail = async (mailFormParams) => {
+
+    const mailOptions = generateMailOptions(
+                            "Message from my portfolio heroku site", 
+                            generateContactMailMessage(mailFormParams)
+                        )
+    const response = await transporter.sendMail(mailOptions);
+
+    return response
+
+}
+
 
 module.exports.sendResetMailPassword = async ( email ) => {
 
@@ -32,26 +77,15 @@ module.exports.sendResetMailPassword = async ( email ) => {
 
         const resetPasswordUrl = `${host}/password-reset/${token}`;
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                   user: mailerDetails.email,
-                   pass: mailerDetails.password
-               }
-           });
 
-        const mailOptions = {
-            from: mailerDetails.email, // sender address
-            to: mailerDetails.email, // list of receivers
-            subject: 'Mail reset link', // Subject line
-            html: generateMailMessage(resetPasswordUrl)// plain text body
-        };
+        const mailOptions = generateMailOptions(
+                                "Mail reset link", 
+                                generateResetPasswordMailMessage(resetPasswordUrl)
+                            )
 
         response = await transporter.sendMail(mailOptions);
 
         return response
     }
-
-    
 
 }

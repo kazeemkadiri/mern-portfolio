@@ -70,6 +70,27 @@ const styles = theme => ({
 
 })
 
+
+const addSlideMutation = gql`
+    mutation( 
+        $title: String!, 
+        $image_path: String!, 
+        $description: String!, 
+        $projectId: ID!){
+
+            addProjectSlide(
+                title: $title,
+                image_path: $image_path,
+                description: $description,
+                projectId: $projectId
+            ){
+                title
+                image_path
+                description
+            }
+    }`
+
+
 const deleteSlideMutation = gql`
     mutation( 
         $title: String!, 
@@ -162,15 +183,12 @@ class EditProject extends React.Component {
         // Run mutation to update the project slides`
         const { project } = this.state;
 
-
-        this.props.updateProjectSlide({
+        this.props.addProjectSlide({
             variables:{
                 projectId: project.id,
                 ...slide
             },
             update: (store, { data: { addProjectSlide } }) => {
-
-                // console.log(addProjectSlide)
 
                 const slides = addProjectSlide
 
@@ -179,9 +197,10 @@ class EditProject extends React.Component {
                     "project": {
                         ...project,
                         slides
-                    },
-                    slide:this.slide
+                    }
                 })
+
+                this.newSlide(false)
 
                 // console.log(this.state.project)
             }
@@ -227,11 +246,11 @@ class EditProject extends React.Component {
 
     }
 
-    newSlide = () => {
+    newSlide = param => {
 
         this.setState({
-            newSlide: true,
-            isSlideOperation: true
+            newSlide: param,
+            isSlideOperation: param
         })
 
     }
@@ -335,7 +354,7 @@ class EditProject extends React.Component {
                                     <Button variant="raised"
                                         size='small'
                                         className={`${classes.button} ${classes.createButton}`}
-                                        onClick={() => this.newSlide()}>
+                                        onClick={() => this.newSlide(true)}>
                                         <AddIcon className={classes.icon} /> New Slide
                                     </Button>
                                 </Grid>
@@ -436,5 +455,6 @@ const mapStateToProps = ({ project }) => ({
 
 export default compose(graphql(deleteSlideMutation, { name: "deleteSlideMutation" }),
     graphql(updateProjectSlideMutation, { name: "updateProjectSlide" }),
+    graphql(addSlideMutation, { name: "addProjectSlide" }),
     graphql(updateProjectMutation, { name: 'updateProject' })
 )(withStyles(styles)( connect( mapStateToProps )(EditProject) ))
