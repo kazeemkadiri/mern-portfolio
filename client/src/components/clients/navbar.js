@@ -92,6 +92,12 @@ class Navbar extends Component {
       
         };
     }
+
+    scrollPageTo = pageID => {
+
+        document.querySelector(`#${pageID}`).scrollIntoView({behavior: "smooth"})
+
+    }
     
     render() {    
         
@@ -149,19 +155,19 @@ class Navbar extends Component {
                             <Hidden smDown>
                                 <ul style={{ display: "flex", flex: "1.2", listStyle: "none" }}>
                                     <li variant="title" color="inherit" className={classes.flex}>
-                                        <a href="#home" className={classes.navLinks}>HOME</a>
+                                        <a href="#home" onClick={() => this.scrollPageTo('home')} className={classes.navLinks}>HOME</a>
                                     </li>
                                     <li variant="title" color="inherit" className={classes.flex}>
-                                        <a href="#about-me" className={classes.navLinks}>ABOUT ME</a>
+                                        <a href="#about-me" onClick={() => this.scrollPageTo('about-me')} className={classes.navLinks}>ABOUT ME</a>
                                     </li>
                                     <li variant="title" color="inherit" className={classes.flex}>
-                                        <a href="#services" className={classes.navLinks}>SERVICES</a>
+                                        <a href="#services" onClick={() => this.scrollPageTo('services')} className={classes.navLinks}>SERVICES</a>
                                     </li>
                                     <li variant="title" color="inherit" className={classes.flex}>
-                                        <a href="#portfolio" className={classes.navLinks}>WORKS</a>
+                                        <a href="#portfolio" onClick={() => this.scrollPageTo('portfolio')} className={classes.navLinks}>WORKS</a>
                                     </li>
                                     <li variant="title" color="inherit" className={classes.flex}>
-                                        <a href="#contact" className={classes.navLinks}>CONTACT ME</a>
+                                        <a href="#contact" onClick={() => this.scrollPageTo('contact')} className={classes.navLinks}>CONTACT ME</a>
                                     </li>
                                 </ul>
                             </Hidden>
